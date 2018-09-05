@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:padding="25dp"
-    android:layout_gravity="center_vertical"
-    android:minWidth="295dp"
-    android:minHeight="300dp"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:minHeight="300dp"
+    android:minWidth="295dp"
+    android:orientation="vertical"
+    android:padding="25dp">
 
     <LinearLayout
         android:id="@+id/ll_material_background"
@@ -18,58 +17,58 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_weight="1"
             android:id="@+id/ll_contentView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:textColor="#333333"
-                android:textSize="16sp"
                 android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="23dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:text="Material title"
-                android:layout_marginLeft="23dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="23dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:textColor="#333333"
+                android:textSize="16sp" />
 
             <ImageView
-                android:contentDescription="@string/app_name"
                 android:id="@+id/iv_materpic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:contentDescription="@string/app_name" />
 
 
             <ScrollView
                 android:id="@+id/sv_message_content_root"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="15dp"
-                tools:layout_height="700dp"
-                android:fillViewport="false">
+                android:layout_weight="1"
+                android:fillViewport="false"
+                tools:layout_height="700dp">
 
                 <LinearLayout
                     android:id="@+id/ll_message_content_view"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
 
                     <TextView
                         android:id="@+id/tv_message"
-                        android:textColor="#333333"
-                        android:textSize="13sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:lineSpacingMultiplier="1.3"
                         android:text="message"
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:textColor="#333333"
+                        android:textSize="13sp" />
                 </LinearLayout>
 
             </ScrollView>
@@ -85,37 +84,35 @@
 
             <LinearLayout
                 android:id="@+id/ll_buttonLayout"
-                android:gravity="center_vertical"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="15dp"
+                android:gravity="center_vertical">
 
                 <Button
-                    android:text="取消"
                     android:id="@+id/btn_negative"
-                    android:textSize="13sp"
-                    android:textColor="#999999"
-                    android:background="@drawable/btn_new_normal"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    />
+                    android:background="@drawable/btn_new_normal"
+                    android:text="取消"
+                    android:textColor="#999999"
+                    android:textSize="13sp" />
 
                 <Button
-                    android:text="确定"
-                    android:textSize="13sp"
-                    android:layout_marginRight="20dp"
                     android:id="@+id/btn_positive"
-                    android:textColor="#ffffff"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="20dp"
-                    android:background="@drawable/btn_new_pressed"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                     />
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_new_pressed"
+                    android:text="确定"
+                    android:textColor="#ffffff"
+                    android:textSize="13sp" />
             </LinearLayout>
 
         </RelativeLayout>

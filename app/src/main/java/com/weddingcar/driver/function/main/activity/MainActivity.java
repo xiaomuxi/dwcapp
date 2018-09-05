@@ -24,7 +24,6 @@ public class MainActivity extends BaseActivity {
         super.initActionBar();
         setActionBar(R.layout.common_top_bar);
         setTopTitle("主界面");
-
     }
 
     @Override

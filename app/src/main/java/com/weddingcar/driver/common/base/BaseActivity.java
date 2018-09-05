@@ -153,7 +153,7 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             mStatusBarView = view;
         }
-        mStatusBarView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.bg_main_shape));
+        mStatusBarView.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_main_shape));
         mStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mStatusHeight));
     }
 
@@ -267,6 +267,7 @@ public class BaseActivity extends AppCompatActivity {
             mTopRightImage.setVisibility(View.VISIBLE);
         }
     }
+
     public void setTopRightImage2(int drawable) {
         mTopRightImage2 = (ImageView) mRootView.findViewById(R.id.iv_right2);
         if (mTopRightImage2 != null) {
@@ -325,6 +326,7 @@ public class BaseActivity extends AppCompatActivity {
 
     /**
      * Show process dialog
+     *
      * @param message the dialog message
      */
     public void showProcess(String message) {
@@ -345,7 +347,6 @@ public class BaseActivity extends AppCompatActivity {
         if (null != mDialog) {
             mDialog.dismiss();
         }
-
     }
 
     @Override

@@ -7,10 +7,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_gravity="center"
+        android:gravity="center"
         android:text="这是主界面的内容"
         android:textColor="@color/text_black"
-        android:textSize="@dimen/sp_16"/>
+        android:textSize="@dimen/sp_16" />
 
 </LinearLayout>
