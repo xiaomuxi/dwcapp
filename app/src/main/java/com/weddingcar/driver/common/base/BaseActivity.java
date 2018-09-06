@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -36,6 +35,8 @@ import com.weddingcar.driver.common.utils.UIUtils;
 public class BaseActivity extends AppCompatActivity {
 
     protected final String TAG = this.getClass().getSimpleName();
+    private static final int INVALID_VAL = -1;
+    private static final int COLOR_DEFAULT = Color.parseColor("#20000000");
     public static final int COLOR_TRANSPARENT = Color.parseColor("#00000000");
     public static BaseActivity mForegroundActivity = null;
     public Activity mContext;
@@ -64,16 +65,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        // 默认为普通风格
-        mActivityLayoutId = R.layout.theme_acitity_normal;
-        // 设置为竖屏模式
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         init();
         initActionBar();
         initView();
@@ -81,8 +72,6 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void init() {
         mContext = this;
-//        mRootView = (ViewGroup) mContext.findViewById(android.R.id.content); //  获取content的view
-        // 默认为普通风格
         mActivityLayoutId = R.layout.theme_acitity_normal;
         // 设置为竖屏模式
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -153,7 +142,7 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             mStatusBarView = view;
         }
-        mStatusBarView.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_main_shape));
+        mStatusBarView.setBackground(ContextCompat.getDrawable(mContext, R.color.bg_main_red));
         mStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mStatusHeight));
     }
 
@@ -371,6 +360,22 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         return super.onTouchEvent(event);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void compat(Activity activity, int statusColor) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            int color = COLOR_DEFAULT;
+            ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
+            if (statusColor != INVALID_VAL) {
+                color = statusColor;
+            }
+            View statusBarView = new View(activity);
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    UIUtils.getStatusBarHeight(activity));
+            statusBarView.setBackgroundColor(color);
+            contentView.addView(statusBarView, lp);
+        }
     }
 }
 
