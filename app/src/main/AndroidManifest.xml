@@ -15,13 +15,16 @@
         android:supportsRtl="true"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme" >
-        <activity android:name=".function.main.activity.MainActivity" >
+        <activity android:name=".function.user.activity.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".function.main.activity.HomeActivity"/>
+        <activity android:name=".function.user.activity.WelcomeGuideActivity"/>
+        <activity android:name=".function.user.activity.LoginActivity"/>
     </application>
 
 </manifest>

@@ -8,7 +8,7 @@ import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
 import com.weddingcar.driver.common.utils.UIUtils;
 
-public class MainActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity {
 
     private Context context;
     private long exitTime = 0;

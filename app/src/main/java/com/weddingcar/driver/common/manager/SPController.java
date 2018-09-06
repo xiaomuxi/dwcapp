@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 
 public class SPController {
 
+    public static final String IS_APP_FIRST_INSTALL = "IS_APP_FIRST_INSTALL";
+    public static final String IS_USER_AUTO_LOGIN = "IS_USER_AUTO_LOGIN";
+
+
     private static SPController instance;
 
     private SharedPreferences sp;
