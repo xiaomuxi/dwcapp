@@ -6,4 +6,10 @@
     <string name="forget_password">忘记密码</string>
     <string name="hint_input_mobile">请输入手机号</string>
     <string name="hint_input_password">请输入密码</string>
+    <string name="tab_title_order">订单</string>
+    <string name="tab_title_my">我的</string>
+    <string name="tab_running">进行中</string>
+    <string name="tab_wait">待通过</string>
+    <string name="tab_complete">已完成</string>
+    <string name="tab_invalid">已失效</string>
 </resources>
