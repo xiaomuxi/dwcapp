@@ -28,7 +28,7 @@ public class RetrofitUtil {
 
     private static final String WEATHER_BASE_URL = "http://jisutqybmf.market.alicloudapi.com/";
     private static final String BAIDU_OAUTH_URL = "https://aip.baidubce.com/oauth/2.0/";
-    private static String NET_WORK_BASE_URL = "https://xxx.xxx.xxx";
+    private static String NET_WORK_BASE_URL = "http://139.196.254.89:8080/";
 
     private static final int DEFAULT_TIMEOUT = 15;
     private static Context mContext;

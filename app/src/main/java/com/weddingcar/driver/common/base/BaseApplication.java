@@ -6,7 +6,15 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.network.library.utils.Logger;
+import com.weddingcar.driver.common.manager.SPController;
+
 import java.util.List;
+
+import static com.weddingcar.driver.common.manager.SPController.ALI_PUSH_DEVICE_ID;
 
 /**
  * Base application
@@ -26,6 +34,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initAliPushChannel();
         mMainThreadId = android.os.Process.myTid();
         mMainThread = Thread.currentThread();
         mMainThreadHandler = new Handler();
@@ -35,6 +44,24 @@ public class BaseApplication extends Application {
         if (null == processName || processName.equals(getApplication().getPackageName())) {
             initSystems();
         }
+    }
+
+    private void initAliPushChannel() {
+        PushServiceFactory.init(this);
+        CloudPushService pushService = PushServiceFactory.getCloudPushService();
+        pushService.register(this, new CommonCallback() {
+            @Override
+            public void onSuccess(String response) {
+                String deviceId = pushService.getDeviceId();
+                SPController.getInstance().putString(ALI_PUSH_DEVICE_ID, deviceId);
+                Logger.D("init AliPushChannel success and deviceId = " + deviceId);
+            }
+
+            @Override
+            public void onFailed(String errorCode, String errorMessage) {
+                Logger.D("init AliPushChannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+            }
+        });
     }
 
     /**

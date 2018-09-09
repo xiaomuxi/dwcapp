@@ -1,9 +1,15 @@
 package com.weddingcar.driver.common.app;
 
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.network.library.utils.Logger;
 import com.weddingcar.driver.common.base.BaseApplication;
 import com.weddingcar.driver.common.config.GlobalConfig;
 import com.weddingcar.driver.common.manager.SPController;
+
+import static com.weddingcar.driver.common.manager.SPController.ALI_PUSH_DEVICE_ID;
 
 /**
  * driver wedding car Application

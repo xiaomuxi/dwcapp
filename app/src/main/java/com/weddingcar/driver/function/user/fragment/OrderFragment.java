@@ -100,6 +100,37 @@ public class OrderFragment extends BaseFragment {
         mOrderViewPager.setAdapter(orderPagerAdapter);
 
         mOrderViewPager.setCurrentItem(0);
+        mOrderViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pageChanged(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+    }
+
+    private void pageChanged(int position) {
+        switch (position) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
