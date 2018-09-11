@@ -7,6 +7,7 @@
     <!--background-->
     <color name="bg_gray">#BFBFBF</color>
     <color name="bg_black">#333333</color>
+    <color name="bg_white">#ffffff</color>
     <color name="bg_main_red">#ff4545</color>
     <color name="divide_main_gray">#e5e5e5</color>
 

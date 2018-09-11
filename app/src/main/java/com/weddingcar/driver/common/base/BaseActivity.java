@@ -361,21 +361,5 @@ public class BaseActivity extends AppCompatActivity {
 
         return super.onTouchEvent(event);
     }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void compat(Activity activity, int statusColor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int color = COLOR_DEFAULT;
-            ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
-            if (statusColor != INVALID_VAL) {
-                color = statusColor;
-            }
-            View statusBarView = new View(activity);
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    UIUtils.getStatusBarHeight(activity));
-            statusBarView.setBackgroundColor(color);
-            contentView.addView(statusBarView, lp);
-        }
-    }
 }
 

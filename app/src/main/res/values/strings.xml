@@ -6,6 +6,15 @@
     <string name="forget_password">忘记密码</string>
     <string name="hint_input_mobile">请输入手机号</string>
     <string name="hint_input_password">请输入密码</string>
+    <string name="hint_input_verify_code">请输入验证码</string>
+    <string name="get_verify_code">获取验证码</string>
+    <string name="next_step">下一步</string>
+    <string name="hint_input_register_password">请输入8-20位密码</string>
+    <string name="hint_input_register_password_again">请再次输入密码</string>
+    <string name="hint_input_new_password">请输入8-20位新密码</string>
+    <string name="hint_input_new_password_again">请再次输入新密码</string>
+    <string name="text_complete">完成</string>
+
     <string name="tab_title_order">订单</string>
     <string name="tab_title_my">我的</string>
     <string name="tab_running">进行中</string>

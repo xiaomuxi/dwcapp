@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/app_name"
                 android:scaleType="center"
-                android:src="@mipmap/nav_back" />
+                android:src="@drawable/nav_back" />
 
             <TextView
                 android:id="@+id/tv_left"
