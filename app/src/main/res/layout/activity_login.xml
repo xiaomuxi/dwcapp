@@ -13,7 +13,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_launcher" />
     </LinearLayout>
 
 
@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@null"
-            android:drawableLeft="@mipmap/login_icon_num"
+            android:drawableLeft="@drawable/logoin_icon_num"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:hint="@string/hint_input_mobile"
@@ -67,7 +67,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@null"
-            android:drawableLeft="@mipmap/login_icon_pas"
+            android:drawableLeft="@drawable/logoin_icon_pas"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:hint="@string/hint_input_password"
@@ -94,6 +94,7 @@
         android:layout_marginLeft="@dimen/dimen_25"
         android:layout_marginRight="@dimen/dimen_25"
         android:layout_marginTop="25dp"
+        android:enabled="false"
         android:background="@drawable/selector_button_red"
         android:gravity="center"
         android:text="@string/tab_login"
@@ -108,19 +109,20 @@
         android:layout_marginTop="@dimen/dimen_10">
 
         <TextView
-            android:id="@+id/tv_other_account"
+            android:id="@+id/tv_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/dimen_8"
+            android:padding="@dimen/dimen_8"
             android:gravity="center"
             android:text="@string/register_immediate"
             android:textColor="@color/text_main_red"
             android:textSize="@dimen/sp_14" />
 
         <TextView
-            android:id="@+id/tv_toReset"
+            android:id="@+id/tv_forget_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_8"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="@string/forget_password"

@@ -31,7 +31,7 @@ public class SpinView extends AppCompatImageView {
     }
 
     private void init(Context context) {
-        setImageResource(R.mipmap.progress_hud_spinner);
+        setImageResource(R.drawable.progress_hud_spinner);
 
         setAdjustViewBounds(true);
         setMaxHeight(72);
