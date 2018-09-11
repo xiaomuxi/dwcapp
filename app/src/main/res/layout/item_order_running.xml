@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="214dp"
+    android:background="@color/text_white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/order_status_tx_view"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginLeft="@dimen/dimen_15"
+        android:drawableLeft="@drawable/tab_order"
+        android:drawablePadding="13dp"
+        android:gravity="center_vertical"
+        android:text="@string/today_order"
+        android:textColor="@color/bg_black"
+        android:textSize="@dimen/sp_14" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/text_main_gray" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_15"
+            android:text="订单号:20184444"
+            android:textColor="@color/text_main_gray"
+            android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_15"
+            android:text="高先生"
+            android:textColor="@color/text_main_gray"
+            android:textSize="@dimen/sp_12" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/text_main_gray" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="97dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/order_user_icon_view"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_15" />
+
+        <RelativeLayout
+            android:id="@+id/order_layout_rl_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/order_user_icon_view"
+            android:layout_marginLeft="@dimen/dimen_15"
+            android:layout_marginRight="@dimen/dimen_15"
+            android:layout_toRightOf="@+id/order_user_icon_view">
+
+            <TextView
+                android:id="@+id/order_time_tx_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/dimen_10"
+                android:drawableRight="@drawable/sign_main"
+                android:text="2018年5月18日"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/sp_15"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/order_money_tx_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dimen_15"
+                android:text="$500"
+                android:textColor="@color/text_main_red"
+                android:textSize="@dimen/sp_15"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/order_car_type_tx_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/order_layout_rl_view"
+            android:layout_below="@+id/order_layout_rl_view"
+            android:layout_marginTop="@dimen/dimen_10"
+            android:text="奥迪A6L"
+            android:textColor="@color/text_main_gray"
+            android:textSize="@dimen/sp_12" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/order_layout_rl_view"
+            android:layout_below="@+id/order_car_type_tx_view"
+            android:layout_marginTop="@dimen/dimen_10"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/order_duration_tx_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_time"
+                android:drawablePadding="@dimen/dimen_5"
+                android:text="5小时"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/order_road_tx_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_15"
+                android:drawableLeft="@drawable/icon_road"
+                android:drawablePadding="@dimen/dimen_5"
+                android:text="50公里"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/order_space_tx_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_15"
+                android:drawableLeft="@drawable/icon_area"
+                android:drawablePadding="@dimen/dimen_5"
+                android:text="松江区"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/sp_14" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/text_main_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:gravity="end|center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_15"
+            android:text="查看定位"
+            android:textColor="@color/text_main_gray"
+            android:textSize="@dimen/sp_12" />
+
+    </LinearLayout>
+
+</LinearLayout>

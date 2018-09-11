@@ -8,6 +8,8 @@ public class SPController {
     public static final String IS_APP_FIRST_INSTALL = "IS_APP_FIRST_INSTALL";
     public static final String IS_USER_AUTO_LOGIN = "IS_USER_AUTO_LOGIN";
 
+    public static final String ALI_PUSH_DEVICE_ID = "ALI_PUSH_DEVICE_ID";
+
 
     private static SPController instance;
 
@@ -78,21 +80,21 @@ public class SPController {
     }
 
     public boolean putLong(String key, long value) {
-        if(!isInitialed) {
+        if (!isInitialed) {
             return false;
         }
-        if(key == null || "".equals(key)) {
+        if (key == null || "".equals(key)) {
             return false;
         }
-        editor.putLong(key,value);
+        editor.putLong(key, value);
         return editor.commit();
     }
 
     public long getLong(String key, long defValue) {
-        if(!isInitialed) {
+        if (!isInitialed) {
             return defValue;
         }
-        if(key == null || "".equals(key)) {
+        if (key == null || "".equals(key)) {
             return defValue;
         }
         return sp.getLong(key, defValue);
