@@ -5,6 +5,7 @@ import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.network.library.utils.Logger;
+import com.network.library.utils.RetrofitUtil;
 import com.weddingcar.driver.common.base.BaseApplication;
 import com.weddingcar.driver.common.config.GlobalConfig;
 import com.weddingcar.driver.common.manager.SPController;
@@ -22,5 +23,6 @@ public class DWCApp extends BaseApplication {
         super.initSystems();
         GlobalConfig.init(this);
         SPController.getInstance().init(this);
+        RetrofitUtil.getInstance(this);
     }
 }

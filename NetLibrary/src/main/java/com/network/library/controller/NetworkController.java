@@ -3,12 +3,13 @@ package com.network.library.controller;
 
 import com.network.library.Model.NetworkModel;
 import com.network.library.bean.BaiduOauthEntity;
+import com.network.library.bean.BaseEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.callback.CallBack;
 import com.network.library.view.BaiduOauthView;
 import com.network.library.view.BaseNetView;
 import com.network.library.view.GetWeatherView;
-import com.network.library.view.LoginView;
+import com.network.library.view.GetOrderView;
 
 public class NetworkController<V extends BaseNetView> {
 
@@ -103,11 +104,11 @@ public class NetworkController<V extends BaseNetView> {
         });
     }
 
-    public void login(final String user, String password, boolean showLoading) {
+    public void getOrderList(final String apiId, String customId, String state, boolean showLoading) {
         if (!isViewAttached()) {
             return;
         }
-        NetworkModel.baiduOauth(user, password, new CallBack<BaiduOauthEntity>() {
+        NetworkModel.getOrderList(apiId, customId, state, new CallBack<BaseEntity>() {
             @Override
             public void onStart() {
                 if (isViewAttached() && showLoading)
@@ -123,13 +124,13 @@ public class NetworkController<V extends BaseNetView> {
             @Override
             public void onError(String msg) {
                 if (isViewAttached())
-                    iMvpView.onRequestError(msg, "login");
+                    iMvpView.onRequestError(msg, "getOrderList");
             }
 
             @Override
-            public void onSuccess(BaiduOauthEntity data) {
+            public void onSuccess(BaseEntity data) {
                 if (isViewAttached())
-                    ((LoginView) iMvpView).onLoginSuccess(data);
+                    ((GetOrderView) iMvpView).onGetOrderListSuccess(data);
             }
         });
     }

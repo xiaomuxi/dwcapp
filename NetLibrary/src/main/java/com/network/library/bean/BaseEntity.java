@@ -1,15 +1,17 @@
 package com.network.library.bean;
 
-public class BaseEntity {
-    private int code;
+public class BaseEntity<T> {
+    private String status;
     private String msg;
+    private String Count;
+    private T data;
 
-    public int getCode() {
-        return code;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getMsg() {
@@ -20,11 +22,29 @@ public class BaseEntity {
         this.msg = msg;
     }
 
+    public String getCount() {
+        return Count;
+    }
+
+    public void setCount(String count) {
+        Count = count;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
     @Override
     public String toString() {
         return "BaseEntity{" +
-                "code=" + code +
+                "status='" + status + '\'' +
                 ", msg='" + msg + '\'' +
+                ", Count='" + Count + '\'' +
+                ", data=" + data +
                 '}';
     }
 }

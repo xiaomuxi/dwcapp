@@ -2,12 +2,15 @@ package com.network.library.utils;
 
 import android.content.Context;
 import android.os.Environment;
+
 import com.network.library.bean.BaiduOauthEntity;
+import com.network.library.bean.BaseEntity;
 import com.network.library.bean.LoginEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.inter.BaiduOauthService;
 import com.network.library.inter.DeviceGetWeatherService;
 import com.network.library.inter.NetworkService;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -175,8 +178,8 @@ public class RetrofitUtil {
                 .subscribe(subscriber);
     }
 
-    public void login(Subscriber<LoginEntity> subscriber, String user, String password) {
-        mNetworkService.login(user, password)
+    public void getOrderList(Subscriber<BaseEntity> subscriber, String interfaceCode, String customerId, String state) {
+        mNetworkService.getOrderList(interfaceCode, customerId, state)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
