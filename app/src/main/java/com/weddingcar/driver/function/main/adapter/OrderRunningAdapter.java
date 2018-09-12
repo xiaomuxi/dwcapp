@@ -1,4 +1,4 @@
-package com.weddingcar.driver.function.user.adapter;
+package com.weddingcar.driver.function.main.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

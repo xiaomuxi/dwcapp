@@ -1,4 +1,4 @@
-package com.weddingcar.driver.function.user.fragment;
+package com.weddingcar.driver.function.main.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

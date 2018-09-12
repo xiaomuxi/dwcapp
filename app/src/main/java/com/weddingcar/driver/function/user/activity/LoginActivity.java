@@ -100,6 +100,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         if (!checkInsert()) {
             return;
         }
+
         // 登录请求
 //        UserNetManager.loginRequest(mLoginTask, et_phone.getText().toString().trim(),et_password.getText().toString(),tv_other_account.isSelected());
     }

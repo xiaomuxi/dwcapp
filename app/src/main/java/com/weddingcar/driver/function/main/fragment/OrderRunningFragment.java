@@ -1,9 +1,8 @@
-package com.weddingcar.driver.function.user.fragment;
+package com.weddingcar.driver.function.main.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.callback.OnRecycleItemClick;
 import com.weddingcar.driver.common.utils.UIUtils;
-import com.weddingcar.driver.function.user.adapter.OrderRunningAdapter;
+import com.weddingcar.driver.function.main.adapter.OrderRunningAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

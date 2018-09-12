@@ -1,10 +1,8 @@
-package com.weddingcar.driver.function.user.fragment;
+package com.weddingcar.driver.function.main.fragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +12,7 @@ import com.weddingcar.driver.R;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MyFragment extends BaseFragment {
-
+public class OrderWaitFragment extends BaseFragment {
     private String mFragmentTag;
 
     private Unbinder unbinder;
@@ -31,7 +28,7 @@ public class MyFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my, container, false);
+        View view = inflater.inflate(R.layout.fragment_order_wait, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }

@@ -1,6 +1,5 @@
-package com.weddingcar.driver.function.user.fragment;
+package com.weddingcar.driver.function.main.fragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.utils.UIUtils;
-import com.weddingcar.driver.function.user.adapter.OrderPagerAdapter;
+import com.weddingcar.driver.function.main.adapter.OrderPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
