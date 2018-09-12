@@ -4,16 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 public class WeatherEntity extends BaseEntity {
-    private int status;
     private Result result;
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 
     public Result getResult() {
         return result;
@@ -26,12 +17,11 @@ public class WeatherEntity extends BaseEntity {
     @Override
     public String toString() {
         return "WeatherEntity{" +
-                "status=" + status +
-                ", result=" + result +
+                "result=" + result +
                 '}';
     }
 
-    public class Result implements Serializable{
+    public class Result implements Serializable {
         private String city;
         private int cityid;
         private int citycode;

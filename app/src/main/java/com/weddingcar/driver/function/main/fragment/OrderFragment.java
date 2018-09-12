@@ -1,5 +1,7 @@
 package com.weddingcar.driver.function.main.fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.network.library.bean.BaseEntity;
+import com.network.library.controller.NetworkController;
+import com.network.library.utils.Logger;
+import com.network.library.view.BaseNetView;
+import com.network.library.view.GetOrderView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.main.adapter.OrderPagerAdapter;
@@ -21,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class OrderFragment extends BaseFragment {
+public class OrderFragment extends BaseFragment implements GetOrderView {
 
     @BindView(R.id.order_tab_layout)
     TabLayout mOrderTabLayout;
@@ -34,6 +41,7 @@ public class OrderFragment extends BaseFragment {
 
     private List<Fragment> mOrderFragments = new ArrayList<>();
     private List<String> mPagerTitles = new ArrayList<>();
+    private NetworkController<BaseNetView> mController;
 
     public OrderFragment() {
     }
@@ -44,6 +52,19 @@ public class OrderFragment extends BaseFragment {
         if (null != getArguments()) {
             mFragmentTag = getArguments().getString(TAG);
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mController = new NetworkController<>();
+        mController.attachView(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mController.detachView();
     }
 
     @Nullable
@@ -59,6 +80,7 @@ public class OrderFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         initTabLayout();
         initViewPager();
+        mController.getOrderList("HC0103122", "18616270226", "待通过", true);
     }
 
     private void initTabLayout() {
@@ -136,5 +158,15 @@ public class OrderFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onGetOrderListSuccess(BaseEntity baseEntity) {
+        if (null != baseEntity) {
+            String status = baseEntity.getStatus();
+            String msg = baseEntity.getMsg();
+            String count = baseEntity.getCount();
+            Logger.I("onGetOrderListSuccess status : " + status + " msg : " + msg + " count : " + count);
+        }
     }
 }
