@@ -37,7 +37,7 @@ public class LogUtils {
     /**
      * Log tag
      */
-    private static String mTag = "XMApp";
+    private static String mTag = "DWCApp";
     /**
      * is debug
      */

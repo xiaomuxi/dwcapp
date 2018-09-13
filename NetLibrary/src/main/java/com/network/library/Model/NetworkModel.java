@@ -4,6 +4,8 @@ package com.network.library.Model;
 import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.LoginEntity;
+import com.network.library.bean.RegisterEntity;
+import com.network.library.bean.VerifyCodeEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.callback.CallBack;
 import com.network.library.utils.RetrofitUtil;
@@ -112,5 +114,104 @@ public class NetworkModel {
             }
         };
         RetrofitUtil.getInstance().getOrderList(mEntitySubscriber, apiId, customId, state);
+    }
+
+    public static void login(String phone, String pwd, CallBack<LoginEntity> callBack) {
+        Subscriber<LoginEntity> mEntitySubscriber = new Subscriber<LoginEntity>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(LoginEntity baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().login(mEntitySubscriber, "HC020103", phone, pwd);
+    }
+
+    public static void sendVerifyCode(String phone, String type, CallBack<VerifyCodeEntity> callBack) {
+        Subscriber<VerifyCodeEntity> mEntitySubscriber = new Subscriber<VerifyCodeEntity>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(VerifyCodeEntity baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().sendVerifyCode(mEntitySubscriber, "HC020501", phone, type);
+    }
+
+    public static void register(String phone, String pwd, String pwdAgain, String vCode, CallBack<RegisterEntity> callBack) {
+        Subscriber<RegisterEntity> mEntitySubscriber = new Subscriber<RegisterEntity>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(RegisterEntity baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().register(mEntitySubscriber, "HC020101", phone, pwd, pwdAgain, vCode, "Android");
     }
 }

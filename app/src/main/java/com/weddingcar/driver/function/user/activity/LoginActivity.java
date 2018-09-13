@@ -9,24 +9,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.network.library.bean.LoginEntity;
+import com.network.library.controller.NetworkController;
+import com.network.library.view.BaseNetView;
+import com.network.library.view.NormalView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
+import com.weddingcar.driver.common.bean.UserInfo;
+import com.weddingcar.driver.common.config.ToastConstant;
+import com.weddingcar.driver.common.manager.SPController;
 import com.weddingcar.driver.common.utils.CheckUtils;
+import com.weddingcar.driver.common.utils.LogUtils;
+import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
+import com.weddingcar.driver.function.main.activity.HomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by inrokei on 2018/9/4.
  */
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
+public class LoginActivity extends BaseActivity implements View.OnClickListener, NormalView<LoginEntity>{
 
     private long exitTime = 0;
-
-    Unbinder unbinder;
 
     @BindView(R.id.et_phone)
     EditText et_phone;
@@ -41,6 +48,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     TextWatcher textWatcher;
 
+    private NetworkController<BaseNetView> mController;
 
     @Override
     protected void init() {
@@ -62,6 +70,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         btn_go.setOnClickListener(this);
         tv_register.setOnClickListener(this);
         tv_forget_password.setOnClickListener(this);
+
+        mController = new NetworkController<>();
+        mController.attachView(this);
     }
 
     @Override
@@ -91,6 +102,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         };
         et_phone.addTextChangedListener(textWatcher);
         et_password.addTextChangedListener(textWatcher);
+        et_phone.setText(SPController.getInstance().getString(SPController.USER_LAST_FILLED_PHONE, ""));
     }
 
     /**
@@ -101,8 +113,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             return;
         }
 
-        // 登录请求
-//        UserNetManager.loginRequest(mLoginTask, et_phone.getText().toString().trim(),et_password.getText().toString(),tv_other_account.isSelected());
+        mController.login(et_phone.getText().toString().trim(), et_password.getText().toString());
     }
 
     /**
@@ -148,6 +159,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         startActivity(intent);
     }
 
+    private void goToHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -176,4 +193,48 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
         return false;
     }
+
+    @Override
+    public void onSuccess(LoginEntity entity) {
+        LogUtils.i(TAG, "YIN---->" + entity.toString());
+        if (StringUtils.equals("1", entity.getStatus()) && StringUtils.equals(entity.getCount(), "0")){
+            UIUtils.showToastSafe("用户名或密码错误！");
+            return;
+        }
+
+        LoginEntity.Data data = entity.getData().get(0);
+
+        UserInfo info = new UserInfo();
+        info.setUserId(data.getUserId());
+        info.setSex(data.getSex());
+        info.setName(data.getName());
+        LogUtils.i(TAG, info.toString());
+        SPController.getInstance().saveUserInfo(info);
+        SPController.getInstance().putBoolean(SPController.IS_USER_AUTO_LOGIN, true);
+        SPController.getInstance().putString(SPController.USER_LAST_FILLED_PHONE, et_phone.getText().toString().trim());
+
+        goToHomeActivity();
+    }
+
+    @Override
+    public void showLoading() {
+        showProcess("正在登录...");
+    }
+
+    @Override
+    public void hideLoading() {
+        hideProcess();
+    }
+
+    @Override
+    public void onRequestSuccess() {
+
+    }
+
+    @Override
+    public void onRequestError(String errorMsg, String methodName) {
+        LogUtils.i(TAG, errorMsg);
+        UIUtils.showToastSafe(ToastConstant.TOAST_SERVER_IS_BUSY);
+    }
+
 }
