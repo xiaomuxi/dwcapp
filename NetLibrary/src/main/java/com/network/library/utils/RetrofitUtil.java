@@ -6,6 +6,8 @@ import android.os.Environment;
 import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.LoginEntity;
+import com.network.library.bean.RegisterEntity;
+import com.network.library.bean.VerifyCodeEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.inter.BaiduOauthService;
 import com.network.library.inter.DeviceGetWeatherService;
@@ -180,6 +182,46 @@ public class RetrofitUtil {
 
     public void getOrderList(Subscriber<BaseEntity> subscriber, String interfaceCode, String customerId, String state) {
         mNetworkService.getOrderList(interfaceCode, customerId, state)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void login(Subscriber<LoginEntity> subscriber, String interfaceCode, String phone, String pwd) {
+        mNetworkService.login(interfaceCode, phone, pwd)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void sendVerifyCode(Subscriber<VerifyCodeEntity> subscriber, String interfaceCode, String phone, String type) {
+        mNetworkService.sendVerifyCode(interfaceCode, phone, type)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void register(Subscriber<RegisterEntity> subscriber, String interfaceCode, String phone, String pwd, String pwdAgain, String vCode, String id) {
+        mNetworkService.register(interfaceCode, phone, pwd, pwdAgain, vCode, id)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void modifyPassword(Subscriber<BaseEntity> subscriber, String interfaceCode, String phone, String pwd, String newPwd) {
+        mNetworkService.modifyPassword(interfaceCode, phone, pwd, newPwd, "Android")
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void modifyUserInfo(Subscriber<BaseEntity> subscriber, String interfaceCode, String phone, String sex, String name) {
+        mNetworkService.modifyUserInfo(interfaceCode, phone, sex, name)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

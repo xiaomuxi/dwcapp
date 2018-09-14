@@ -3,12 +3,19 @@ package com.weddingcar.driver.common.manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.weddingcar.driver.common.bean.UserInfo;
+
 public class SPController {
 
     public static final String IS_APP_FIRST_INSTALL = "IS_APP_FIRST_INSTALL";
     public static final String IS_USER_AUTO_LOGIN = "IS_USER_AUTO_LOGIN";
+    public static final String USER_LAST_FILLED_PHONE = "USER_LAST_FILLED_PHONE";
 
     public static final String ALI_PUSH_DEVICE_ID = "ALI_PUSH_DEVICE_ID";
+
+    public static final String USER_INFO_USER_ID = "USER_INFO_USER_ID";
+    public static final String USER_INFO_SEX = "USER_INFO_SEX";
+    public static final String USER_INFO_NAME = "USER_INFO_NAME";
 
 
     private static SPController instance;
@@ -34,6 +41,31 @@ public class SPController {
         editor = sp.edit();
         isInitialed = true;
         return null;
+    }
+
+    public UserInfo getUserInfo() {
+        UserInfo info = new UserInfo();
+        info.setUserId(getInstance().getString(USER_INFO_USER_ID, ""));
+        info.setName(getInstance().getString(USER_INFO_NAME, ""));
+        info.setSex(getInstance().getString(USER_INFO_SEX, ""));
+
+        return info;
+    }
+
+    public void saveUserInfo(UserInfo info) {
+        if (info == null) {
+            return;
+        }
+
+        getInstance().putString(USER_INFO_USER_ID, info.getUserId());
+        getInstance().putString(USER_INFO_NAME, info.getName());
+        getInstance().putString(USER_INFO_SEX, info.getSex());
+    }
+
+    public void cleanUserInfo() {
+        getInstance().putString(USER_INFO_USER_ID, "");
+        getInstance().putString(USER_INFO_NAME, "");
+        getInstance().putString(USER_INFO_SEX, "");
     }
 
     public String getString(String key, String defValue) {

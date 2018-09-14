@@ -1,6 +1,13 @@
 package com.network.library.bean;
 
 public class BaseEntity<T> {
+    /**
+     * status : 1
+     * msg : Successd
+     * Count : 1
+     * data : [{"UserId":"18616270226","Sex":"男","Name":"张硕"}]
+     */
+
     private String status;
     private String msg;
     private String Count;
@@ -26,8 +33,8 @@ public class BaseEntity<T> {
         return Count;
     }
 
-    public void setCount(String count) {
-        Count = count;
+    public void setCount(String Count) {
+        this.Count = Count;
     }
 
     public T getData() {
