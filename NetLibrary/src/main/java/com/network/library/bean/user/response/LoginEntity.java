@@ -1,4 +1,6 @@
-package com.network.library.bean;
+package com.network.library.bean.user.response;
+
+import com.network.library.bean.BaseEntity;
 
 import java.util.List;
 

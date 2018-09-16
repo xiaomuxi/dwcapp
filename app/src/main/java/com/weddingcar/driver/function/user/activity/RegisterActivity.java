@@ -7,12 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.network.library.bean.RegisterEntity;
-import com.network.library.bean.VerifyCodeEntity;
+import com.network.library.bean.user.response.RegisterEntity;
+import com.network.library.bean.user.response.VerifyCodeEntity;
 import com.network.library.controller.NetworkController;
 import com.network.library.view.NormalView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
+import com.weddingcar.driver.common.config.IntentConstant;
 import com.weddingcar.driver.common.config.ToastConstant;
 import com.weddingcar.driver.common.ui.VerifyCodeView;
 import com.weddingcar.driver.common.utils.CheckUtils;
@@ -120,6 +121,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             }
 
             UIUtils.showToastSafe("验证码已发送");
+            vcv_code.startToCountDown();
         }
 
         @Override
@@ -224,6 +226,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void goToPersonalInfoActivity() {
         Intent intent = new Intent(this, PersonalInfoActivity.class);
+        intent.putExtra(IntentConstant.EXTRA_MOBILE, et_phone.getText().toString().trim());
         startActivity(intent);
     }
 

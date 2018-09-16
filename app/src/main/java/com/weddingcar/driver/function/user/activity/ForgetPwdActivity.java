@@ -7,10 +7,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.network.library.bean.user.request.VerifyCodeRequest;
+import com.network.library.bean.user.response.VerifyCodeEntity;
+import com.network.library.constant.HttpAction;
+import com.network.library.controller.NetworkController;
+import com.network.library.view.NormalView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
+import com.weddingcar.driver.common.config.ToastConstant;
 import com.weddingcar.driver.common.ui.VerifyCodeView;
 import com.weddingcar.driver.common.utils.CheckUtils;
+import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 
@@ -27,6 +34,10 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
     Button btn_next_step;
     @BindView(R.id.vcv_code)
     VerifyCodeView vcv_code;
+    private String targetVerifyCode;
+    private String targetPhone;
+
+    private NetworkController mControllerVerifyCode;
 
     @Override
     protected void init() {
@@ -49,6 +60,9 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
 
         initTextChangeListener();
         initVerifyCodeView();
+
+        mControllerVerifyCode = new NetworkController<>();
+        mControllerVerifyCode.attachView(verifyCodeView);
     }
 
     private void initTextChangeListener() {
@@ -125,10 +139,57 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
             return;
         }
         String phone = et_phone.getText().toString().trim();
-        // 获取短信验证码请求
-        vcv_code.startToCountDown();
-//        UserNetManager.fetchVerifyCodeRequest(mGetVerifyCodeTask,UserNetManager.VERIFY_CODE_FIND_PASSWORD,phone);
+        targetPhone = phone;
+        VerifyCodeRequest req = new VerifyCodeRequest();
+        VerifyCodeRequest.Request request = new VerifyCodeRequest.Request();
+        request.setApiId("HC020501");
+        request.setTel(phone);
+        request.setType("2");
+        req.setQuery(request);
+        mControllerVerifyCode.sendRequest(HttpAction.ACTION_SEND_VERIFY_CODE, req);
     }
+
+    private NormalView<VerifyCodeEntity> verifyCodeView = new NormalView<VerifyCodeEntity>() {
+        @Override
+        public void onSuccess(VerifyCodeEntity entity) {
+            LogUtils.i(TAG, "-------"+entity.toString());
+            VerifyCodeEntity.Data data = entity.getData().get(0);
+            if (data == null) {
+                UIUtils.showToastSafe(ToastConstant.TOAST_SERVER_IS_BUSY);
+                return;
+            }
+            if (!StringUtils.equals(entity.getStatus(), "1") || !StringUtils.equals(entity.getCount(), "1")) {
+                UIUtils.showToastSafe(entity.getMsg());
+                return;
+            }
+
+            targetVerifyCode = data.getVerificationCode();
+            UIUtils.showToastSafe("验证码已发送");
+            vcv_code.startToCountDown();
+        }
+
+        @Override
+        public void showLoading() {
+            showProcess("正在请求验证码...");
+        }
+
+        @Override
+        public void hideLoading() {
+            hideProcess();
+        }
+
+        @Override
+        public void onRequestSuccess() {
+
+        }
+
+        @Override
+        public void onRequestError(String errorMsg, String methodName) {
+            LogUtils.e(errorMsg);
+            UIUtils.showToastSafe(StringUtils.isEmpty(errorMsg) ? ToastConstant.TOAST_REQUEST_ERROR : errorMsg);
+        }
+    };
+
 
     /**
      * 跳转修改密码界面
@@ -174,18 +235,19 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
         if (!checkInputDataValid(et_phone, et_verify_code)) {
             return;
         }
-        String phone = et_phone.getText().toString().trim();
         String verifyCode = et_verify_code.getText().toString().trim();
-        // 验证手机请求
-//        UserNetManager.verifyPhoneInFindPwdRequest(mVerifyPhoneTask,phone,verifyCode);
+        if (!StringUtils.equals(targetVerifyCode, verifyCode)) {
+            UIUtils.showToastSafe("验证码错误！");
+            return;
+        }
+        goToResetPwdActivity(targetPhone);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_next_step:
-//                nextStepClick();
-                goToResetPwdActivity("h");
+                nextStepClick();
                 break;
         }
     }
