@@ -5,10 +5,11 @@ import android.os.Environment;
 
 import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
-import com.network.library.bean.LoginEntity;
-import com.network.library.bean.RegisterEntity;
-import com.network.library.bean.VerifyCodeEntity;
 import com.network.library.bean.WeatherEntity;
+import com.network.library.bean.user.response.LoginEntity;
+import com.network.library.bean.user.response.RegisterEntity;
+import com.network.library.bean.user.response.VerifyCodeEntity;
+import com.network.library.constant.HttpAction;
 import com.network.library.inter.BaiduOauthService;
 import com.network.library.inter.DeviceGetWeatherService;
 import com.network.library.inter.NetworkService;
@@ -18,10 +19,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -111,19 +109,7 @@ public class RetrofitUtil {
     private RetrofitUtil() {
         //-------------------------------Weather-------------------------------//
         //手动创建一个OkHttpClient并设置超时时间
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request()
-                                .newBuilder()
-                                .addHeader("Content-Type", "application/json")
-                                .addHeader("Connection", "Keep-alive")
-                                .addHeader("Authorization", "APPCODE 0cf6d4b52f16455e8218a76c1e34e627")
-                                .build();
-                        return chain.proceed(request);
-                    }
-                });
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         builder.readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         builder.writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
@@ -152,9 +138,44 @@ public class RetrofitUtil {
                 .baseUrl(NET_WORK_BASE_URL)
                 .build();
 
+
         mWeatherService = mWeatherRetrofit.create(DeviceGetWeatherService.class);
         mBaiduOauthService = mOauthRetrofit.create(BaiduOauthService.class);
         mNetworkService = mNetworkRetrofit.create(NetworkService.class);
+    }
+
+
+    public void sendRequest(String action, Subscriber subscriber, String queryContent, Object body) {
+        switch (action) {
+            case HttpAction.ACTION_MODIFY_USER_INFO:
+                mNetworkService.modifyUserInfo(GsonUtils.jsonToMap(queryContent), GsonUtils.jsonToMap(GsonUtils.toJson(body)))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_LOGIN:
+                mNetworkService.login(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_SEND_VERIFY_CODE:
+                mNetworkService.sendVerifyCode(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_RESET_PASSWORD:
+                mNetworkService.modifyPassword(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+        }
     }
 
     /**
@@ -220,11 +241,11 @@ public class RetrofitUtil {
                 .subscribe(subscriber);
     }
 
-    public void modifyUserInfo(Subscriber<BaseEntity> subscriber, String interfaceCode, String phone, String sex, String name) {
-        mNetworkService.modifyUserInfo(interfaceCode, phone, sex, name)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-    }
+//    public void modifyUserInfo(Subscriber<BaseEntity> subscriber, String interfaceCode, String phone, String sex, String name) {
+//        mNetworkService.modifyUserInfo(interfaceCode, phone, sex, name)
+//                .subscribeOn(Schedulers.io())
+//                .unsubscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(subscriber);
+//    }
 }

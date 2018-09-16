@@ -15,12 +15,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.network.library.bean.BaseEntity;
+import com.network.library.bean.user.request.ModifyUserInfoRequest;
+import com.network.library.constant.HttpAction;
+import com.network.library.controller.NetworkController;
+import com.network.library.view.NormalView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
+import com.weddingcar.driver.common.config.IntentConstant;
+import com.weddingcar.driver.common.config.ToastConstant;
+import com.weddingcar.driver.common.utils.Base64Utils;
 import com.weddingcar.driver.common.utils.DrawableUtils;
 import com.weddingcar.driver.common.utils.FileUtils;
 import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.PictureUtils;
+import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 
 import butterknife.BindView;
@@ -47,11 +56,15 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     TextView tv_cancel;
     private Dialog mPicChooseDialog;
     Uri imageUri;
+    private NetworkController mController;
     private boolean isBoySelected = true;
+    private String userId;
+    private String imgStream;
 
     @Override
     protected void init() {
         super.init();
+        userId = getIntent().getStringExtra(IntentConstant.EXTRA_MOBILE);
         setContentView(R.layout.activity_personal_info);
         ButterKnife.bind(this);
     }
@@ -73,12 +86,13 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         tv_boy.setOnClickListener(this);
         tv_girl.setOnClickListener(this);
         btn_complete.setOnClickListener(this);
+
+        mController = new NetworkController<>();
+        mController.attachView(modifyUserInfoView);
     }
 
     private void initHead() {
         iv_head.setImageDrawable(getResources().getDrawable(R.drawable.my_head));
-//        RequestOptions options = new RequestOptions().placeholder(R.drawable.my_head);
-//        Glide.with(this).load("").apply(options).into(iv_head);
     }
 
     /**
@@ -158,8 +172,77 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         tv_boy.setSelected(isBoySelected);
     }
 
+    private NormalView<BaseEntity> modifyUserInfoView = new NormalView<BaseEntity>() {
+        @Override
+        public void onSuccess(BaseEntity entity) {
+
+            UIUtils.showToastSafe("用户信息上传成功");
+            goToLoginActivity();
+        }
+
+        @Override
+        public void showLoading() {
+            showProcess("正在上传用户信息...");
+        }
+
+        @Override
+        public void hideLoading() {
+            hideProcess();
+        }
+
+        @Override
+        public void onRequestSuccess() {
+
+        }
+
+        @Override
+        public void onRequestError(String errorMsg, String methodName) {
+            LogUtils.e(errorMsg);
+            UIUtils.showToastSafe(StringUtils.isEmpty(errorMsg) ? ToastConstant.TOAST_REQUEST_ERROR : errorMsg);
+        }
+    };
+
     private void onSubmitPersonalInfo() {
-        //TODO: checking the info and submit it to server.
+        if (!checkInsert()) {
+            return;
+        }
+
+        ModifyUserInfoRequest req = new ModifyUserInfoRequest();
+        ModifyUserInfoRequest.Request request = new ModifyUserInfoRequest.Request();
+        ModifyUserInfoRequest.Body body = new ModifyUserInfoRequest.Body();
+        request.setApiId("HC020102");
+        body.setID(userId);
+        body.setName(et_name.getText().toString().trim());
+        body.setSex(isBoySelected ? "男" : "女");
+        body.setAvator(imgStream);
+        req.setQuery(request);
+        req.setBody(body);
+
+        mController.sendRequest(HttpAction.ACTION_MODIFY_USER_INFO, req);
+    }
+
+    private boolean checkInsert() {
+        if (StringUtils.isEmpty(userId)) {
+            UIUtils.showToastSafe("获取用户ID失败，请重试!");
+            return false;
+        }
+        if (StringUtils.isEmpty(imgStream)) {
+            UIUtils.showToastSafe("请上传头像！");
+            return false;
+        }
+        if (StringUtils.isEmpty(et_name.getText().toString().trim())) {
+            UIUtils.showToastSafe("请输入姓名！");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void goToLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(IntentConstant.EXTRA_MOBILE, userId);
+        startActivity(intent);
     }
 
     @Override
@@ -187,9 +270,12 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             LogUtils.i(TAG, "拍照获取到图片");
             String imgPath = FileUtils.getRealFilePath(mContext, imageUri);
             Bitmap bitmap = DrawableUtils.getBitmapFromPath(imgPath, 50, 50);
+            int degree = DrawableUtils.readPictureDegree(imgPath);// 获取图片旋转的角度
+            bitmap = DrawableUtils.rotaingImageView(degree,bitmap);// 将bitmap旋转回来
             if (bitmap == null) {
                 UIUtils.showToastSafe("图片有问题，不支持上传！");
             } else {
+                imgStream = Base64Utils.bitmapToBase64(bitmap);
                 iv_head.setImageBitmap(bitmap);
             }
         }
@@ -199,10 +285,13 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             //图库
             String imgPath = PictureUtils.getPath(mContext, data.getData());
             Bitmap bitmap = DrawableUtils.getBitmapFromPath(imgPath, 50, 50);
+            int degree = DrawableUtils.readPictureDegree(imgPath);// 获取图片旋转的角度
+            bitmap = DrawableUtils.rotaingImageView(degree,bitmap);// 将bitmap旋转回来
             //保存图片到本地
             if (bitmap == null) {
                 UIUtils.showToastSafe("图片有问题，不支持上传！");
             } else {
+                imgStream = Base64Utils.bitmapToBase64(bitmap);
                 iv_head.setImageBitmap(bitmap);
             }
         }

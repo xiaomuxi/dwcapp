@@ -4,9 +4,9 @@ package com.network.library.controller;
 import com.network.library.Model.NetworkModel;
 import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
-import com.network.library.bean.LoginEntity;
-import com.network.library.bean.RegisterEntity;
-import com.network.library.bean.VerifyCodeEntity;
+import com.network.library.bean.BaseRequest;
+import com.network.library.bean.user.response.RegisterEntity;
+import com.network.library.bean.user.response.VerifyCodeEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.callback.CallBack;
 import com.network.library.view.BaiduOauthView;
@@ -143,7 +143,7 @@ public class NetworkController<V extends BaseNetView> {
         if (!isViewAttached()) {
             return;
         }
-        NetworkModel.login(phone, pwd, new CallBack<LoginEntity>() {
+        NetworkModel.login(phone, pwd, new CallBack<BaseEntity>() {
             @Override
             public void onStart() {
                 if (isViewAttached())
@@ -163,7 +163,7 @@ public class NetworkController<V extends BaseNetView> {
             }
 
             @Override
-            public void onSuccess(LoginEntity data) {
+            public void onSuccess(BaseEntity data) {
                 if (isViewAttached())
                     ((NormalView) iMvpView).onSuccess(data);
             }
@@ -225,6 +225,37 @@ public class NetworkController<V extends BaseNetView> {
 
             @Override
             public void onSuccess(RegisterEntity data) {
+                if (isViewAttached())
+                    ((NormalView) iMvpView).onSuccess(data);
+            }
+        });
+    }
+
+    public void sendRequest(String action, BaseRequest baseRequest) {
+        if (!isViewAttached()) {
+            return;
+        }
+        NetworkModel.sendRequest(action, baseRequest.getQuery(), baseRequest.getBody(), new CallBack<BaseEntity>() {
+            @Override
+            public void onStart() {
+                if (isViewAttached())
+                    iMvpView.showLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached())
+                    iMvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(String msg) {
+                if (isViewAttached())
+                    iMvpView.onRequestError(msg, action);
+            }
+
+            @Override
+            public void onSuccess(BaseEntity data) {
                 if (isViewAttached())
                     ((NormalView) iMvpView).onSuccess(data);
             }

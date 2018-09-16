@@ -1,15 +1,21 @@
 package com.weddingcar.driver.function.user.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.network.library.bean.BaseEntity;
+import com.network.library.bean.user.request.ResetPwdRequest;
+import com.network.library.constant.HttpAction;
+import com.network.library.controller.NetworkController;
+import com.network.library.view.NormalView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
+import com.weddingcar.driver.common.config.ToastConstant;
+import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 
@@ -29,11 +35,13 @@ public class ResetPwdActivity extends BaseActivity implements View.OnClickListen
     EditText et_again_pwd;
     @BindView(R.id.btn_ensure)
     Button btn_ensure;
+    private NetworkController mController;
 
     private String phone = "";
     @Override
     protected void init() {
         super.init();
+        phone = getIntent().getStringExtra("phone");
         setContentView(R.layout.activity_reset_password);
         ButterKnife.bind(this);
     }
@@ -49,18 +57,9 @@ public class ResetPwdActivity extends BaseActivity implements View.OnClickListen
     protected void initView() {
         super.initView();
 
-//        et_new_pwd = (EditText) findViewById(R.id.et_new_pwd);
-//        et_again_pwd = (EditText) findViewById(R.id.et_again_pwd);
-//        btn_ensure = (Button) findViewById(R.id.btn_ensure);
-
         btn_ensure.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        phone = getIntent().getStringExtra("phone");
+        mController = new NetworkController();
+        mController.attachView(resetPwdView);
     }
 
     @Override
@@ -98,14 +97,46 @@ public class ResetPwdActivity extends BaseActivity implements View.OnClickListen
             return;
         }
 
-        if(StringUtils.isEmpty(phone)){
-            UIUtils.showToastSafe("获取手机号失败，请返回上一页重新验证！");
-            return;
+        ResetPwdRequest req = new ResetPwdRequest();
+        ResetPwdRequest.Request request = new ResetPwdRequest.Request();
+        request.setApiId("HC020105");
+        request.setTel(phone);
+        request.setPassword(et_new_pwd.getText().toString());
+        request.setNewPassword(et_again_pwd.getText().toString());
+        request.setID("Android");
+        req.setQuery(request);
+        mController.sendRequest(HttpAction.ACTION_RESET_PASSWORD, req);
+    }
+
+    private NormalView<BaseEntity> resetPwdView = new NormalView<BaseEntity>() {
+        @Override
+        public void onSuccess(BaseEntity entity) {
+            UIUtils.showToastSafe("密码修改成功");
+            goBackLoginActivity();
         }
 
-        // 确认修改密码请求
-//        UserNetManager.ensureResetPwdRequest(mEnsureResetTask,phone,et_new_pwd.getText().toString());
-    }
+        @Override
+        public void showLoading() {
+            showProcess("正在修改密码...");
+        }
+
+        @Override
+        public void hideLoading() {
+            hideProcess();
+        }
+
+        @Override
+        public void onRequestSuccess() {
+
+        }
+
+        @Override
+        public void onRequestError(String errorMsg, String methodName) {
+            LogUtils.e(errorMsg);
+            UIUtils.showToastSafe(StringUtils.isEmpty(errorMsg) ? ToastConstant.TOAST_REQUEST_ERROR : errorMsg);
+        }
+    };
+
 
 
     /**
@@ -122,6 +153,10 @@ public class ResetPwdActivity extends BaseActivity implements View.OnClickListen
      * 检查输入数据的有效性
      */
     private boolean checkInputDataValid(EditText etPassword1, EditText etPassword2) {
+        if(StringUtils.isEmpty(phone)){
+            UIUtils.showToastSafe("获取手机号失败，请返回上一页重新验证！");
+            return false;
+        }
 
         if (null != etPassword1) {
             String password1 = etPassword1.getText().toString();
@@ -147,8 +182,8 @@ public class ResetPwdActivity extends BaseActivity implements View.OnClickListen
         }
 
         if (null != etPassword1 && null != etPassword2) {
-            String password1 = etPassword1.getText().toString().trim();
-            String password2 = etPassword2.getText().toString().trim();
+            String password1 = etPassword1.getText().toString();
+            String password2 = etPassword2.getText().toString();
             if (!StringUtils.equals(password1, password2)) {
                 UIUtils.showToastSafe("两次输入的密码不一致！");
                 etPassword2.requestFocus();

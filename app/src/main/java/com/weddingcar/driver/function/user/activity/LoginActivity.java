@@ -9,13 +9,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.network.library.bean.LoginEntity;
+import com.network.library.bean.user.request.LoginRequest;
+import com.network.library.bean.user.response.LoginEntity;
+import com.network.library.constant.HttpAction;
 import com.network.library.controller.NetworkController;
 import com.network.library.view.BaseNetView;
 import com.network.library.view.NormalView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
 import com.weddingcar.driver.common.bean.UserInfo;
+import com.weddingcar.driver.common.config.IntentConstant;
 import com.weddingcar.driver.common.config.ToastConstant;
 import com.weddingcar.driver.common.manager.SPController;
 import com.weddingcar.driver.common.utils.CheckUtils;
@@ -49,10 +52,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     TextWatcher textWatcher;
 
     private NetworkController<BaseNetView> mController;
+    private String mPhoneNum;
 
     @Override
     protected void init() {
         super.init();
+        mPhoneNum = getIntent().getStringExtra(IntentConstant.EXTRA_MOBILE);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
     }
@@ -102,7 +107,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         };
         et_phone.addTextChangedListener(textWatcher);
         et_password.addTextChangedListener(textWatcher);
-        et_phone.setText(SPController.getInstance().getString(SPController.USER_LAST_FILLED_PHONE, ""));
+        et_phone.setText(StringUtils.isEmpty(mPhoneNum) ? SPController.getInstance().getString(SPController.USER_LAST_FILLED_PHONE, "") : mPhoneNum);
+        et_phone.setSelection(et_phone.getText().length());
     }
 
     /**
@@ -113,7 +119,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             return;
         }
 
-        mController.login(et_phone.getText().toString().trim(), et_password.getText().toString());
+        LoginRequest req = new LoginRequest();
+        LoginRequest.Request request = new LoginRequest.Request();
+        request.setApiId("HC020103");
+        request.setTel(et_phone.getText().toString().trim());
+        request.setPassword(et_password.getText().toString());
+        req.setQuery(request);
+        mController.sendRequest(HttpAction.ACTION_LOGIN, req);
     }
 
     /**
@@ -196,7 +208,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onSuccess(LoginEntity entity) {
-        LogUtils.i(TAG, "YIN---->" + entity.toString());
         if (StringUtils.equals("1", entity.getStatus()) && StringUtils.equals(entity.getCount(), "0")){
             UIUtils.showToastSafe("用户名或密码错误！");
             return;
@@ -234,7 +245,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onRequestError(String errorMsg, String methodName) {
         LogUtils.i(TAG, errorMsg);
-        UIUtils.showToastSafe(ToastConstant.TOAST_SERVER_IS_BUSY);
+        UIUtils.showToastSafe(StringUtils.isEmpty(errorMsg) ? ToastConstant.TOAST_REQUEST_ERROR : errorMsg);
     }
 
 }
