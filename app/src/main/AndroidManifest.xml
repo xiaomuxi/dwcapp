@@ -202,6 +202,7 @@
             android:launchMode="singleInstance"
             android:process=":channel"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"></activity>
+        <activity android:name=".function.mine.CarAuthActivity" />
 
         <!--消息接收监听器-->
         <receiver
