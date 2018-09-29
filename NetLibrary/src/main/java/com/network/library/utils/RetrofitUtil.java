@@ -175,6 +175,20 @@ public class RetrofitUtil {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(subscriber);
                 break;
+            case HttpAction.ACTION_GET_CAR_BRANDS:
+                mNetworkService.getCarBrands(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_CAR_COLORS:
+                mNetworkService.getCarColors(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
         }
     }
 
