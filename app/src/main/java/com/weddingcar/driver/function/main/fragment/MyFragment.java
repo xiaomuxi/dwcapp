@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
-import com.weddingcar.driver.function.mine.CarAuthActivity;
+import com.weddingcar.driver.function.mine.activity.CarAuthActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

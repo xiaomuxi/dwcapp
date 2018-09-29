@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!--阿里移动推送相关权限-->
     <!--Android 6.0版本可去除，用于选举信息（通道复用）的同步-->
@@ -68,6 +70,9 @@
             <!--</intent-filter>-->
         </activity>
         <!--about home end-->
+
+        <!-- 高德地图-->
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="key"/>
         <!--ali push-->
         <meta-data
             android:name="com.alibaba.app.appkey"
@@ -202,7 +207,10 @@
             android:launchMode="singleInstance"
             android:process=":channel"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"></activity>
-        <activity android:name=".function.mine.CarAuthActivity" />
+        <activity android:name=".function.mine.activity.CarAuthActivity" />
+        <activity android:name=".function.mine.activity.CarBrandActivity" />
+        <activity android:name=".function.mine.activity.CarColorActivity" />
+        <activity android:name=".function.mine.activity.AddressChooseActivity" />
 
         <!--消息接收监听器-->
         <receiver

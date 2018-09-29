@@ -14,6 +14,8 @@ public class Config {
     private static final String APP_BASE_URL_DEV = "http://139.196.254.89:8080/";
     private static final String APP_BASE_URL_TEST = "http://139.196.254.89:8080/";
     private static final String APP_BASE_URL_PRO = "http://139.196.254.89:8080/";
+    private static final String APP_BASE_URL_USER_AVATOR = "http://139.196.254.89:8080/LJTP/CATP/";
+    private static final String APP_BASE_URL_CAR_BRANDS = "http://139.196.254.89:8080/LJTP/Logo/";
 
     /**
      * Determine whether is test environment currently
@@ -53,5 +55,13 @@ public class Config {
      */
     public static String getAppBaseUrlPro() {
         return APP_BASE_URL_PRO;
+    }
+
+    public static String getCarBrandsBaseUrl() {
+        return APP_BASE_URL_CAR_BRANDS;
+    }
+
+    public static String getUserAvatorBaseUrl() {
+        return APP_BASE_URL_USER_AVATOR;
     }
 }
