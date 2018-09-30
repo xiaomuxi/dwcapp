@@ -45,4 +45,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation files('libs/Android_Map3D_SDK_V6.4.1_20180906.jar')
+    implementation files('libs/AMap_Search_V6.1.0_20180330.jar')
 }

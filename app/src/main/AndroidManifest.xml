@@ -72,7 +72,7 @@
         <!--about home end-->
 
         <!-- 高德地图-->
-        <meta-data android:name="com.amap.api.v2.apikey" android:value="key"/>
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="706b2e5f1bf9475016fb10b6362cb235"/>
         <!--ali push-->
         <meta-data
             android:name="com.alibaba.app.appkey"
@@ -211,7 +211,6 @@
         <activity android:name=".function.mine.activity.CarBrandActivity" />
         <activity android:name=".function.mine.activity.CarColorActivity" />
         <activity android:name=".function.mine.activity.AddressChooseActivity" />
-
         <!--消息接收监听器-->
         <receiver
             android:name="com.weddingcar.driver.common.receiver.AliPushReceiver"

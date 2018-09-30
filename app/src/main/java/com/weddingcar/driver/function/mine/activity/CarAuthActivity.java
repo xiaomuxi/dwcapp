@@ -2,6 +2,9 @@ package com.weddingcar.driver.function.mine.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,6 +18,11 @@ import android.widget.TextView;
 
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
+import com.weddingcar.driver.common.utils.Base64Utils;
+import com.weddingcar.driver.common.utils.DrawableUtils;
+import com.weddingcar.driver.common.utils.FileUtils;
+import com.weddingcar.driver.common.utils.LogUtils;
+import com.weddingcar.driver.common.utils.PictureUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.mine.adapter.LettersAdapter;
@@ -31,6 +39,8 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
     private final static int REQUEST_CODE_CAR_BRANDS = 1001;
     private final static int REQUEST_CODE_CAR_COLORS = 1002;
     private final static int REQUEST_CODE_ADDRESS_CHOOSE = 1003;
+    private static final int REQUEST_CODE_PICTURE_CAMERA = 1004;  // 拍照获取头像
+    private static final int REQUEST_CODE_PICTURE_ALBUM = 1005;  // 从相册中选择头像
     private final List<String> provinces = Arrays.asList("京", "津", "冀", "晋", "蒙", "辽", "吉", "黑", "沪", "苏", "浙", "皖", "闽", "赣", "鲁", "豫", "鄂",
             "湘", "粤", "桂", "琼", "渝", "川", "贵", "云", "藏", "陕", "甘", "青", "宁", "新", "台", "", "", "");
     private final List<String> letters = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "", "");
@@ -53,6 +63,26 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
     LinearLayout ll_address;
     @BindView(R.id.tv_address)
     TextView tv_address;
+    @BindView(R.id.iv_car_left_1)
+    ImageView iv_car_left_1;
+    @BindView(R.id.iv_car_middle_1)
+    ImageView iv_car_middle_1;
+    @BindView(R.id.iv_car_right_1)
+    ImageView iv_car_right_1;
+    @BindView(R.id.iv_car_left_2)
+    ImageView iv_car_left_2;
+    @BindView(R.id.iv_car_middle_2)
+    ImageView iv_car_middle_2;
+    @BindView(R.id.iv_car_right_2)
+    ImageView iv_car_right_2;
+    @BindView(R.id.iv_id_left)
+    ImageView iv_id_left;
+    @BindView(R.id.iv_id_right)
+    ImageView iv_id_right;
+    @BindView(R.id.iv_driver_left)
+    ImageView iv_driver_left;
+    @BindView(R.id.iv_driver_right)
+    ImageView iv_driver_right;
 
     private LettersAdapter lettersProvinceAdapter;
     private LettersAdapter lettersCityAdapter;
@@ -94,6 +124,24 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
 
     private String carModelID;
     private String carColorID;
+    private String address;
+    private String imgCarLeft1;
+    private String imgCarLeft2;
+    private String imgCarMiddle1;
+    private String imgCarMiddle2;
+    private String imgCarRight1;
+    private String imgCarRight2;
+    private String imgIdLeft;
+    private String imgIdRight;
+    private String imgDriverLeft;
+    private String imgDriverRight;
+
+    private String currentSelectedImage;
+    private Dialog mPicChooseDialog;
+    TextView tv_take_picture;
+    TextView tv_pic_album;
+    TextView tv_cancel;
+    Uri imageUri;
 
     @Override
     protected void init() {
@@ -117,6 +165,16 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
         ll_color.setOnClickListener(this);
         ll_plate_number.setOnClickListener(this);
         ll_address.setOnClickListener(this);
+        iv_car_left_1.setOnClickListener(this);
+        iv_car_left_2.setOnClickListener(this);
+        iv_car_middle_1.setOnClickListener(this);
+        iv_car_middle_2.setOnClickListener(this);
+        iv_car_right_1.setOnClickListener(this);
+        iv_car_right_2.setOnClickListener(this);
+        iv_id_left.setOnClickListener(this);
+        iv_id_right.setOnClickListener(this);
+        iv_driver_left.setOnClickListener(this);
+        iv_driver_right.setOnClickListener(this);
 
         initDialog();
     }
@@ -301,7 +359,10 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
                     numberSixSelectedIndex = lettersNumberSixAdapter.getSelectedIndex();
                     String plateNumber = lettersProvinceAdapter.getSelectItem() + lettersCityAdapter.getSelectItem()
                             + lettersNumberOneAdapter.getSelectItem() + lettersNumberTwoAdapter.getSelectItem() + lettersNumberThreeAdapter.getSelectItem()
-                            + lettersNumberFourAdapter.getSelectItem() + lettersNumberFiveAdapter.getSelectItem() + lettersNumberSixAdapter.getSelectItem();
+                            + lettersNumberFourAdapter.getSelectItem() + lettersNumberFiveAdapter.getSelectItem();
+                    if (numberSixSelectedIndex != -1) {
+                        plateNumber += lettersNumberSixAdapter.getSelectItem();
+                    }
                     tv_plate_number.setText(plateNumber);
                     mPlateNumberDialog.dismiss();
                 }
@@ -461,9 +522,75 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
         startActivityForResult(intent, REQUEST_CODE_CAR_COLORS);
     }
     private void goToAddressChooseActivity() {
-        return;
-//        Intent intent = new Intent(this, AddressChooseActivity.class);
-//        startActivityForResult(intent, REQUEST_CODE_ADDRESS_CHOOSE);
+        Intent intent = new Intent(this, AddressChooseActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_ADDRESS_CHOOSE);
+    }
+
+    /**
+     * 拍照获取图片
+     */
+    private void takePicture(int reqCode) {
+        imageUri = DrawableUtils.createImageUri(mContext, "store"); // 创建用来存储图片的uri
+        Intent intent = new Intent();
+        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, reqCode);
+    }
+
+    /**
+     * 从相册取
+     */
+    private void pickImageFromAlbum(int reqCode) {
+        Intent intent = new Intent(Intent.ACTION_PICK, null);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, reqCode);
+    }
+
+    /**
+     * 展示底部相册,拍照选择对话框
+     */
+    public void showCameraChoose() {
+        mPicChooseDialog = new Dialog(this, R.style.ActionSheetDialogStyle);
+        //填充对话框的布局
+        View inflate = LayoutInflater.from(this).inflate(R.layout.layout_dialog_camera_choose, null);
+        //初始化控件
+        tv_take_picture = (TextView) inflate.findViewById(R.id.tv_take_picture);
+        tv_pic_album = (TextView) inflate.findViewById(R.id.tv_pic_album);
+        tv_cancel = (TextView) inflate.findViewById(R.id.tv_cancel);
+
+        tv_take_picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePicture(REQUEST_CODE_PICTURE_CAMERA);
+                mPicChooseDialog.dismiss();
+            }
+        });
+        tv_pic_album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickImageFromAlbum(REQUEST_CODE_PICTURE_ALBUM);
+                mPicChooseDialog.dismiss();
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPicChooseDialog.dismiss();
+            }
+        });
+        // 将布局设置给Dialog
+        mPicChooseDialog.setContentView(inflate);
+        // 获取当前Activity所在的窗体
+        Window dialogWindow = mPicChooseDialog.getWindow();
+        // 设置Dialog从窗体底部弹出
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        // 获得窗体的属性
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.y = 20;  // 设置Dialog距离底部的距离
+        // 将属性设置给窗体
+        dialogWindow.setAttributes(lp);
+        mPicChooseDialog.show();    // 显示对话框
     }
 
 
@@ -483,6 +610,92 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
             case R.id.ll_address:
                 goToAddressChooseActivity();
                 break;
+            case R.id.iv_car_left_1:
+                currentSelectedImage = "iv_car_left_1";
+                showCameraChoose();
+                break;
+            case R.id.iv_car_middle_1:
+                currentSelectedImage = "iv_car_middle_1";
+                showCameraChoose();
+                break;
+            case R.id.iv_car_right_1:
+                currentSelectedImage = "iv_car_right_1";
+                showCameraChoose();
+                break;
+            case R.id.iv_car_left_2:
+                currentSelectedImage = "iv_car_left_2";
+                showCameraChoose();
+                break;
+            case R.id.iv_car_middle_2:
+                currentSelectedImage = "iv_car_middle_2";
+                showCameraChoose();
+                break;
+            case R.id.iv_car_right_2:
+                currentSelectedImage = "iv_car_right_2";
+                showCameraChoose();
+                break;
+            case R.id.iv_id_left:
+                currentSelectedImage = "iv_id_left";
+                showCameraChoose();
+                break;
+            case R.id.iv_id_right:
+                currentSelectedImage = "iv_id_right";
+                showCameraChoose();
+                break;
+            case R.id.iv_driver_left:
+                currentSelectedImage = "iv_driver_left";
+                showCameraChoose();
+                break;
+            case R.id.iv_driver_right:
+                currentSelectedImage = "iv_driver_right";
+                showCameraChoose();
+                break;
+        }
+    }
+
+    private void setImage(Bitmap bitmap) {
+        String imageStream = Base64Utils.bitmapToBase64(bitmap);
+        switch (currentSelectedImage) {
+            case "iv_car_left_1":
+                imgCarLeft1 = imageStream;
+                iv_car_left_1.setImageBitmap(bitmap);
+                break;
+            case "iv_car_middle_1":
+                imgCarMiddle1 = imageStream;
+                iv_car_middle_1.setImageBitmap(bitmap);
+                break;
+            case "iv_car_right_1":
+                imgCarRight1 = imageStream;
+                iv_car_right_1.setImageBitmap(bitmap);
+                break;
+            case "iv_car_left_2":
+                imgCarLeft2 = imageStream;
+                iv_car_left_2.setImageBitmap(bitmap);
+                break;
+            case "iv_car_middle_2":
+                imgCarMiddle2 = imageStream;
+                iv_car_middle_2.setImageBitmap(bitmap);
+                break;
+            case "iv_car_right_2":
+                imgCarRight2 = imageStream;
+                iv_car_right_2.setImageBitmap(bitmap);
+                break;
+            case "iv_id_left":
+                imgIdLeft = imageStream;
+                iv_id_left.setImageBitmap(bitmap);
+                break;
+            case "iv_id_right":
+                imgIdRight = imageStream;
+                iv_id_right.setImageBitmap(bitmap);
+                break;
+            case "iv_driver_left":
+                imgDriverLeft = imageStream;
+                iv_driver_left.setImageBitmap(bitmap);
+                break;
+            case "iv_driver_right":
+                imgDriverRight = imageStream;
+                iv_driver_right.setImageBitmap(bitmap);
+                break;
         }
     }
 
@@ -500,6 +713,43 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
                 if (resultCode == 1) {
                     carColorID = data.getStringExtra("CAR_COLOR_ID");
                     tv_color.setText(data.getStringExtra("CAR_COLOR_VALUE"));
+                }
+                break;
+            case REQUEST_CODE_ADDRESS_CHOOSE:
+                if (resultCode == 1) {
+                    address = data.getStringExtra("ADDRESS");
+                    tv_address.setText(address);
+                }
+                break;
+            case REQUEST_CODE_PICTURE_CAMERA:
+                if (resultCode == RESULT_OK) {
+                    LogUtils.i(TAG, "拍照获取到图片");
+                    String imgPath = FileUtils.getRealFilePath(mContext, imageUri);
+                    Bitmap bitmap = DrawableUtils.getBitmapFromPath(imgPath, 50, 50);
+                    int degree = DrawableUtils.readPictureDegree(imgPath);// 获取图片旋转的角度
+                    bitmap = DrawableUtils.rotaingImageView(degree,bitmap);// 将bitmap旋转回来
+                    if (bitmap == null) {
+                        UIUtils.showToastSafe("图片有问题，不支持上传！");
+                        return;
+                    }
+
+                    setImage(bitmap);
+                }
+                break;
+            case REQUEST_CODE_PICTURE_ALBUM:
+                if (resultCode == RESULT_OK && data != null) {
+                    LogUtils.i(TAG, "从相册获取到图片");
+                    //图库
+                    String imgPath = PictureUtils.getPath(mContext, data.getData());
+                    Bitmap bitmap = DrawableUtils.getBitmapFromPath(imgPath, 50, 50);
+                    int degree = DrawableUtils.readPictureDegree(imgPath);// 获取图片旋转的角度
+                    bitmap = DrawableUtils.rotaingImageView(degree,bitmap);// 将bitmap旋转回来
+                    //保存图片到本地
+                    if (bitmap == null) {
+                        UIUtils.showToastSafe("图片有问题，不支持上传！");
+                        return;
+                    }
+                    setImage(bitmap);
                 }
                 break;
         }
