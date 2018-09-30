@@ -45,8 +45,8 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void initActionBar() {
         super.initActionBar();
-        setActionBar(R.layout.common_top_bar);
-        setTopTitle(UIUtils.getString(R.string.tab_title_order));
+//        setActionBar(R.layout.common_top_bar);
+//        setTopTitle(UIUtils.getString(R.string.tab_title_order));
     }
 
     @Override

@@ -18,6 +18,7 @@ public class BaseFragment extends Fragment implements BaseNetView {
     public static final String WAIT = "order_wait_fragment";
     public static final String COMPLETE = "order_complete_fragment";
     public static final String INVALID = "order_invalid_fragment";
+    public Context mContext;
 
     private NetworkController<BaseNetView> mNetWorkController;
 
@@ -66,6 +67,7 @@ public class BaseFragment extends Fragment implements BaseNetView {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
         mNetWorkController = new NetworkController<>();
         mNetWorkController.attachView(this);
     }
