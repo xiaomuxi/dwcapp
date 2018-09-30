@@ -211,8 +211,6 @@
         <activity android:name=".function.mine.activity.CarBrandActivity" />
         <activity android:name=".function.mine.activity.CarColorActivity" />
         <activity android:name=".function.mine.activity.AddressChooseActivity" />
-        <activity android:name=".function.mine.activity.PoiSearchActivity" />
-
         <!--消息接收监听器-->
         <receiver
             android:name="com.weddingcar.driver.common.receiver.AliPushReceiver"

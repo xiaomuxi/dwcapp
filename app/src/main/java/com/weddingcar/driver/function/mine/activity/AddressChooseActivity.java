@@ -49,6 +49,7 @@ public class AddressChooseActivity extends BaseActivity implements View.OnClickL
     private PoiSearch.Query query;// Poi查询条件类
     private PoiSearch poiSearch;// POI搜索
     private PoiResult poiResult; // poi返回的结果
+
     @Override
     protected void init() {
         super.init();
