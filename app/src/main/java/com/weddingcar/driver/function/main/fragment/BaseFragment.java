@@ -71,8 +71,6 @@ public class BaseFragment extends Fragment implements BaseNetView {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        mNetWorkController = new NetworkController<>();
-        mNetWorkController.attachView(this);
     }
 
     @Override

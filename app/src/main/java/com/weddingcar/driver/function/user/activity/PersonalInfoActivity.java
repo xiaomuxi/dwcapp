@@ -110,6 +110,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         tv_take_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO request permission
                 takePicture(PHOTO_FILE_NAME, PHOTO_REQUEST_CAMERA);
                 mPicChooseDialog.dismiss();
             }

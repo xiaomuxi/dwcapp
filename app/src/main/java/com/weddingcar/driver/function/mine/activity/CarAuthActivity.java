@@ -562,6 +562,7 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
         tv_take_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO request permission
                 takePicture(REQUEST_CODE_PICTURE_CAMERA);
                 mPicChooseDialog.dismiss();
             }
