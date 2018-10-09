@@ -25,4 +25,9 @@
 
     <string name="empty_order_list">暂无当前状态订单</string>
     <string name="sign_up_car">查看报名车辆</string>
+
+    <string name="text_order_num">5单\n出车日历</string>
+    <string name="text_evaluate">5星\n客户评价</string>
+    <string name="text_income">500元\n累计收入</string>
+    <string name="text_complete_order">2单\n完成订单</string>
 </resources>

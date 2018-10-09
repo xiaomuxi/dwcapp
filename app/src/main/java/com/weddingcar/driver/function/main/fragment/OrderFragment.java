@@ -1,16 +1,20 @@
 package com.weddingcar.driver.function.main.fragment;
 
-import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.network.library.bean.BaseEntity;
 import com.network.library.controller.NetworkController;
@@ -18,6 +22,7 @@ import com.network.library.utils.Logger;
 import com.network.library.view.BaseNetView;
 import com.network.library.view.GetOrderView;
 import com.weddingcar.driver.R;
+import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.main.adapter.OrderPagerAdapter;
 
@@ -34,7 +39,13 @@ public class OrderFragment extends BaseFragment {
     TabLayout mOrderTabLayout;
     @BindView(R.id.order_view_pager)
     ViewPager mOrderViewPager;
-
+    @BindView(R.id.iv_left)
+    ImageView iv_left;
+    @BindView(R.id.iv_right)
+    ImageView iv_right;
+    @BindView(R.id.ll_order)
+    LinearLayout ll_order;
+    LinearLayout mStatusBarView;
     Unbinder unbinder;
 
     private String mFragmentTag;
@@ -80,8 +91,23 @@ public class OrderFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initActionBar();
         initTabLayout();
         initViewPager();
+    }
+
+    private void initActionBar() {
+        initStatusBar();
+        ll_order.addView(mStatusBarView, 0);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public void initStatusBar() {
+        LogUtils.i(TAG, "init status bar");
+        int mStatusHeight = UIUtils.getStatusBarHeight(mContext);
+        mStatusBarView = new LinearLayout(mContext);
+        mStatusBarView.setBackground(ContextCompat.getDrawable(mContext, R.color.bg_main_red));
+        mStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mStatusHeight));
     }
 
     private void initTabLayout() {

@@ -103,7 +103,7 @@ public class ResetPwdActivity extends BaseActivity implements View.OnClickListen
         request.setTel(phone);
         request.setPassword(et_new_pwd.getText().toString());
         request.setNewPassword(et_again_pwd.getText().toString());
-        request.setID("Android");
+        request.setID(phone);
         req.setQuery(request);
         mController.sendRequest(HttpAction.ACTION_RESET_PASSWORD, req);
     }

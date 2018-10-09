@@ -3,16 +3,18 @@ package com.network.library.Model;
 
 import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
+import com.network.library.bean.WeatherEntity;
 import com.network.library.bean.user.response.LoginEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
 import com.network.library.bean.user.response.SignUpInfoEntity;
 import com.network.library.bean.user.response.VerifyCodeEntity;
-import com.network.library.bean.WeatherEntity;
 import com.network.library.callback.CallBack;
 import com.network.library.utils.GsonUtils;
 import com.network.library.utils.RetrofitUtil;
+
+import java.net.ConnectException;
 
 import java.util.List;
 
@@ -271,7 +273,11 @@ public class NetworkModel {
 
             @Override
             public void onError(Throwable e) {
-                callBack.onError(e.getMessage());
+                String errorMsg = e.getMessage();
+                if (e instanceof ConnectException) {
+                    errorMsg = "网络链接失败，请检查网络!";
+                }
+                callBack.onError(errorMsg);
                 callBack.onComplete();
             }
 
