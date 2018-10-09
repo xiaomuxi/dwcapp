@@ -41,32 +41,33 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:screenOrientation="portrait"
-        android:theme="@style/AppTheme" >
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
         <!--about user start-->
-        <activity android:name=".function.user.activity.SplashActivity" >
+        <activity android:name=".function.user.activity.SplashActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".function.user.activity.WelcomeGuideActivity" />
+        <activity android:name=".function.user.activity.LoginActivity" />
+        <activity android:name=".function.user.activity.ForgetPwdActivity" />
+        <activity android:name=".function.user.activity.ResetPwdActivity" />
+        <activity android:name=".function.user.activity.RegisterActivity" />
+        <activity android:name=".function.user.activity.PersonalInfoActivity" />
+        <!--about user end-->
+        <!--about home start-->
+        <activity android:name=".function.main.activity.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".function.user.activity.WelcomeGuideActivity"/>
-        <activity android:name=".function.user.activity.LoginActivity"/>
-        <activity android:name=".function.user.activity.ForgetPwdActivity"/>
-        <activity android:name=".function.user.activity.ResetPwdActivity"/>
-        <activity android:name=".function.user.activity.RegisterActivity"/>
-        <activity android:name=".function.user.activity.PersonalInfoActivity" />
-        <!--about user end-->
-        <!--about home start-->
-        <activity android:name=".function.main.activity.HomeActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
+        <activity android:name=".function.main.activity.LookSignUpCarActivity" />
         <!--about home end-->
         <!--ali push-->
         <meta-data

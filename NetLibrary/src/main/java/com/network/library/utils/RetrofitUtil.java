@@ -7,7 +7,10 @@ import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.bean.user.response.LoginEntity;
+import com.network.library.bean.user.response.OrderRunningListEntity;
+import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
+import com.network.library.bean.user.response.SignUpInfoEntity;
 import com.network.library.bean.user.response.VerifyCodeEntity;
 import com.network.library.constant.HttpAction;
 import com.network.library.inter.BaiduOauthService;
@@ -17,6 +20,7 @@ import com.network.library.inter.NetworkService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -201,8 +205,18 @@ public class RetrofitUtil {
                 .subscribe(subscriber);
     }
 
-    public void getOrderList(Subscriber<BaseEntity> subscriber, String interfaceCode, String customerId, String state) {
-        mNetworkService.getOrderList(interfaceCode, customerId, state)
+    public void getRunningOrderList(Subscriber<BaseEntity<List<OrderRunningListEntity>>> subscriber, String interfaceCode, String id) {
+        Logger.I("[ getRunningOrderList ] apiId = " + interfaceCode + " , id = " + id);
+        mNetworkService.getRunningOrderList(interfaceCode, id)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void getWaitOrderList(Subscriber<BaseEntity<List<OrderWaitListEntity>>> subscriber, String apiId, String customerId, String state) {
+        Logger.I("[ getWaitOrderList ] apiId = " + apiId + " , customerId = " + customerId + " , state = " + state);
+        mNetworkService.getWaitOrderList(apiId, customerId, state)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -235,6 +249,15 @@ public class RetrofitUtil {
 
     public void modifyPassword(Subscriber<BaseEntity> subscriber, String interfaceCode, String phone, String pwd, String newPwd) {
         mNetworkService.modifyPassword(interfaceCode, phone, pwd, newPwd, "Android")
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void getSignUpList(Subscriber<BaseEntity<List<SignUpInfoEntity>>> subscriber, String apiId, String customerId, String orderId) {
+        Logger.I("[ getSignUpList ] apiId = " + apiId + " , customerId = " + customerId + " , orderId = " + orderId);
+        mNetworkService.getSignUpList(apiId, customerId, orderId)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

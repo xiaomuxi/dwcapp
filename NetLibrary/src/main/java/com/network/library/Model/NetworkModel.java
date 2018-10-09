@@ -4,12 +4,17 @@ package com.network.library.Model;
 import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.user.response.LoginEntity;
+import com.network.library.bean.user.response.OrderRunningListEntity;
+import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
+import com.network.library.bean.user.response.SignUpInfoEntity;
 import com.network.library.bean.user.response.VerifyCodeEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.callback.CallBack;
 import com.network.library.utils.GsonUtils;
 import com.network.library.utils.RetrofitUtil;
+
+import java.util.List;
 
 import rx.Subscriber;
 
@@ -83,9 +88,9 @@ public class NetworkModel {
         RetrofitUtil.getInstance().baiduOauth(mEntitySubscriber, client_id, client_secret);
     }
 
-    public static void getOrderList(String apiId, String customId, String state, CallBack<BaseEntity> callBack) {
+    public static void getRunningOrderList(String apiId, String id, CallBack<BaseEntity<List<OrderRunningListEntity>>> callBack) {
         //订单例子
-        Subscriber<BaseEntity> mEntitySubscriber = new Subscriber<BaseEntity>() {
+        Subscriber<BaseEntity<List<OrderRunningListEntity>>> mEntitySubscriber = new Subscriber<BaseEntity<List<OrderRunningListEntity>>>() {
 
             @Override
             public void onStart() {
@@ -114,7 +119,41 @@ public class NetworkModel {
                 }
             }
         };
-        RetrofitUtil.getInstance().getOrderList(mEntitySubscriber, apiId, customId, state);
+        RetrofitUtil.getInstance().getRunningOrderList(mEntitySubscriber, apiId, id);
+    }
+
+    public static void getWaitOrderList(String apiId, String customerId, String state, CallBack<BaseEntity<List<OrderWaitListEntity>>> callBack) {
+        //订单例子
+        Subscriber<BaseEntity<List<OrderWaitListEntity>>> mEntitySubscriber = new Subscriber<BaseEntity<List<OrderWaitListEntity>>>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(BaseEntity baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().getWaitOrderList(mEntitySubscriber, apiId, customerId, state);
     }
 
     public static void login(String phone, String pwd, CallBack callBack) {
@@ -247,5 +286,38 @@ public class NetworkModel {
             }
         };
         RetrofitUtil.getInstance().sendRequest(action, mEntitySubscriber, GsonUtils.toJson(queryObj), body);
+    }
+
+    public static void getSignUpList(String apiId, String customerId, String orderId, CallBack<BaseEntity<List<SignUpInfoEntity>>> callBack) {
+        Subscriber<BaseEntity<List<SignUpInfoEntity>>> mEntitySubscriber = new Subscriber<BaseEntity<List<SignUpInfoEntity>>>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(BaseEntity baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().getSignUpList(mEntitySubscriber, apiId, customerId, orderId);
     }
 }

@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class OrderFragment extends BaseFragment implements GetOrderView {
+public class OrderFragment extends BaseFragment {
 
     @BindView(R.id.order_tab_layout)
     TabLayout mOrderTabLayout;
@@ -41,7 +41,11 @@ public class OrderFragment extends BaseFragment implements GetOrderView {
 
     private List<Fragment> mOrderFragments = new ArrayList<>();
     private List<String> mPagerTitles = new ArrayList<>();
-    private NetworkController<BaseNetView> mController;
+
+    private OrderRunningFragment mRunningFragment;
+    private OrderWaitFragment mWaitFragment;
+    private OrderCompleteFragment mCompleteFragment;
+    private OrderInvalidFragment mInvalidFragment;
 
     public OrderFragment() {
     }
@@ -57,14 +61,12 @@ public class OrderFragment extends BaseFragment implements GetOrderView {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mController = new NetworkController<>();
-        mController.attachView(this);
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mController.detachView();
     }
 
     @Nullable
@@ -80,7 +82,6 @@ public class OrderFragment extends BaseFragment implements GetOrderView {
         super.onViewCreated(view, savedInstanceState);
         initTabLayout();
         initViewPager();
-        mController.getOrderList("HC0103122", "18616270226", "待通过", true);
     }
 
     private void initTabLayout() {
@@ -106,10 +107,14 @@ public class OrderFragment extends BaseFragment implements GetOrderView {
     private void initViewPager() {
         mOrderViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mOrderTabLayout));
 
-        mOrderFragments.add(OrderRunningFragment.newInstance(RUNNING));
-        mOrderFragments.add(OrderWaitFragment.newInstance(WAIT));
-        mOrderFragments.add(OrderCompleteFragment.newInstance(COMPLETE));
-        mOrderFragments.add(OrderInvalidFragment.newInstance(INVALID));
+        mRunningFragment = (OrderRunningFragment) OrderRunningFragment.newInstance(RUNNING);
+        mWaitFragment = (OrderWaitFragment) OrderWaitFragment.newInstance(WAIT);
+        mCompleteFragment = (OrderCompleteFragment) OrderCompleteFragment.newInstance(COMPLETE);
+        mInvalidFragment = (OrderInvalidFragment) OrderInvalidFragment.newInstance(INVALID);
+        mOrderFragments.add(mRunningFragment);
+        mOrderFragments.add(mWaitFragment);
+        mOrderFragments.add(mCompleteFragment);
+        mOrderFragments.add(mInvalidFragment);
 
         mPagerTitles.add(UIUtils.getString(R.string.tab_running));
         mPagerTitles.add(UIUtils.getString(R.string.tab_wait));
@@ -121,6 +126,7 @@ public class OrderFragment extends BaseFragment implements GetOrderView {
         mOrderViewPager.setAdapter(orderPagerAdapter);
 
         mOrderViewPager.setCurrentItem(0);
+        mOrderViewPager.setOffscreenPageLimit(4);
         mOrderViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
@@ -142,12 +148,20 @@ public class OrderFragment extends BaseFragment implements GetOrderView {
     private void pageChanged(int position) {
         switch (position) {
             case 0:
+                if (null != mRunningFragment)
+                    mRunningFragment.visible();
                 break;
             case 1:
+                if (null != mWaitFragment)
+                    mWaitFragment.visible();
                 break;
             case 2:
+                if (null != mCompleteFragment)
+                    mCompleteFragment.visible();
                 break;
             case 3:
+                if (null != mInvalidFragment)
+                    mInvalidFragment.visible();
                 break;
             default:
                 break;
@@ -158,15 +172,5 @@ public class OrderFragment extends BaseFragment implements GetOrderView {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onGetOrderListSuccess(BaseEntity baseEntity) {
-        if (null != baseEntity) {
-            String status = baseEntity.getStatus();
-            String msg = baseEntity.getMsg();
-            String count = baseEntity.getCount();
-            Logger.I("onGetOrderListSuccess status : " + status + " msg : " + msg + " count : " + count);
-        }
     }
 }
