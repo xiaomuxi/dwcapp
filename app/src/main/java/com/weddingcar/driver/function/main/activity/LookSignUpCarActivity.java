@@ -2,8 +2,10 @@ package com.weddingcar.driver.function.main.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
@@ -17,10 +19,14 @@ import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
 import com.weddingcar.driver.common.config.Config;
 import com.weddingcar.driver.common.manager.SPController;
+import com.weddingcar.driver.common.ui.MaterialDialog;
+import com.weddingcar.driver.common.utils.DrawableUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
+import com.weddingcar.driver.function.main.adapter.SignUpAdapter;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -59,17 +65,25 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
     TextView mOrderInfoView;
     @BindView(R.id.sign_list)
     ListView mSignUpListView;
+
     private OrderWaitListEntity mOrderEntity;
     private NetworkController<BaseNetView> mController;
+
+    private List<SignUpInfoEntity.OrderOffer> mSignUpList = new ArrayList<>();
+
     private Unbinder unbinder;
+    private SignUpAdapter mSignUpAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        unbinder = ButterKnife.bind(this);
         mOrderEntity = (OrderWaitListEntity) getIntent().getSerializableExtra("orderNumber");
         mController = new NetworkController<>();
         mController.attachView(this);
+
+        mSignUpAdapter = new SignUpAdapter(this, mSignUpList);
+        mSignUpListView.setAdapter(mSignUpAdapter);
+
         String userId = SPController.getInstance().getUserInfo().getUserId();
         if (null == userId || userId.isEmpty()) userId = "18616367480";
         String orderId = mOrderEntity.getCode();
@@ -80,13 +94,30 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
     protected void init() {
         super.init();
         setContentView(R.layout.activity_look_sign_up_car);
+        unbinder = ButterKnife.bind(this);
     }
 
     @Override
     protected void initActionBar() {
         super.initActionBar();
         setActionBar(R.layout.common_top_bar);
+        setTopLeftImage(R.drawable.nav_back);
+        setTopRightImage(R.drawable.icon_share);
         setTopTitle(UIUtils.getString(R.string.sign_up_car));
+
+        getTopLeftImage().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        getTopRightImage().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO share
+                share();
+            }
+        });
     }
 
     @Override
@@ -167,15 +198,40 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
         mOrderCarNumber.setText("当前报名车辆:" + signUpInfoEntity.getOfferCount() + "辆");
         mOrderCarAverage.setText("当前平均价:" + signUpInfoEntity.getAmountAverage() + "元");
 
+        List<SignUpInfoEntity.OrderOffer> orderOffers = signUpInfoEntity.getOrderOffers();
+        mSignUpList.clear();
+        mSignUpList.addAll(orderOffers);
+        mSignUpAdapter.notifyDataSetChanged();
     }
 
     @OnClick(R.id.order_cancel_sign)
     public void onCancelSignClicked() {
-
+        final MaterialDialog materialDialog = new MaterialDialog(this);
+        materialDialog.setCancelable(true);
+        materialDialog.setBackground(UIUtils.getDrawable(R.drawable.material_card));
+        materialDialog.setTitle("取消报名");
+        materialDialog.setMessage("取消后不得对此订单进行二次报价!");
+        materialDialog.setPositiveButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materialDialog.dismiss();
+            }
+        });
+        materialDialog.setNegativeButton("取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materialDialog.dismiss();
+            }
+        });
+        materialDialog.show();
     }
 
     @OnClick(R.id.order_info_view)
     public void onOrderInfoViewClicked() {
+        // TODO cat signUpOrder info message
+    }
 
+    private void share() {
+        Toast.makeText(mContext, "Share Order Info", Toast.LENGTH_SHORT).show();
     }
 }

@@ -30,4 +30,8 @@
     <string name="text_evaluate">5星\n客户评价</string>
     <string name="text_income">500元\n累计收入</string>
     <string name="text_complete_order">2单\n完成订单</string>
+
+    <string name="city_name">上海市</string>
+    <string name="robbing_my_type">我的车型</string>
+    <string name="robbing_all_type">全部车型</string>
 </resources>

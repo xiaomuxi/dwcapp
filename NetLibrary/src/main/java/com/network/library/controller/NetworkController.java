@@ -8,6 +8,7 @@ import com.network.library.bean.BaseRequest;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
+import com.network.library.bean.user.response.RobbingInfoEntity;
 import com.network.library.bean.user.response.SignUpInfoEntity;
 import com.network.library.bean.user.response.VerifyCodeEntity;
 import com.network.library.bean.WeatherEntity;
@@ -15,6 +16,7 @@ import com.network.library.callback.CallBack;
 import com.network.library.view.BaiduOauthView;
 import com.network.library.view.BaseNetView;
 import com.network.library.view.GetOrderView;
+import com.network.library.view.GetRobbingView;
 import com.network.library.view.GetSignUpListView;
 import com.network.library.view.GetWeatherView;
 import com.network.library.view.NormalView;
@@ -358,6 +360,37 @@ public class NetworkController<V extends BaseNetView> {
             public void onSuccess(BaseEntity<List<SignUpInfoEntity>> data) {
                 if (isViewAttached())
                     ((GetSignUpListView) iMvpView).onGetSignUpListSuccess(data);
+            }
+        });
+    }
+
+    public void getRobbingList(String apiId, String customerId, String carBrandId, String carModelId, boolean showLoading) {
+        if (!isViewAttached()) {
+            return;
+        }
+        NetworkModel.getRobbingList(apiId, customerId, carBrandId, carModelId, new CallBack<BaseEntity<List<RobbingInfoEntity>>>() {
+            @Override
+            public void onStart() {
+                if (isViewAttached() && showLoading)
+                    iMvpView.showLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached())
+                    iMvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(String msg) {
+                if (isViewAttached())
+                    iMvpView.onRequestError(msg, "getRobbingList");
+            }
+
+            @Override
+            public void onSuccess(BaseEntity<List<RobbingInfoEntity>> data) {
+                if (isViewAttached())
+                    ((GetRobbingView) iMvpView).onGetRobbingSuccess(data);
             }
         });
     }

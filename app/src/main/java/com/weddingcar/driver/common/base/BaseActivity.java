@@ -234,10 +234,14 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void setTopLeftImage(int drawable) {
-        mTopLeftImage = (ImageView) mRootView.findViewById(R.id.iv_left);
-        if (mTopLeftImage != null) {
-            mTopLeftImage.setImageResource(drawable);
-            mTopLeftImage.setVisibility(View.VISIBLE);
+        mTopLeft = mRootView.findViewById(R.id.left);
+        if (null != mTopLeft) {
+            mTopLeft.setVisibility(View.VISIBLE);
+            mTopLeftImage = mTopLeft.findViewById(R.id.iv_left);
+            if (mTopLeftImage != null) {
+                mTopLeftImage.setImageResource(drawable);
+                mTopLeftImage.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -250,10 +254,14 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void setTopRightImage(int drawable) {
-        mTopRightImage = (ImageView) mRootView.findViewById(R.id.iv_right);
-        if (mTopRightImage != null) {
-            mTopRightImage.setImageResource(drawable);
-            mTopRightImage.setVisibility(View.VISIBLE);
+        mTopRight = mRootView.findViewById(R.id.right);
+        if (null != mTopRight) {
+            mTopRight.setVisibility(View.VISIBLE);
+            mTopRightImage = (ImageView) mTopRight.findViewById(R.id.iv_right);
+            if (mTopRightImage != null) {
+                mTopRightImage.setImageResource(drawable);
+                mTopRightImage.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -360,6 +368,14 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         return super.onTouchEvent(event);
+    }
+
+    public ImageView getTopLeftImage() {
+        return (ImageView) mTopLeft.findViewById(R.id.iv_left);
+    }
+
+    public ImageView getTopRightImage() {
+        return (ImageView) mTopRight.findViewById(R.id.iv_right);
     }
 }
 

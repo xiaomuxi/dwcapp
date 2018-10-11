@@ -17,6 +17,9 @@ public class SPController {
     public static final String USER_INFO_SEX = "USER_INFO_SEX";
     public static final String USER_INFO_NAME = "USER_INFO_NAME";
 
+    public static final String USER_CAR_MODEL_ID = "USER_CAR_MODEL_ID";
+    public static final String USER_CAR_BRAND_ID = "USER_CAR_BRAND_ID";
+
 
     private static SPController instance;
 
@@ -48,6 +51,8 @@ public class SPController {
         info.setUserId(getInstance().getString(USER_INFO_USER_ID, ""));
         info.setName(getInstance().getString(USER_INFO_NAME, ""));
         info.setSex(getInstance().getString(USER_INFO_SEX, ""));
+        info.setCarModelId(getInstance().getString(USER_CAR_MODEL_ID, ""));
+        info.setCarBrandId(getInstance().getString(USER_CAR_BRAND_ID, ""));
 
         return info;
     }

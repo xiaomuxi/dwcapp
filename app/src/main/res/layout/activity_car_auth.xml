@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
-    
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="@color/bg_white"
             android:divider="@color/divide_main_gray"
+            android:orientation="vertical"
             android:showDividers="middle">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50"
-                android:gravity="center_vertical"
-                android:drawablePadding="@dimen/dimen_5"
                 android:drawableLeft="@drawable/bg_tag"
+                android:drawablePadding="@dimen/dimen_5"
+                android:gravity="center_vertical"
                 android:text="车辆基本信息"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/sp_14" />
+
             <LinearLayout
                 android:id="@+id/ll_brand"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50"
-                android:paddingLeft="@dimen/dimen_15"
-                android:paddingRight="@dimen/dimen_15"
                 android:background="?android:attr/selectableItemBackground"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_15"
+                android:paddingRight="@dimen/dimen_15">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -47,20 +49,22 @@
                     android:id="@+id/tv_brand"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|end"
                     android:drawableRight="@drawable/common_rightarrowbutton"
+                    android:gravity="center_vertical|end"
                     android:text="未选择"
                     android:textColor="@color/text_black"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_color"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50"
-                android:paddingLeft="@dimen/dimen_15"
-                android:paddingRight="@dimen/dimen_15"
                 android:background="?android:attr/selectableItemBackground"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_15"
+                android:paddingRight="@dimen/dimen_15">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -73,20 +77,22 @@
                     android:id="@+id/tv_color"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|end"
                     android:drawableRight="@drawable/common_rightarrowbutton"
+                    android:gravity="center_vertical|end"
                     android:text="未选择"
                     android:textColor="@color/text_black"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_plate_number"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50"
-                android:paddingLeft="@dimen/dimen_15"
-                android:paddingRight="@dimen/dimen_15"
                 android:background="?android:attr/selectableItemBackground"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_15"
+                android:paddingRight="@dimen/dimen_15">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -99,8 +105,8 @@
                     android:id="@+id/tv_plate_number"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|end"
                     android:drawableRight="@drawable/common_rightarrowbutton"
+                    android:gravity="center_vertical|end"
                     android:text="未完善"
                     android:textColor="@color/text_black"
                     android:textSize="@dimen/sp_14" />
@@ -109,9 +115,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50"
+                android:orientation="horizontal"
                 android:paddingLeft="@dimen/dimen_15"
-                android:paddingRight="@dimen/dimen_15"
-                android:orientation="horizontal">
+                android:paddingRight="@dimen/dimen_15">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -124,9 +131,9 @@
                     android:id="@+id/et_contact"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@null"
                     android:gravity="center_vertical|end"
                     android:hint="@string/hint_input_mobile"
-                    android:background="@null"
                     android:inputType="phone"
                     android:maxLength="11"
                     android:textColor="@color/text_black"
@@ -137,9 +144,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50"
+                android:orientation="horizontal"
                 android:paddingLeft="@dimen/dimen_15"
-                android:paddingRight="@dimen/dimen_15"
-                android:orientation="horizontal">
+                android:paddingRight="@dimen/dimen_15">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -152,9 +160,9 @@
                     android:id="@+id/et_urgent_contact"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@null"
                     android:gravity="center_vertical|end"
                     android:hint="@string/hint_input_mobile"
-                    android:background="@null"
                     android:inputType="phone"
                     android:maxLength="11"
                     android:textColor="@color/text_black"
@@ -166,10 +174,11 @@
                 android:id="@+id/ll_address"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50"
-                android:paddingLeft="@dimen/dimen_15"
-                android:paddingRight="@dimen/dimen_15"
                 android:background="?android:attr/selectableItemBackground"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_15"
+                android:paddingRight="@dimen/dimen_15">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -182,8 +191,8 @@
                     android:id="@+id/tv_address"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|end"
                     android:drawableRight="@drawable/common_rightarrowbutton"
+                    android:gravity="center_vertical|end"
                     android:textColor="@color/text_black"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
@@ -191,9 +200,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50"
+                android:orientation="horizontal"
                 android:paddingLeft="@dimen/dimen_15"
-                android:paddingRight="@dimen/dimen_15"
-                android:orientation="horizontal">
+                android:paddingRight="@dimen/dimen_15">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -206,12 +216,12 @@
                     android:id="@+id/et_description"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@null"
                     android:gravity="center_vertical|end"
                     android:hint="请输入车辆简介"
-                    android:background="@null"
                     android:inputType="text"
-                    android:textColorHint="@color/text_main_gray"
                     android:textColor="@color/text_black"
+                    android:textColorHint="@color/text_main_gray"
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
         </LinearLayout>
@@ -219,53 +229,59 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="@dimen/dimen_10"
             android:background="@color/bg_white"
             android:divider="@color/divide_main_gray"
-            android:layout_marginTop="@dimen/dimen_10"
+            android:orientation="vertical"
             android:paddingLeft="@dimen/dimen_15"
             android:paddingRight="@dimen/dimen_15">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50"
-                android:gravity="center_vertical"
-                android:drawablePadding="@dimen/dimen_5"
                 android:drawableLeft="@drawable/bg_tag"
+                android:drawablePadding="@dimen/dimen_5"
+                android:gravity="center_vertical"
                 android:text="车辆照片"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/sp_14" />
+
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <ImageView
                     android:id="@+id/iv_car_left_1"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="80dp"
                     android:layout_marginRight="2.5dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/car_left_anterior"/>
+                    android:src="@drawable/car_left_anterior" />
+
                 <ImageView
                     android:id="@+id/iv_car_middle_1"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="80dp"
-                    android:scaleType="fitXY"
                     android:layout_marginLeft="2.5dp"
                     android:layout_marginRight="2.5dp"
-                    android:src="@drawable/car_forward"/>
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/car_forward" />
+
                 <ImageView
                     android:id="@+id/iv_car_right_1"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="80dp"
                     android:layout_marginLeft="2.5dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/car_front_seat"/>
+                    android:src="@drawable/car_front_seat" />
 
             </LinearLayout>
 
@@ -274,31 +290,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5"
                 android:orientation="horizontal">
+
                 <ImageView
                     android:id="@+id/iv_car_left_2"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="80dp"
-                    android:scaleType="fitXY"
                     android:layout_marginRight="2.5dp"
-                    android:src="@drawable/car_right_back"/>
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/car_right_back" />
+
                 <ImageView
                     android:id="@+id/iv_car_middle_2"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="80dp"
-                    android:scaleType="fitXY"
                     android:layout_marginLeft="2.5dp"
                     android:layout_marginRight="2.5dp"
-                    android:src="@drawable/car_after"/>
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/car_after" />
+
                 <ImageView
                     android:id="@+id/iv_car_right_2"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="80dp"
-                    android:scaleType="fitXY"
                     android:layout_marginLeft="2.5dp"
-                    android:src="@drawable/car_back_seat"/>
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/car_back_seat" />
 
             </LinearLayout>
         </LinearLayout>
@@ -306,45 +325,50 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="@dimen/dimen_10"
             android:background="@color/bg_white"
             android:divider="@color/divide_main_gray"
-            android:layout_marginTop="@dimen/dimen_10"
+            android:orientation="vertical"
             android:paddingBottom="@dimen/dimen_10"
             android:paddingLeft="@dimen/dimen_15"
             android:paddingRight="@dimen/dimen_15">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50"
-                android:gravity="center_vertical"
-                android:drawablePadding="@dimen/dimen_5"
                 android:drawableLeft="@drawable/bg_tag"
+                android:drawablePadding="@dimen/dimen_5"
+                android:gravity="center_vertical"
                 android:text="证件信息"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/sp_14" />
+
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <ImageView
                     android:id="@+id/iv_id_left"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="104dp"
                     android:layout_marginRight="2.5dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/id_positive"/>
+                    android:src="@drawable/id_positive" />
+
                 <ImageView
                     android:id="@+id/iv_id_right"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="104dp"
                     android:layout_marginLeft="2.5dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/id_opposite"/>
+                    android:src="@drawable/id_opposite" />
             </LinearLayout>
 
             <LinearLayout
@@ -352,24 +376,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5"
                 android:orientation="horizontal">
+
                 <ImageView
                     android:id="@+id/iv_driver_left"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="104dp"
                     android:layout_marginRight="2.5dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/drivers_license"/>
+                    android:src="@drawable/drivers_license" />
+
                 <ImageView
                     android:id="@+id/iv_driver_right"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="104dp"
                     android:layout_marginLeft="2.5dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/driving_license"/>
+                    android:src="@drawable/driving_license" />
             </LinearLayout>
         </LinearLayout>
+
         <Button
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
@@ -378,8 +405,8 @@
             android:layout_marginLeft="@dimen/dimen_25"
             android:layout_marginRight="@dimen/dimen_25"
             android:layout_marginTop="25dp"
-            android:enabled="false"
             android:background="@drawable/btn_new_pressed"
+            android:enabled="false"
             android:gravity="center"
             android:text="上传"
             android:textColor="@color/text_white"

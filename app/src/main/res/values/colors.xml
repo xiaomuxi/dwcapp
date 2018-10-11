@@ -18,4 +18,5 @@
     <color name="text_main_red">#ff4545</color>
     <color name="text_main_gray">#999999</color>
     <color name="text_order_black">#666666</color>
+    <color name="text_color_ccc">#cccccc</color>
 </resources>

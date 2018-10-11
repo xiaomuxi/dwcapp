@@ -7,6 +7,7 @@ import com.network.library.bean.user.response.LoginEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
+import com.network.library.bean.user.response.RobbingInfoEntity;
 import com.network.library.bean.user.response.SignUpInfoEntity;
 import com.network.library.bean.user.response.VerifyCodeEntity;
 
@@ -62,4 +63,7 @@ public interface NetworkService {
 
     @GET("ljwy/JSON/HcPlApi01.aspx")
     Observable<CarColorsEntity> getCarColors(@QueryMap Map<String, String> map);
+
+    @POST("ljwy/JSON/HcPlApi01.aspx")
+    Observable<BaseEntity<List<RobbingInfoEntity>>> getRobbingList(@Query("ApiId") String apiId, @Query("customerId") String customerId,@Query("carBrandId") String carBrandId,@Query("carModelId") String carModelId);
 }

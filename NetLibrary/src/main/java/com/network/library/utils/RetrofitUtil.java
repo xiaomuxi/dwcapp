@@ -10,6 +10,7 @@ import com.network.library.bean.user.response.LoginEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
+import com.network.library.bean.user.response.RobbingInfoEntity;
 import com.network.library.bean.user.response.SignUpInfoEntity;
 import com.network.library.bean.user.response.VerifyCodeEntity;
 import com.network.library.constant.HttpAction;
@@ -285,4 +286,13 @@ public class RetrofitUtil {
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribe(subscriber);
 //    }
+
+    public void getRobbingList(Subscriber<BaseEntity<List<RobbingInfoEntity>>> subscriber, String apiId, String customerId, String carBrandId, String carModelId) {
+        Logger.I("[ getRobbingList ] apiId = " + apiId + " , customerId = " + customerId);
+        mNetworkService.getRobbingList(apiId, customerId, carBrandId, carModelId)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
 }

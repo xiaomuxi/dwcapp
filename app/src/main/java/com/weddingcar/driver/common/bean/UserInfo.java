@@ -11,6 +11,8 @@ public class UserInfo {
     private String UserId;
     private String Sex;
     private String Name;
+    private String carModelId;
+    private String carBrandId;
 
     public String getUserId() {
         return UserId;
@@ -36,12 +38,30 @@ public class UserInfo {
         this.Name = Name;
     }
 
+    public String getCarModelId() {
+        return carModelId;
+    }
+
+    public void setCarModelId(String carModelId) {
+        this.carModelId = carModelId;
+    }
+
+    public String getCarBrandId() {
+        return carBrandId;
+    }
+
+    public void setCarBrandId(String carBrandId) {
+        this.carBrandId = carBrandId;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
                 "UserId='" + UserId + '\'' +
                 ", Sex='" + Sex + '\'' +
                 ", Name='" + Name + '\'' +
+                ", carModelId='" + carModelId + '\'' +
+                ", carBrandId='" + carBrandId + '\'' +
                 '}';
     }
 }

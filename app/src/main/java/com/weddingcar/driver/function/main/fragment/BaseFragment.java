@@ -23,6 +23,10 @@ public class BaseFragment extends Fragment implements BaseNetView {
     public static final String WAIT = "order_wait_fragment";
     public static final String COMPLETE = "order_complete_fragment";
     public static final String INVALID = "order_invalid_fragment";
+
+    public static final String ROBBING = "order_robbing_fragment";
+    public static final String MY_TYPE = "order_robbing_my_type";
+    public static final String ALL_TYPE = "order_robbing_all_type";
     public Context mContext;
 
     public static BaseFragment newInstance(String tag) {
@@ -62,6 +66,24 @@ public class BaseFragment extends Fragment implements BaseNetView {
             args.putString(TAG, tag);
             invalidFragment.setArguments(args);
             return invalidFragment;
+        } else if (tag.equals(ROBBING)) {
+            RobbingFragment robbingFragment = new RobbingFragment();
+            Bundle args = new Bundle();
+            args.putString(TAG, tag);
+            robbingFragment.setArguments(args);
+            return robbingFragment;
+        } else if (tag.equals(MY_TYPE)) {
+            MyCarTypeFragment myCarTypeFragment = new MyCarTypeFragment();
+            Bundle args = new Bundle();
+            args.putString(TAG, tag);
+            myCarTypeFragment.setArguments(args);
+            return myCarTypeFragment;
+        }  else if (tag.equals(ALL_TYPE)) {
+            AllCarTypeFragment allCarTypeFragment = new AllCarTypeFragment();
+            Bundle args = new Bundle();
+            args.putString(TAG, tag);
+            allCarTypeFragment.setArguments(args);
+            return allCarTypeFragment;
         } else {
             return null;
         }
@@ -99,6 +121,7 @@ public class BaseFragment extends Fragment implements BaseNetView {
 
     @Override
     public void onRequestError(String errorMsg, String methodName) {
+        hideLoading();
         Logger.E("onRequestError from [ " + methodName + " ] , errorMsg = " + errorMsg);
         UIUtils.showToastSafe(StringUtils.isEmpty(errorMsg) ? ToastConstant.TOAST_REQUEST_ERROR : errorMsg);
     }

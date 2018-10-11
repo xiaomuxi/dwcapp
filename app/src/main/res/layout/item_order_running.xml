@@ -166,20 +166,32 @@
         android:layout_height="1px"
         android:background="@color/text_main_gray" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:gravity="end|center_vertical">
+        android:layout_height="36dp">
+
+        <TextView
+            android:id="@+id/order_left_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_15"
+            android:textColor="@color/text_main_gray"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/order_cat_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dimen_15"
             android:text="查看定位"
             android:textColor="@color/text_main_gray"
             android:textSize="@dimen/sp_12" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

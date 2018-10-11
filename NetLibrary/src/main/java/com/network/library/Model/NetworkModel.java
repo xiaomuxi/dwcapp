@@ -8,6 +8,7 @@ import com.network.library.bean.user.response.LoginEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
+import com.network.library.bean.user.response.RobbingInfoEntity;
 import com.network.library.bean.user.response.SignUpInfoEntity;
 import com.network.library.bean.user.response.VerifyCodeEntity;
 import com.network.library.callback.CallBack;
@@ -325,5 +326,38 @@ public class NetworkModel {
             }
         };
         RetrofitUtil.getInstance().getSignUpList(mEntitySubscriber, apiId, customerId, orderId);
+    }
+
+    public static void getRobbingList(String apiId, String customerId, String carBrandId, String carModelId, CallBack<BaseEntity<List<RobbingInfoEntity>>> callBack) {
+        Subscriber<BaseEntity<List<RobbingInfoEntity>>> mEntitySubscriber = new Subscriber<BaseEntity<List<RobbingInfoEntity>>>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(BaseEntity baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().getRobbingList(mEntitySubscriber, apiId, customerId, carBrandId, carModelId);
     }
 }
