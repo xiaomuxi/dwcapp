@@ -76,10 +76,10 @@
         <!--ali push-->
         <meta-data
             android:name="com.alibaba.app.appkey"
-            android:value="25061879" /> <!-- 请填写你自己的- appKey -->
+            android:value="25136436" /> <!-- 请填写你自己的- appKey -->
         <meta-data
             android:name="com.alibaba.app.appsecret"
-            android:value="eab2c0734e1c2b1d1a0553c6bb2c1630" /> <!-- 请填写你自己的appSecret -->
+            android:value="06348e8490f3fc669e8b511a22cc36a9" /> <!-- 请填写你自己的appSecret -->
 
         <service
             android:name="com.alibaba.sdk.android.push.MsgService"
@@ -106,7 +106,7 @@
         <service
             android:name="com.taobao.accs.ChannelService$KernelService"
             android:exported="false"
-            android:process=":channel"></service>
+            android:process=":channel"/>
         <service
             android:name="com.taobao.accs.data.MsgDistributeService"
             android:exported="true">
@@ -206,11 +206,17 @@
             android:finishOnTaskLaunch="false"
             android:launchMode="singleInstance"
             android:process=":channel"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
         <activity android:name=".function.mine.activity.CarAuthActivity" />
         <activity android:name=".function.mine.activity.CarBrandActivity" />
         <activity android:name=".function.mine.activity.CarColorActivity" />
         <activity android:name=".function.mine.activity.AddressChooseActivity" />
+        <activity android:name=".function.mine.activity.UploadCarInfoActivity" />
+        <activity android:name=".function.mine.activity.WalletActivity" />
+        <activity android:name=".function.mine.activity.BalanceDetailActivity" />
+        <activity android:name=".function.mine.activity.SettingActivity" />
+        <activity android:name=".function.mine.activity.MineInfoActivity" />
+        <activity android:name=".function.mine.activity.RechargeActivity" />
         <!--消息接收监听器-->
         <receiver
             android:name="com.weddingcar.driver.common.receiver.AliPushReceiver"

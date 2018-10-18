@@ -11,6 +11,7 @@ public class UserInfo {
     private String UserId;
     private String Sex;
     private String Name;
+    private String deviceId;
 
     public String getUserId() {
         return UserId;
@@ -36,12 +37,21 @@ public class UserInfo {
         this.Name = Name;
     }
 
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
                 "UserId='" + UserId + '\'' +
                 ", Sex='" + Sex + '\'' +
                 ", Name='" + Name + '\'' +
+                ", deviceId='" + deviceId + '\'' +
                 '}';
     }
 }

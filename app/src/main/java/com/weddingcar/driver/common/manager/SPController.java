@@ -16,6 +16,7 @@ public class SPController {
     public static final String USER_INFO_USER_ID = "USER_INFO_USER_ID";
     public static final String USER_INFO_SEX = "USER_INFO_SEX";
     public static final String USER_INFO_NAME = "USER_INFO_NAME";
+    public static final String USER_INFO_AVATAR = "USER_INFO_AVATAR";
 
 
     private static SPController instance;
@@ -66,6 +67,11 @@ public class SPController {
         getInstance().putString(USER_INFO_USER_ID, "");
         getInstance().putString(USER_INFO_NAME, "");
         getInstance().putString(USER_INFO_SEX, "");
+    }
+
+    public void logout() {
+        cleanUserInfo();
+        getInstance().putBoolean(IS_USER_AUTO_LOGIN, false);
     }
 
     public String getString(String key, String defValue) {

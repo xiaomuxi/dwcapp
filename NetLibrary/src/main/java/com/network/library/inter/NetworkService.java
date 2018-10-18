@@ -1,8 +1,13 @@
 package com.network.library.inter;
 
 import com.network.library.bean.BaseEntity;
+import com.network.library.bean.mine.response.BalanceDetailEntity;
 import com.network.library.bean.mine.response.CarColorsEntity;
+import com.network.library.bean.mine.response.GetBalanceInfoEntity;
 import com.network.library.bean.mine.response.GetCarBrandsEntity;
+import com.network.library.bean.mine.response.GetCarInfoEntity;
+import com.network.library.bean.mine.response.GetDriverCarInfoEntity;
+import com.network.library.bean.mine.response.GetMineInfoEntity;
 import com.network.library.bean.user.response.LoginEntity;
 import com.network.library.bean.user.response.RegisterEntity;
 import com.network.library.bean.user.response.VerifyCodeEntity;
@@ -50,4 +55,23 @@ public interface NetworkService {
 
     @GET("ljwy/JSON/HcPlApi01.aspx")
     Observable<CarColorsEntity> getCarColors(@QueryMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST("ljwy/JSON/HcPlApi03.aspx")
+    Observable<BaseEntity> uploadCarAuth(@QueryMap Map<String, String> queryMap, @FieldMap Map<String, String> fieldMap);
+
+    @GET("ljwy/JSON/HcPlApi01.aspx")
+    Observable<GetMineInfoEntity> getMineInfo(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi01.aspx")
+    Observable<GetCarInfoEntity> getCarInfo(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi01.aspx")
+    Observable<GetBalanceInfoEntity> getBalanceInfo(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi01.aspx")
+    Observable<GetDriverCarInfoEntity> getDriverCarInfo(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi01.aspx")
+    Observable<BalanceDetailEntity> getBalanceDetailList(@QueryMap Map<String, String> map);
 }

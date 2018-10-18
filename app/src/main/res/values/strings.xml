@@ -23,8 +23,12 @@
     <string name="tab_invalid">已失效</string>
     <string name="today_order">今日订单</string>
 
-    <string name="text_order_num">5单\n出车日历</string>
-    <string name="text_evaluate">5星\n客户评价</string>
-    <string name="text_income">500元\n累计收入</string>
-    <string name="text_complete_order">2单\n完成订单</string>
+    <string name="text_order_num">%s单\n出车日历</string>
+    <string name="text_evaluate">%s星\n客户评价</string>
+    <string name="text_income">%s元\n累计收入</string>
+    <string name="text_complete_order">%s单\n完成订单</string>
+    <string name="text_mine_car_model">%s(%s)</string>
+    <string name="text_order_number">已接单%s次</string>
+    <string name="text_balance_detail_money">%s元</string>
+    <string name="text_balance_detail_order">(订单号：%s)</string>
 </resources>

@@ -20,6 +20,8 @@ import static com.weddingcar.driver.common.manager.SPController.ALI_PUSH_DEVICE_
  * Base application
  */
 public class BaseApplication extends Application {
+    public String TAG = this.getClass().getSimpleName();
+
     //Global context
     private static BaseApplication mInstance;
     //Main thread id
