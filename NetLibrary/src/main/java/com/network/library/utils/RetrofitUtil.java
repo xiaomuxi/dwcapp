@@ -194,6 +194,48 @@ public class RetrofitUtil {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(subscriber);
                 break;
+            case HttpAction.ACTION_UPLOAD_CAR_AUTH:
+                mNetworkService.uploadCarAuth(GsonUtils.jsonToMap(queryContent), GsonUtils.jsonToMap(GsonUtils.toJson(body)))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_MINE_INFO:
+                mNetworkService.getMineInfo(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_CAR_INFO:
+                mNetworkService.getCarInfo(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_BALANCE_INFO:
+                mNetworkService.getBalanceInfo(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_DRIVER_CAR_INFO:
+                mNetworkService.getDriverCarInfo(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_BALANCE_DETAIL_LIST:
+                mNetworkService.getBalanceDetailList(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
         }
     }
 

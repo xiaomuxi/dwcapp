@@ -11,6 +11,7 @@ public class UserInfo {
     private String UserId;
     private String Sex;
     private String Name;
+    private String deviceId;
     private String carModelId;
     private String carBrandId;
 
@@ -38,6 +39,13 @@ public class UserInfo {
         this.Name = Name;
     }
 
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
     public String getCarModelId() {
         return carModelId;
     }
@@ -60,6 +68,7 @@ public class UserInfo {
                 "UserId='" + UserId + '\'' +
                 ", Sex='" + Sex + '\'' +
                 ", Name='" + Name + '\'' +
+                ", deviceId='" + deviceId + '\'' +
                 ", carModelId='" + carModelId + '\'' +
                 ", carBrandId='" + carBrandId + '\'' +
                 '}';

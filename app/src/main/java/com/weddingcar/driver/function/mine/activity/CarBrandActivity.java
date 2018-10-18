@@ -139,11 +139,11 @@ public class CarBrandActivity extends BaseActivity implements View.OnClickListen
     };
 
     public void goBackAndBringResult() {
-        String brandKey = carBrandsChildrenList.get(brandChildrenIndex).getKey();
-        String brandValue = carBrandsChildrenList.get(brandChildrenIndex).getValue();
+        String modelKey = carBrandsChildrenList.get(brandChildrenIndex).getKey();
+        String modelValue = carBrandsChildrenList.get(brandChildrenIndex).getValue();
         Intent intent = new Intent();
-        intent.putExtra("CAR_MODEL_ID", brandKey);
-        intent.putExtra("CAR_MODEL_VALUE", brandValue);
+        intent.putExtra("CAR_MODEL_ID", modelKey);
+        intent.putExtra("CAR_MODEL_VALUE", modelValue);
         setResult(1, intent);
         finish();
     }

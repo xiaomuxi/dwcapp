@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <TextView
+        android:id="@+id/tv_modify_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_15"
+        android:layout_marginBottom="@dimen/dimen_15"
+        android:paddingTop="@dimen/dimen_10"
+        android:paddingBottom="@dimen/dimen_10"
+        android:paddingLeft="@dimen/dimen_8"
+        android:paddingRight="@dimen/dimen_8"
+        android:padding="@dimen/dimen_10"
+        android:gravity="center_vertical"
+        android:background="@color/bg_white"
+        android:drawableRight="@drawable/common_rightarrowbutton"
+        android:text="修改登录密码"
+        android:textSize="@dimen/sp_14"
+        android:textColor="@color/text_black" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="@dimen/dimen_10"
+        android:layout_marginLeft="@dimen/dimen_25"
+        android:layout_marginRight="@dimen/dimen_25"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/btn_new_pressed"
+        android:gravity="center"
+        android:text="退出登录"
+        android:textColor="@color/text_white"
+        android:textSize="@dimen/sp_17" />
+
+</LinearLayout>

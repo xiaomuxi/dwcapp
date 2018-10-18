@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.user.request.ModifyUserInfoRequest;
 import com.network.library.constant.HttpAction;
@@ -22,8 +24,11 @@ import com.network.library.controller.NetworkController;
 import com.network.library.view.NormalView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
+import com.weddingcar.driver.common.bean.UserInfo;
+import com.weddingcar.driver.common.config.Config;
 import com.weddingcar.driver.common.config.IntentConstant;
 import com.weddingcar.driver.common.config.ToastConstant;
+import com.weddingcar.driver.common.manager.SPController;
 import com.weddingcar.driver.common.utils.Base64Utils;
 import com.weddingcar.driver.common.utils.DrawableUtils;
 import com.weddingcar.driver.common.utils.FileUtils;
@@ -39,6 +44,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private static final int PHOTO_REQUEST_CAMERA = 1001;  // 拍照获取头像
     private static final int PHOTO_REQUEST_ALBUM = 1002; // 从相册中选择头像
     private static final String PHOTO_FILE_NAME = "head";  // 头像照片
+    private static final String TYPE_MINE_ACTIVITY = "MINE_ACTIVITY";
 
     @BindView(R.id.iv_head)
     ImageView iv_head;
@@ -60,11 +66,13 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     private boolean isBoySelected = true;
     private String userId;
     private String imgStream;
+    private String type;
 
     @Override
     protected void init() {
         super.init();
         userId = getIntent().getStringExtra(IntentConstant.EXTRA_MOBILE);
+        type = getIntent().getStringExtra("TYPE");
         setContentView(R.layout.activity_personal_info);
         ButterKnife.bind(this);
     }
@@ -79,6 +87,15 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void initView() {
         super.initView();
+        if (StringUtils.equals(type, TYPE_MINE_ACTIVITY)) {
+            UserInfo userInfo = SPController.getInstance().getUserInfo();
+            userId = userInfo.getUserId();
+            isBoySelected = StringUtils.equals("男", userInfo.getSex());
+            et_name.setText(userInfo.getName());
+            RequestOptions options = new RequestOptions().placeholder(R.drawable.my_head);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + SPController.getInstance().getString(SPController.USER_INFO_AVATAR, "")).apply(options).into(iv_head);
+        }
+
         initHead();
         tv_boy.setSelected(isBoySelected);
         tv_girl.setSelected(!isBoySelected);
@@ -178,6 +195,11 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         public void onSuccess(BaseEntity entity) {
 
             UIUtils.showToastSafe("用户信息上传成功");
+            if (StringUtils.equals(type, TYPE_MINE_ACTIVITY)) {
+                setResult(0);
+                finish();
+                return;
+            }
             goToLoginActivity();
         }
 
@@ -227,7 +249,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             UIUtils.showToastSafe("获取用户ID失败，请重试!");
             return false;
         }
-        if (StringUtils.isEmpty(imgStream)) {
+        if (!StringUtils.equals(type, TYPE_MINE_ACTIVITY) && StringUtils.isEmpty(imgStream)) {
             UIUtils.showToastSafe("请上传头像！");
             return false;
         }
