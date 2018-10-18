@@ -12,17 +12,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.network.library.bean.BaseEntity;
-import com.network.library.bean.user.response.OrderWaitListEntity;
+import com.network.library.bean.user.response.RobbingInfoEntity;
 import com.network.library.controller.NetworkController;
 import com.network.library.utils.Logger;
 import com.network.library.view.BaseNetView;
-import com.network.library.view.GetOrderView;
+import com.network.library.view.GetRobbingView;
 import com.weddingcar.driver.R;
+import com.weddingcar.driver.common.callback.FilterListener;
 import com.weddingcar.driver.common.callback.OnRecycleItemClick;
 import com.weddingcar.driver.common.manager.SPController;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
-import com.weddingcar.driver.function.main.adapter.OrderWaitAdapter;
+import com.weddingcar.driver.function.main.adapter.OrderMyCarTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,26 +32,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemClick,
-        GetOrderView {
+public class AllCarTypeFragment extends BaseFragment implements GetRobbingView, OnRecycleItemClick, FilterListener {
 
-    private static final String state = "已失效";
-
-    @BindView(R.id.order_running_recycle)
-    RecyclerView mInvalidRecycleView;
+    @BindView(R.id.order_my_car_type)
+    RecyclerView mAllCarTypeRecycleView;
     @BindView(R.id.empty_order_list_view)
     TextView mEmptyView;
 
     private String mFragmentTag;
 
     private Unbinder unbinder;
-
     private NetworkController<BaseNetView> mController;
 
-    private OrderWaitAdapter mOrderInvalidAdapter;
-    private List<OrderWaitListEntity> mOrderInvalidList = new ArrayList<>();
-
-    private boolean mRequestComplete = false;
+    private OrderMyCarTypeAdapter mOrderAllCarAdapter;
+    private List<RobbingInfoEntity> mOrderAllCarList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +58,7 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_order_invalid, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_car_type, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -78,12 +73,24 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (null == mOrderInvalidAdapter)
-            mOrderInvalidAdapter = new OrderWaitAdapter(mOrderInvalidList, this);
-        mInvalidRecycleView.setAdapter(mOrderInvalidAdapter);
-        DividerItemDecoration divider = new DividerItemDecoration(UIUtils.getContext(), DividerItemDecoration.VERTICAL);
-        divider.setDrawable(UIUtils.getDrawable(R.drawable.recycleview_divider));
-        mInvalidRecycleView.addItemDecoration(divider);
+    }
+
+    private void initViewAndData() {
+        if (isVisible()) {
+            if (null == mOrderAllCarAdapter)
+                mOrderAllCarAdapter = new OrderMyCarTypeAdapter(mOrderAllCarList, this, this);
+            mAllCarTypeRecycleView.setAdapter(mOrderAllCarAdapter);
+            DividerItemDecoration divider = new DividerItemDecoration(UIUtils.getContext(), DividerItemDecoration.VERTICAL);
+            divider.setDrawable(UIUtils.getDrawable(R.drawable.recycleview_divider));
+            mAllCarTypeRecycleView.addItemDecoration(divider);
+        }
+        getMyCarTypeData();
+    }
+
+    private void getMyCarTypeData() {
+        String userId = SPController.getInstance().getUserInfo().getUserId();
+        if (null == userId || userId.isEmpty()) userId = "18616367480";
+        mController.getRobbingList("HC010308", userId, null, null, true);
     }
 
     @Override
@@ -99,47 +106,56 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
     }
 
     public void visible() {
-        if (mRequestComplete) return;
-        String userId = SPController.getInstance().getUserInfo().getUserId();
-        if (null == userId || userId.isEmpty()) userId = "18616367480";
-        mController.getCompleteOrderList("HC010312", userId, state, true);
+        initViewAndData();
     }
 
-    @Override
-    public void onRecycleItemClick(int position) {
+    public void dateClear() {
 
     }
 
     @Override
     public void onRequestError(String errorMsg, String methodName) {
         super.onRequestError(errorMsg, methodName);
-        mInvalidRecycleView.setVisibility(View.GONE);
+        mAllCarTypeRecycleView.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onGetOrderListSuccess(BaseEntity baseEntity) {
+    public void onGetRobbingSuccess(BaseEntity baseEntity) {
         if (null != baseEntity) {
-            mRequestComplete = true;
-            String status = baseEntity.getStatus();
             String msg = baseEntity.getMsg();
             String count = baseEntity.getCount();
 
             if (StringUtils.equals(count, "0")) {
-                mInvalidRecycleView.setVisibility(View.GONE);
-                mEmptyView.setVisibility(View.VISIBLE);
                 UIUtils.showToastSafe(msg);
+                mAllCarTypeRecycleView.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
                 return;
             }
-            mEmptyView.setVisibility(View.GONE);
-            mInvalidRecycleView.setVisibility(View.VISIBLE);
+            List<RobbingInfoEntity> robbingInfoEntities = (List<RobbingInfoEntity>) baseEntity.getData();
+            mOrderAllCarList.clear();
+            mOrderAllCarList.addAll(robbingInfoEntities);
+            mOrderAllCarAdapter.notifyDataSetChanged();
+            Logger.I("onGetAllCarTypeDataSuccess : " + baseEntity.toString());
+        }
+    }
 
-            mOrderInvalidList.clear();
+    @Override
+    public void onRecycleItemClick(int position) {
+        RobbingInfoEntity infoEntity = mOrderAllCarList.get(position);
+        if (null != infoEntity) {
+            Logger.I("AllCarTypeFragment onItemClick \n" + infoEntity.toString());
+        }
+    }
 
-            List<OrderWaitListEntity> listEntities = (List<OrderWaitListEntity>) baseEntity.getData();
-            mOrderInvalidList.addAll(listEntities);
-            mOrderInvalidAdapter.notifyDataSetChanged();
-            Logger.I("onGetInvalidOrderListSuccess : " + baseEntity.toString());
+    @Override
+    public void getFilterData(List<RobbingInfoEntity> data) {
+        Logger.I("AllCatType getFilterData " + data.toString());
+    }
+
+    public void filter(String searchId) {
+        if (null != mOrderAllCarAdapter){
+            mOrderAllCarAdapter.getFilter().filter(searchId);
         }
     }
 }

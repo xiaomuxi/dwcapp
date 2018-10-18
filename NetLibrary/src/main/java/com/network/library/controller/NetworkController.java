@@ -5,15 +5,23 @@ import com.network.library.Model.NetworkModel;
 import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.BaseRequest;
+import com.network.library.bean.user.response.OrderRunningListEntity;
+import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
+import com.network.library.bean.user.response.RobbingInfoEntity;
+import com.network.library.bean.user.response.SignUpInfoEntity;
 import com.network.library.bean.user.response.VerifyCodeEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.callback.CallBack;
 import com.network.library.view.BaiduOauthView;
 import com.network.library.view.BaseNetView;
 import com.network.library.view.GetOrderView;
+import com.network.library.view.GetRobbingView;
+import com.network.library.view.GetSignUpListView;
 import com.network.library.view.GetWeatherView;
 import com.network.library.view.NormalView;
+
+import java.util.List;
 
 public class NetworkController<V extends BaseNetView> {
 
@@ -108,11 +116,11 @@ public class NetworkController<V extends BaseNetView> {
         });
     }
 
-    public void getOrderList(final String apiId, String customId, String state, boolean showLoading) {
+    public void getRunningOrderList(final String apiId, String id, boolean showLoading) {
         if (!isViewAttached()) {
             return;
         }
-        NetworkModel.getOrderList(apiId, customId, state, new CallBack<BaseEntity>() {
+        NetworkModel.getRunningOrderList(apiId, id, new CallBack<BaseEntity<List<OrderRunningListEntity>>>() {
             @Override
             public void onStart() {
                 if (isViewAttached() && showLoading)
@@ -128,11 +136,73 @@ public class NetworkController<V extends BaseNetView> {
             @Override
             public void onError(String msg) {
                 if (isViewAttached())
-                    iMvpView.onRequestError(msg, "getOrderList");
+                    iMvpView.onRequestError(msg, "getRunningOrderList");
             }
 
             @Override
-            public void onSuccess(BaseEntity data) {
+            public void onSuccess(BaseEntity<List<OrderRunningListEntity>> data) {
+                if (isViewAttached())
+                    ((GetOrderView) iMvpView).onGetOrderListSuccess(data);
+            }
+        });
+    }
+
+    public void getWaitOrderList(final String apiId, String customerId, String state, boolean showLoading) {
+        if (!isViewAttached()) {
+            return;
+        }
+        NetworkModel.getWaitOrderList(apiId, customerId, state, new CallBack<BaseEntity<List<OrderWaitListEntity>>>() {
+            @Override
+            public void onStart() {
+                if (isViewAttached() && showLoading)
+                    iMvpView.showLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached())
+                    iMvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(String msg) {
+                if (isViewAttached())
+                    iMvpView.onRequestError(msg, "getWaitOrderList");
+            }
+
+            @Override
+            public void onSuccess(BaseEntity<List<OrderWaitListEntity>> data) {
+                if (isViewAttached())
+                    ((GetOrderView) iMvpView).onGetOrderListSuccess(data);
+            }
+        });
+    }
+
+    public void getCompleteOrderList(final String apiId, String customerId, String state, boolean showLoading) {
+        if (!isViewAttached()) {
+            return;
+        }
+        NetworkModel.getWaitOrderList(apiId, customerId, state, new CallBack<BaseEntity<List<OrderWaitListEntity>>>() {
+            @Override
+            public void onStart() {
+                if (isViewAttached() && showLoading)
+                    iMvpView.showLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached())
+                    iMvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(String msg) {
+                if (isViewAttached())
+                    iMvpView.onRequestError(msg, "getCompleteOrderList");
+            }
+
+            @Override
+            public void onSuccess(BaseEntity<List<OrderWaitListEntity>> data) {
                 if (isViewAttached())
                     ((GetOrderView) iMvpView).onGetOrderListSuccess(data);
             }
@@ -200,6 +270,7 @@ public class NetworkController<V extends BaseNetView> {
             }
         });
     }
+
     public void register(String phone, String pwd, String pwdAgain, String verifyCode) {
         if (!isViewAttached()) {
             return;
@@ -258,6 +329,68 @@ public class NetworkController<V extends BaseNetView> {
             public void onSuccess(BaseEntity data) {
                 if (isViewAttached())
                     ((NormalView) iMvpView).onSuccess(data);
+            }
+        });
+    }
+
+    public void getSignUpList(final String apiId, String customerId, String orderId) {
+        if (!isViewAttached()) {
+            return;
+        }
+        NetworkModel.getSignUpList(apiId, customerId, orderId, new CallBack<BaseEntity<List<SignUpInfoEntity>>>() {
+            @Override
+            public void onStart() {
+                if (isViewAttached())
+                    iMvpView.showLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached())
+                    iMvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(String msg) {
+                if (isViewAttached())
+                    iMvpView.onRequestError(msg, "getSignUpList");
+            }
+
+            @Override
+            public void onSuccess(BaseEntity<List<SignUpInfoEntity>> data) {
+                if (isViewAttached())
+                    ((GetSignUpListView) iMvpView).onGetSignUpListSuccess(data);
+            }
+        });
+    }
+
+    public void getRobbingList(String apiId, String customerId, String carBrandId, String carModelId, boolean showLoading) {
+        if (!isViewAttached()) {
+            return;
+        }
+        NetworkModel.getRobbingList(apiId, customerId, carBrandId, carModelId, new CallBack<BaseEntity<List<RobbingInfoEntity>>>() {
+            @Override
+            public void onStart() {
+                if (isViewAttached() && showLoading)
+                    iMvpView.showLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached())
+                    iMvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(String msg) {
+                if (isViewAttached())
+                    iMvpView.onRequestError(msg, "getRobbingList");
+            }
+
+            @Override
+            public void onSuccess(BaseEntity<List<RobbingInfoEntity>> data) {
+                if (isViewAttached())
+                    ((GetRobbingView) iMvpView).onGetRobbingSuccess(data);
             }
         });
     }

@@ -7,9 +7,11 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+
 import java.io.File;
 
 public class GlideUtils {
@@ -45,9 +47,23 @@ public class GlideUtils {
         Glide.with(context).load(Uri.fromFile(new File(path))).into(imageView);
     }
 
+    public static void getNetDrawable(Context context, String pathUrl, onGetNetImgCallback callback) {
+        Glide.with(context.getApplicationContext()).load(pathUrl).into(new SimpleTarget<Drawable>() {
+
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                if (null != callback) callback.onGetDrawable(resource);
+            }
+        });
+    }
+
     public interface OnLoadImageResult {
         void onSuccess();
 
         void onError();
+    }
+
+    public interface onGetNetImgCallback {
+        void onGetDrawable(Drawable drawable);
     }
 }

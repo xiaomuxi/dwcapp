@@ -6,9 +6,8 @@
     android:gravity="center"
     android:orientation="vertical">
 
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/order_running_recycle"
+        android:id="@+id/order_my_car_type"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

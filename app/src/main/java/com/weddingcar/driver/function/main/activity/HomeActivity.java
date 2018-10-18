@@ -18,6 +18,7 @@ import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.main.fragment.BaseFragment;
 import com.weddingcar.driver.function.main.fragment.MyFragment;
 import com.weddingcar.driver.function.main.fragment.OrderFragment;
+import com.weddingcar.driver.function.main.fragment.RobbingFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +36,8 @@ public class HomeActivity extends BaseActivity {
 
     private OrderFragment mOrderFragment;
     private MyFragment mMyFragment;
+
+    private RobbingFragment mRobbingFragment;
 
     @Override
     protected void init() {
@@ -79,11 +82,14 @@ public class HomeActivity extends BaseActivity {
 
         mOrderFragment = (OrderFragment) OrderFragment.newInstance(BaseFragment.ORDER);
         mMyFragment = (MyFragment) MyFragment.newInstance(BaseFragment.MY);
+        mRobbingFragment = (RobbingFragment) RobbingFragment.newInstance(BaseFragment.ROBBING);
 
         transaction.add(R.id.fragment_container, mOrderFragment);
         transaction.add(R.id.fragment_container, mMyFragment);
+        transaction.add(R.id.fragment_container, mRobbingFragment);
 
         transaction.hide(mMyFragment);
+        transaction.hide(mRobbingFragment);
         transaction.show(mOrderFragment).commitAllowingStateLoss();
     }
 
@@ -131,7 +137,7 @@ public class HomeActivity extends BaseActivity {
                     switchFragment(menuItem.getItemId());
                     return true;
                 case R.id.navigation_empty:
-                    onPicOrderClicked();
+                    // empty
                     break;
             }
             return false;
@@ -142,15 +148,22 @@ public class HomeActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (viewId == R.id.navigation_order) {
             transaction.hide(mMyFragment);
+            transaction.hide(mRobbingFragment);
             transaction.show(mOrderFragment).commitAllowingStateLoss();
         } else if (viewId == R.id.navigation_my) {
             transaction.hide(mOrderFragment);
+            transaction.hide(mRobbingFragment);
             transaction.show(mMyFragment).commitAllowingStateLoss();
         }
     }
 
     @OnClick(R.id.btn_pic_order)
     public void onPicOrderClicked() {
-        UIUtils.showToastSafe("抢单");
+        mBtmNavigation.getMenu().getItem(1).setChecked(true);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.hide(mMyFragment);
+        transaction.hide(mOrderFragment);
+        transaction.show(mRobbingFragment).commitAllowingStateLoss();
+        mRobbingFragment.visible();
     }
 }

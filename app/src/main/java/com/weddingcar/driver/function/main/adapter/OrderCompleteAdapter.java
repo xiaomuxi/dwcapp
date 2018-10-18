@@ -9,25 +9,29 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.network.library.bean.user.response.OrderRunningListEntity;
+import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.utils.GlideUtils;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.callback.OnRecycleItemClick;
 import com.weddingcar.driver.common.config.Config;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class OrderRunningAdapter extends RecyclerView.Adapter<OrderRunningAdapter.OrderRunningViewHolder> {
+public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdapter.OrderRunningViewHolder> {
 
-    private List<OrderRunningListEntity> mData;
+    private List<OrderWaitListEntity> mData;
     private OnRecycleItemClick callback;
     private Context mContext;
 
-    public OrderRunningAdapter(List<OrderRunningListEntity> list, OnRecycleItemClick listener) {
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+
+    public OrderCompleteAdapter(List<OrderWaitListEntity> list, OnRecycleItemClick listener) {
         this.mData = list;
         this.callback = listener;
     }
@@ -42,21 +46,38 @@ public class OrderRunningAdapter extends RecyclerView.Adapter<OrderRunningAdapte
 
     @Override
     public void onBindViewHolder(@NonNull OrderRunningViewHolder holder, int position) {
-        OrderRunningListEntity orderListEntity = mData.get(position);
-        String name = orderListEntity.getName();
-        String sex = orderListEntity.getSex();
-        int income = orderListEntity.getIncome();
-        String carBrandName = orderListEntity.getCarBrandName();
-        String carModelID = orderListEntity.getCarModelID();
-        String userHeadUrl = Config.getAppHtmlUrl() + "/LJTP/CATP/" + orderListEntity.getAvator();
-        if (sex.equals("男")) {
-            holder.orderUserName.setText(name + "先生");
-        } else if (sex.equals("女")) {
-            holder.orderUserName.setText(name + "女士");
+        OrderWaitListEntity orderWaitListEntity = mData.get(position);
+        String id = orderWaitListEntity.getID();            //订单号
+        String carBrandName = orderWaitListEntity.getCarBrandName();
+        String carModelName = orderWaitListEntity.getCarModelName();
+        int journeyChoose = orderWaitListEntity.getJourneyChoose();
+        int hourChoose = orderWaitListEntity.getHourChoose();
+        String areaName = orderWaitListEntity.getAreaName();
+        String idH = orderWaitListEntity.getIdH();
+        int amount = orderWaitListEntity.getAmount();
+        String iscar = orderWaitListEntity.getIscar();
+        String orderOfferID = orderWaitListEntity.getOrderOfferID();
+        String theWeddingDate = orderWaitListEntity.getTheWeddingDate();
+        String theWeddingDateString = orderWaitListEntity.getTheWeddingDateString();
+        String customerAvator = orderWaitListEntity.getCustomerAvator();
+        String userHeadUrl = Config.getAppHtmlUrl() + "/LJTP/CATP/" + customerAvator;
+        String customerName = orderWaitListEntity.getCustomerName();
+        String customerSex = orderWaitListEntity.getCustomerSex();
+        String code = orderWaitListEntity.getCode();
+        holder.orderCatLocation.setText("查看报名");
+        holder.orderNumber.setText(code);
+        if (customerSex.equals("男")) {
+            holder.orderUserName.setText(customerName + "先生");
+        } else if (customerSex.equals("女")) {
+            holder.orderUserName.setText(customerName + "女士");
         }
         GlideUtils.loadShow(mContext, userHeadUrl, holder.orderUserIconView);
-        holder.orderMoneyTxView.setText("$" + income);
-        holder.orderCarTypeTxView.setText(carBrandName + carModelID);
+        holder.orderMoneyTxView.setText("$" + amount);
+        holder.orderDurationTxView.setText(hourChoose + "小时");
+        holder.orderRoadTxView.setText(journeyChoose + "公里");
+        holder.orderSpaceTxView.setText(areaName);
+        holder.orderCarTypeTxView.setText(carBrandName + carModelName);
+        holder.orderTimeTxView.setText(sdf.format(new Date(Long.parseLong(theWeddingDate))));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

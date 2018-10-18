@@ -5,7 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.network.library.controller.NetworkController;
+import com.network.library.utils.Logger;
 import com.network.library.view.BaseNetView;
+import com.weddingcar.driver.common.base.BaseActivity;
+import com.weddingcar.driver.common.config.ToastConstant;
+import com.weddingcar.driver.common.utils.StringUtils;
+import com.weddingcar.driver.common.utils.UIUtils;
 
 public class BaseFragment extends Fragment implements BaseNetView {
 
@@ -18,9 +23,11 @@ public class BaseFragment extends Fragment implements BaseNetView {
     public static final String WAIT = "order_wait_fragment";
     public static final String COMPLETE = "order_complete_fragment";
     public static final String INVALID = "order_invalid_fragment";
-    public Context mContext;
 
-    private NetworkController<BaseNetView> mNetWorkController;
+    public static final String ROBBING = "order_robbing_fragment";
+    public static final String MY_TYPE = "order_robbing_my_type";
+    public static final String ALL_TYPE = "order_robbing_all_type";
+    public Context mContext;
 
     public static BaseFragment newInstance(String tag) {
         if (tag.equals(ORDER)) {
@@ -59,6 +66,24 @@ public class BaseFragment extends Fragment implements BaseNetView {
             args.putString(TAG, tag);
             invalidFragment.setArguments(args);
             return invalidFragment;
+        } else if (tag.equals(ROBBING)) {
+            RobbingFragment robbingFragment = new RobbingFragment();
+            Bundle args = new Bundle();
+            args.putString(TAG, tag);
+            robbingFragment.setArguments(args);
+            return robbingFragment;
+        } else if (tag.equals(MY_TYPE)) {
+            MyCarTypeFragment myCarTypeFragment = new MyCarTypeFragment();
+            Bundle args = new Bundle();
+            args.putString(TAG, tag);
+            myCarTypeFragment.setArguments(args);
+            return myCarTypeFragment;
+        }  else if (tag.equals(ALL_TYPE)) {
+            AllCarTypeFragment allCarTypeFragment = new AllCarTypeFragment();
+            Bundle args = new Bundle();
+            args.putString(TAG, tag);
+            allCarTypeFragment.setArguments(args);
+            return allCarTypeFragment;
         } else {
             return null;
         }
@@ -68,24 +93,25 @@ public class BaseFragment extends Fragment implements BaseNetView {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        mNetWorkController = new NetworkController<>();
-        mNetWorkController.attachView(this);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mNetWorkController.detachView();
     }
 
     @Override
     public void showLoading() {
-
+        if (isVisible()) {
+            BaseActivity activity = (BaseActivity) getActivity();
+            if (null != activity) activity.showProcess("正在请求数据...");
+        }
     }
 
     @Override
     public void hideLoading() {
-
+        BaseActivity activity = (BaseActivity) getActivity();
+        if (null != activity) activity.hideProcess();
     }
 
     @Override
@@ -95,6 +121,8 @@ public class BaseFragment extends Fragment implements BaseNetView {
 
     @Override
     public void onRequestError(String errorMsg, String methodName) {
-
+        hideLoading();
+        Logger.E("onRequestError from [ " + methodName + " ] , errorMsg = " + errorMsg);
+        UIUtils.showToastSafe(StringUtils.isEmpty(errorMsg) ? ToastConstant.TOAST_REQUEST_ERROR : errorMsg);
     }
 }

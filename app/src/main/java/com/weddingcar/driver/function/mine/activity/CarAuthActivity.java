@@ -160,7 +160,6 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
         public void onRequestSuccess() {
 
         }
-
         @Override
         public void onRequestError(String errorMsg, String methodName) {
             UIUtils.showToastSafe(StringUtils.isEmpty(errorMsg) ? ToastConstant.TOAST_REQUEST_ERROR : errorMsg);

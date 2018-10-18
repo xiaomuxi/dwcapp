@@ -1,37 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/text_white"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:id="@+id/order_status_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/order_status_tx_view"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginLeft="@dimen/dimen_15"
-            android:drawableLeft="@drawable/tab_order"
-            android:drawablePadding="13dp"
-            android:gravity="center_vertical"
-            android:text="@string/today_order"
-            android:textColor="@color/bg_black"
-            android:textSize="@dimen/sp_14" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/text_main_gray" />
-    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp">
+        android:layout_height="36dp"
+        android:background="@color/text_white">
 
         <TextView
             android:id="@+id/order_number"
@@ -44,15 +21,15 @@
             android:textSize="@dimen/sp_12" />
 
         <TextView
-            android:id="@+id/order_user_name"
+            android:id="@+id/order_cancel_sign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dimen_15"
-            android:text="高先生"
+            android:text="取消报名"
             android:textColor="@color/text_main_gray"
-            android:textSize="@dimen/sp_12" />
+            android:textSize="@dimen/sp_14" />
 
     </RelativeLayout>
 
@@ -63,7 +40,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="97dp">
+        android:layout_height="97dp"
+        android:background="@color/text_white">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/order_user_icon_view"
@@ -93,14 +71,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/order_money_tx_view"
+                android:id="@+id/order_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/dimen_15"
-                android:text="$500"
-                android:textColor="@color/text_main_red"
-                android:textSize="@dimen/sp_15"
+                android:text="高先生"
+                android:textColor="@color/text_main_gray"
+                android:textSize="@dimen/sp_12"
                 android:textStyle="bold" />
 
         </RelativeLayout>
@@ -166,32 +144,79 @@
         android:layout_height="1px"
         android:background="@color/text_main_gray" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp">
+        android:layout_height="36dp"
+        android:background="@color/text_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/order_left_view"
-            android:layout_width="wrap_content"
+            android:id="@+id/order_car_number"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_15"
-            android:textColor="@color/text_main_gray"
-            android:textSize="@dimen/sp_12"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/order_cat_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_15"
-            android:text="查看定位"
-            android:textColor="@color/text_main_gray"
+            android:layout_weight="1"
+            android:text="当前报名车辆:10辆"
+            android:textColor="@color/text_order_black"
             android:textSize="@dimen/sp_12" />
 
-    </RelativeLayout>
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/text_main_gray" />
+
+        <TextView
+            android:id="@+id/order_car_average"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_15"
+            android:layout_weight="1"
+            android:text="当前平均价:500元"
+            android:textColor="@color/text_order_black"
+            android:textSize="@dimen/sp_12" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/text_main_gray" />
+
+    <TextView
+        android:id="@+id/order_info_view"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/text_white"
+        android:drawableLeft="@drawable/tab_order"
+        android:drawablePadding="10dp"
+        android:drawableRight="@drawable/icon_more_down"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dimen_15"
+        android:paddingRight="@dimen/dimen_15"
+        android:text="订单详情"
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/sp_14" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="@dimen/dimen_10"
+        android:background="@color/text_white"
+        android:drawableLeft="@drawable/tab_order"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dimen_15"
+        android:paddingRight="@dimen/dimen_15"
+        android:text="报名车辆"
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/sp_14" />
+
+    <ListView
+        android:id="@+id/sign_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/text_main_gray"
+        android:dividerHeight="1px" />
 
 </LinearLayout>
