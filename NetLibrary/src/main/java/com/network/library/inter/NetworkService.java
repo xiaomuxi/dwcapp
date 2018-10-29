@@ -4,6 +4,7 @@ import com.network.library.bean.BaseEntity;
 import com.network.library.bean.mine.response.CarColorsEntity;
 import com.network.library.bean.mine.response.GetCarBrandsEntity;
 import com.network.library.bean.user.response.LoginEntity;
+import com.network.library.bean.user.response.OrderInfoEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
@@ -65,5 +66,20 @@ public interface NetworkService {
     Observable<CarColorsEntity> getCarColors(@QueryMap Map<String, String> map);
 
     @POST("ljwy/JSON/HcPlApi01.aspx")
-    Observable<BaseEntity<List<RobbingInfoEntity>>> getRobbingList(@Query("ApiId") String apiId, @Query("customerId") String customerId,@Query("carBrandId") String carBrandId,@Query("carModelId") String carModelId);
+    Observable<BaseEntity<List<RobbingInfoEntity>>> getRobbingList(@Query("ApiId") String apiId, @Query("customerId") String customerId, @Query("carBrandId") String carBrandId, @Query("carModelId") String carModelId);
+
+    @POST("ljwy/JSON/HcPlApi01.aspx")
+    Observable<BaseEntity<List<OrderInfoEntity>>> getOrderInfo(@Query("ApiId") String apiId, @Query("orderId") String orderId);
+
+    @POST("ljwy/JSON/HcPlApi02.aspx")
+    Observable<BaseEntity> signUpOrder(@Query("ApiId") String apiId, @Query("customerId") String customerId, @Query("OrderId") String OrderId, @Query("Amount") int Amount);
+
+    @POST("ljwy/JSON/HcPlApi01.aspx")
+    Observable<BaseEntity> cancelSignUp(@Query("ApiId") String apiId, @Query("customerId") String customerId, @Query("orderId") String orderId);
+
+    @POST("ljwy/JSON/HcPlApi03.aspx")
+    Observable<BaseEntity> deleteInvalidOrder(@Query("ApiId") String apiId, @Query("ID") String ID);
+
+    @POST("ljwy/JSON/HcPlApi01.aspx")
+    Observable<BaseEntity<List<OrderWaitListEntity>>> getCompleteOrderList(@Query("ApiId") String apiId, @Query("customerId") String customerId, @Query("state") String state);
 }

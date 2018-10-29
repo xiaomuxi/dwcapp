@@ -5,6 +5,7 @@ import com.network.library.Model.NetworkModel;
 import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.BaseRequest;
+import com.network.library.bean.user.response.OrderInfoEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
@@ -15,11 +16,15 @@ import com.network.library.bean.WeatherEntity;
 import com.network.library.callback.CallBack;
 import com.network.library.view.BaiduOauthView;
 import com.network.library.view.BaseNetView;
+import com.network.library.view.CancelSignUpView;
+import com.network.library.view.DeleteInvalidView;
+import com.network.library.view.GetOrderInfoView;
 import com.network.library.view.GetOrderView;
 import com.network.library.view.GetRobbingView;
 import com.network.library.view.GetSignUpListView;
 import com.network.library.view.GetWeatherView;
 import com.network.library.view.NormalView;
+import com.network.library.view.SignUpOrderView;
 
 import java.util.List;
 
@@ -182,7 +187,7 @@ public class NetworkController<V extends BaseNetView> {
         if (!isViewAttached()) {
             return;
         }
-        NetworkModel.getWaitOrderList(apiId, customerId, state, new CallBack<BaseEntity<List<OrderWaitListEntity>>>() {
+        NetworkModel.getCompleteOrderList(apiId, customerId, state, new CallBack<BaseEntity<List<OrderWaitListEntity>>>() {
             @Override
             public void onStart() {
                 if (isViewAttached() && showLoading)
@@ -391,6 +396,130 @@ public class NetworkController<V extends BaseNetView> {
             public void onSuccess(BaseEntity<List<RobbingInfoEntity>> data) {
                 if (isViewAttached())
                     ((GetRobbingView) iMvpView).onGetRobbingSuccess(data);
+            }
+        });
+    }
+
+    public void getOrderInfo(String apiId, String orderId, boolean showLoading) {
+        if (!isViewAttached()) {
+            return;
+        }
+        NetworkModel.getOrderInfo(apiId, orderId, new CallBack<BaseEntity<List<OrderInfoEntity>>>() {
+            @Override
+            public void onStart() {
+                if (isViewAttached() && showLoading)
+                    iMvpView.showLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached())
+                    iMvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(String msg) {
+                if (isViewAttached())
+                    iMvpView.onRequestError(msg, "getOrderInfo");
+            }
+
+            @Override
+            public void onSuccess(BaseEntity<List<OrderInfoEntity>> data) {
+                if (isViewAttached())
+                    ((GetOrderInfoView) iMvpView).onGetOrderInfoSuccess(data);
+            }
+        });
+    }
+
+    public void signUpOrder(String apiId, String customerId, String OrderID, int Amount, boolean showLoading) {
+        if (!isViewAttached()) {
+            return;
+        }
+        NetworkModel.signUpOrder(apiId, customerId, OrderID, Amount, new CallBack<BaseEntity>() {
+            @Override
+            public void onStart() {
+                if (isViewAttached() && showLoading)
+                    iMvpView.showLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached())
+                    iMvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(String msg) {
+                if (isViewAttached())
+                    iMvpView.onRequestError(msg, "signUpOrder");
+            }
+
+            @Override
+            public void onSuccess(BaseEntity data) {
+                if (isViewAttached())
+                    ((SignUpOrderView) iMvpView).onSignUpOrderSuccess(data);
+            }
+        });
+    }
+
+    public void cancelSignUp(String apiId, String customerId, String orderId, boolean showLoading) {
+        if (!isViewAttached()) {
+            return;
+        }
+        NetworkModel.cancelSignUp(apiId, customerId, orderId, new CallBack<BaseEntity>() {
+            @Override
+            public void onStart() {
+                if (isViewAttached() && showLoading)
+                    iMvpView.showLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached())
+                    iMvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(String msg) {
+                if (isViewAttached())
+                    iMvpView.onRequestError(msg, "cancelSignUp");
+            }
+
+            @Override
+            public void onSuccess(BaseEntity data) {
+                if (isViewAttached())
+                    ((CancelSignUpView) iMvpView).onCancelSignUpSuccess(data);
+            }
+        });
+    }
+
+    public void deleteInvalidOrder(String apiId, String ID, boolean showLoading) {
+        if (!isViewAttached()) {
+            return;
+        }
+        NetworkModel.deleteInvalidOrder(apiId, ID, new CallBack<BaseEntity>() {
+            @Override
+            public void onStart() {
+                if (isViewAttached() && showLoading)
+                    iMvpView.showLoading();
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached())
+                    iMvpView.hideLoading();
+            }
+
+            @Override
+            public void onError(String msg) {
+                if (isViewAttached())
+                    iMvpView.onRequestError(msg, "deleteInvalidOrder");
+            }
+
+            @Override
+            public void onSuccess(BaseEntity data) {
+                if (isViewAttached())
+                    ((DeleteInvalidView) iMvpView).onDeleteInvalidOrderSuccess(data);
             }
         });
     }

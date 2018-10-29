@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.network.library.utils.GlideUtils;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.callback.OnRecycleItemClick;
 import com.weddingcar.driver.common.config.Config;
+import com.weddingcar.driver.function.main.fragment.OrderInvalidFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,16 +25,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdapter.OrderRunningViewHolder> {
+public class OrderInvalidAdapter extends RecyclerView.Adapter<OrderInvalidAdapter.OrderRunningViewHolder> {
 
     private List<OrderWaitListEntity> mData;
     private OnRecycleItemClick callback;
     private Context mContext;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-    private OnDeleteOrderClickListener mCallback;
+    private OnInvalidDeleteListener mCallback;
 
-    public OrderCompleteAdapter(List<OrderWaitListEntity> list, OnRecycleItemClick listener) {
+    public OrderInvalidAdapter(List<OrderWaitListEntity> list, OnRecycleItemClick listener) {
         this.mData = list;
         this.callback = listener;
     }
@@ -47,6 +49,7 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
 
     @Override
     public void onBindViewHolder(@NonNull OrderRunningViewHolder holder, int position) {
+        holder.mOrderStatusView.setVisibility(View.GONE);
         OrderWaitListEntity orderWaitListEntity = mData.get(position);
         String id = orderWaitListEntity.getID();            //订单号
         String carBrandName = orderWaitListEntity.getCarBrandName();
@@ -65,14 +68,16 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
         String customerName = orderWaitListEntity.getCustomerName();
         String customerSex = orderWaitListEntity.getCustomerSex();
         String code = orderWaitListEntity.getID();
+        holder.orderInvalidView.setVisibility(View.VISIBLE);
+        holder.orderInvalidView.setText("已失效");
         holder.orderCatLocation.setText("删除");
         holder.orderCatLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (null != mCallback) mCallback.onDeleteOrderClick(position);
+                if (null != mCallback) mCallback.onInvalidOrderDelete(position);
             }
         });
-        holder.orderNumber.setText(code);
+        holder.orderNumber.setText("订单号:" + code);
         if (customerSex.equals("男")) {
             holder.orderUserName.setText(customerName + "先生");
         } else if (customerSex.equals("女")) {
@@ -98,14 +103,14 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
         return mData.size();
     }
 
-    public void setOnDeleteOrderViewClickListener(OnDeleteOrderClickListener listener) {
+    public void setOnDeleteOrderViewClickListener(OnInvalidDeleteListener listener) {
         this.mCallback = listener;
     }
 
     public static class OrderRunningViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.order_status_tx_view)
-        TextView orderStatusTxView;
+        @BindView(R.id.order_status_view)
+        LinearLayout mOrderStatusView;
         @BindView(R.id.order_number)
         TextView orderNumber;
         @BindView(R.id.order_user_name)
@@ -128,6 +133,8 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
         TextView orderSpaceTxView;
         @BindView(R.id.order_cat_location)
         TextView orderCatLocation;
+        @BindView(R.id.order_left_view)
+        TextView orderInvalidView;
 
         public OrderRunningViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -135,7 +142,7 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
         }
     }
 
-    public interface OnDeleteOrderClickListener {
-        void onDeleteOrderClick(int position);
+    public interface OnInvalidDeleteListener {
+        void onInvalidOrderDelete(int position);
     }
 }

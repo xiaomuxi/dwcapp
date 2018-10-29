@@ -5,6 +5,7 @@ import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.bean.user.response.LoginEntity;
+import com.network.library.bean.user.response.OrderInfoEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
@@ -359,5 +360,170 @@ public class NetworkModel {
             }
         };
         RetrofitUtil.getInstance().getRobbingList(mEntitySubscriber, apiId, customerId, carBrandId, carModelId);
+    }
+
+    public static void getOrderInfo(String apiId, String orderId, CallBack<BaseEntity<List<OrderInfoEntity>>> callBack) {
+        Subscriber<BaseEntity<List<OrderInfoEntity>>> mEntitySubscriber = new Subscriber<BaseEntity<List<OrderInfoEntity>>>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(BaseEntity baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().getOrderInfo(mEntitySubscriber, apiId, orderId);
+    }
+
+    public static void signUpOrder(String apiId, String customerId, String OrderID, int Amount, CallBack<BaseEntity> callBack) {
+        Subscriber<BaseEntity> mEntitySubscriber = new Subscriber<BaseEntity>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(BaseEntity baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().signUpOrder(mEntitySubscriber, apiId, customerId, OrderID, Amount);
+    }
+
+    public static void cancelSignUp(String apiId, String customerId, String orderId, CallBack<BaseEntity> callBack) {
+        Subscriber<BaseEntity> mEntitySubscriber = new Subscriber<BaseEntity>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(BaseEntity baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().cancelSignUp(mEntitySubscriber, apiId, customerId, orderId);
+    }
+
+    public static void deleteInvalidOrder(String apiId, String ID, CallBack<BaseEntity> callBack) {
+        Subscriber<BaseEntity> mEntitySubscriber = new Subscriber<BaseEntity>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(BaseEntity baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().deleteInvalidOrder(mEntitySubscriber, apiId, ID);
+    }
+
+    public static void getCompleteOrderList(String apiId, String customerId, String state, CallBack<BaseEntity<List<OrderWaitListEntity>>> callBack) {
+        Subscriber<BaseEntity<List<OrderWaitListEntity>>> mEntitySubscriber = new Subscriber<BaseEntity<List<OrderWaitListEntity>>>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                callBack.onStart();
+            }
+
+            @Override
+            public void onCompleted() {
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                callBack.onError(e.getMessage());
+                callBack.onComplete();
+            }
+
+            @Override
+            public void onNext(BaseEntity<List<OrderWaitListEntity>> baseEntity) {
+                if (!baseEntity.getStatus().equals("1")) {
+                    callBack.onError(baseEntity.getMsg());
+                    callBack.onComplete();
+                } else {
+                    callBack.onSuccess(baseEntity);
+                }
+            }
+        };
+        RetrofitUtil.getInstance().getCompleteOrderList(mEntitySubscriber, apiId, customerId,state);
     }
 }

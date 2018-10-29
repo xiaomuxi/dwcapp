@@ -11,9 +11,11 @@ import com.network.library.bean.BaseEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.SignUpInfoEntity;
 import com.network.library.controller.NetworkController;
+import com.network.library.eventbus.CancelSignEvent;
 import com.network.library.utils.GlideUtils;
 import com.network.library.utils.Logger;
 import com.network.library.view.BaseNetView;
+import com.network.library.view.CancelSignUpView;
 import com.network.library.view.GetSignUpListView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
@@ -24,6 +26,8 @@ import com.weddingcar.driver.common.utils.DrawableUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.main.adapter.SignUpAdapter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,7 +41,7 @@ import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
-        GetSignUpListView {
+        GetSignUpListView, CancelSignUpView {
 
     @BindView(R.id.order_number)
     TextView mOrderNumber;
@@ -86,7 +90,7 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
 
         String userId = SPController.getInstance().getUserInfo().getUserId();
         if (null == userId || userId.isEmpty()) userId = "18616367480";
-        String orderId = mOrderEntity.getCode();
+        String orderId = mOrderEntity.getID();
         mController.getSignUpList("HC010311", userId, orderId);
     }
 
@@ -170,8 +174,8 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
             }
             List<SignUpInfoEntity> signUpInfoList = (List<SignUpInfoEntity>) baseEntity.getData();
             for (SignUpInfoEntity signUpInfoEntity : signUpInfoList) {
-                String code = signUpInfoEntity.getCode();
-                if (null != code && code.equals(mOrderEntity.getCode())) {
+                String code = signUpInfoEntity.getID();
+                if (null != code && code.equals(mOrderEntity.getID())) {
                     setSignUpInfoMsg(signUpInfoEntity);
                 }
             }
@@ -180,7 +184,7 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
     }
 
     private void setSignUpInfoMsg(SignUpInfoEntity signUpInfoEntity) {
-        mOrderNumber.setText("订单号:" + signUpInfoEntity.getCode());
+        mOrderNumber.setText("订单号:" + signUpInfoEntity.getID());
         String userHeadUrl = Config.getAppHtmlUrl() + "LJTP/CATP/" + signUpInfoEntity.getCustomerAvator();
         Logger.I("setSignUpInfoMsg userHeadUrl = " + userHeadUrl);
         GlideUtils.loadShow(this, userHeadUrl, mOrderUserIconView);
@@ -215,6 +219,7 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
             @Override
             public void onClick(View view) {
                 materialDialog.dismiss();
+                cancelSignUp();
             }
         });
         materialDialog.setNegativeButton("取消", new View.OnClickListener() {
@@ -226,6 +231,12 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
         materialDialog.show();
     }
 
+    private void cancelSignUp() {
+        String customerId = SPController.getInstance().getUserInfo().getUserId();
+        if (null == customerId || customerId.isEmpty()) customerId = "18616367480";
+        mController.cancelSignUp("HC020311", customerId, mOrderEntity.getID(), true);
+    }
+
     @OnClick(R.id.order_info_view)
     public void onOrderInfoViewClicked() {
         // TODO cat signUpOrder info message
@@ -233,5 +244,20 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
 
     private void share() {
         Toast.makeText(mContext, "Share Order Info", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancelSignUpSuccess(BaseEntity baseEntity) {
+        if (null != baseEntity) {
+            String msg = baseEntity.getMsg();
+            String count = baseEntity.getCount();
+
+            if (StringUtils.equals(count, "0")) {
+                UIUtils.showToastSafe(msg);
+                return;
+            }
+            EventBus.getDefault().post(new CancelSignEvent());
+            finish();
+        }
     }
 }

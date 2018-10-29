@@ -67,7 +67,7 @@ public class OrderWaitAdapter extends RecyclerView.Adapter<OrderWaitAdapter.Orde
         String userHeadUrl = Config.getAppHtmlUrl() + "/LJTP/CATP/" + customerAvator;
         String customerName = orderWaitListEntity.getCustomerName();
         String customerSex = orderWaitListEntity.getCustomerSex();
-        String code = orderWaitListEntity.getCode();
+        String code = orderWaitListEntity.getID();
         holder.orderCatLocation.setText("查看报名");
         holder.orderNumber.setText("订单号:" + code);
         if (customerSex.equals("男")) {

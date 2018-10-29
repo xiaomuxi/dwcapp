@@ -1,6 +1,7 @@
 package com.network.library.bean.user.response;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class OrderRunningListEntity implements Serializable {
     private String Name;
@@ -9,6 +10,10 @@ public class OrderRunningListEntity implements Serializable {
     private float Appraise;
     private int Income;
     private int OrderCountHasEnded;
+    private List<String> OrderToday;
+    private List<String> OrderWeek;
+    private List<String> OrderTripConfirm;
+    private List<String> WOrderTripConfirm;
     private String Sex;
     private String Avator;
     private String IsCertification;
@@ -64,6 +69,38 @@ public class OrderRunningListEntity implements Serializable {
 
     public void setOrderCountHasEnded(int orderCountHasEnded) {
         OrderCountHasEnded = orderCountHasEnded;
+    }
+
+    public List<String> getOrderToday() {
+        return OrderToday;
+    }
+
+    public void setOrderToday(List<String> orderToday) {
+        OrderToday = orderToday;
+    }
+
+    public List<String> getOrderWeek() {
+        return OrderWeek;
+    }
+
+    public void setOrderWeek(List<String> orderWeek) {
+        OrderWeek = orderWeek;
+    }
+
+    public List<String> getOrderTripConfirm() {
+        return OrderTripConfirm;
+    }
+
+    public void setOrderTripConfirm(List<String> orderTripConfirm) {
+        OrderTripConfirm = orderTripConfirm;
+    }
+
+    public List<String> getWOrderTripConfirm() {
+        return WOrderTripConfirm;
+    }
+
+    public void setWOrderTripConfirm(List<String> WOrderTripConfirm) {
+        this.WOrderTripConfirm = WOrderTripConfirm;
     }
 
     public String getSex() {
@@ -132,13 +169,17 @@ public class OrderRunningListEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "OrderListEntity{" +
+        return "OrderRunningListEntity{" +
                 "Name='" + Name + '\'' +
                 ", CarColorName='" + CarColorName + '\'' +
                 ", OrderCountOnGoing=" + OrderCountOnGoing +
                 ", Appraise=" + Appraise +
                 ", Income=" + Income +
                 ", OrderCountHasEnded=" + OrderCountHasEnded +
+                ", OrderToday=" + OrderToday +
+                ", OrderWeek=" + OrderWeek +
+                ", OrderTripConfirm=" + OrderTripConfirm +
+                ", WOrderTripConfirm=" + WOrderTripConfirm +
                 ", Sex='" + Sex + '\'' +
                 ", Avator='" + Avator + '\'' +
                 ", IsCertification='" + IsCertification + '\'' +

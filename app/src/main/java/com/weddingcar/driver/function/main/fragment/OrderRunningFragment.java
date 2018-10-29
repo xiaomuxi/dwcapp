@@ -1,17 +1,18 @@
 package com.weddingcar.driver.function.main.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.network.library.bean.BaseEntity;
+import com.network.library.bean.mine.response.RunningOrderEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.controller.NetworkController;
 import com.network.library.utils.Logger;
@@ -22,7 +23,8 @@ import com.weddingcar.driver.common.callback.OnRecycleItemClick;
 import com.weddingcar.driver.common.manager.SPController;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
-import com.weddingcar.driver.function.main.adapter.OrderRunningAdapter;
+import com.weddingcar.driver.function.main.activity.OrderInfoActivity;
+import com.weddingcar.driver.function.main.adapter.GalleryExpandAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,16 +39,18 @@ import static com.weddingcar.driver.common.manager.SPController.USER_CAR_MODEL_I
 public class OrderRunningFragment extends BaseFragment implements OnRecycleItemClick, GetOrderView {
 
     @BindView(R.id.order_running_recycle)
-    RecyclerView mRunningRecycleView;
+    ExpandableListView mRunningRecycleView;
     @BindView(R.id.empty_order_list_view)
     TextView mEmptyView;
 
     private String mFragmentTag;
 
     private Unbinder unbinder;
-    private OrderRunningAdapter mOrderRunningAdapter;
+    private GalleryExpandAdapter mOrderRunningAdapter;
 
     private NetworkController<BaseNetView> mController;
+
+    private List<RunningOrderEntity> mRunningEntityList = new ArrayList<>();
 
     private List<OrderRunningListEntity> mOrderRunningList = new ArrayList<>();
 
@@ -80,16 +84,28 @@ public class OrderRunningFragment extends BaseFragment implements OnRecycleItemC
         super.onViewCreated(view, savedInstanceState);
         if (isVisible()) {
             if (null == mOrderRunningAdapter)
-                mOrderRunningAdapter = new OrderRunningAdapter(mOrderRunningList, this);
+                mOrderRunningAdapter = new GalleryExpandAdapter(this, mRunningEntityList, getActivity());
             mRunningRecycleView.setAdapter(mOrderRunningAdapter);
-            DividerItemDecoration divider = new DividerItemDecoration(UIUtils.getContext(), DividerItemDecoration.VERTICAL);
-            divider.setDrawable(UIUtils.getDrawable(R.drawable.recycleview_divider));
-            mRunningRecycleView.addItemDecoration(divider);
+            mRunningRecycleView.setGroupIndicator(null);
         }
         requestDataFromNet();
     }
 
     private void requestDataFromNet() {
+        RunningOrderEntity todayRunningOrderEntity = new RunningOrderEntity();
+        todayRunningOrderEntity.setTitle("今日订单");
+        RunningOrderEntity twoWeekRunningOrderEntity = new RunningOrderEntity();
+        twoWeekRunningOrderEntity.setTitle("两周内订单");
+        RunningOrderEntity goOutedRunningOrderEntity = new RunningOrderEntity();
+        goOutedRunningOrderEntity.setTitle("已出行程的订单");
+        RunningOrderEntity notGoOutedRunningOrderEntity = new RunningOrderEntity();
+        notGoOutedRunningOrderEntity.setTitle("未出行程的订单");
+        mRunningEntityList.add(todayRunningOrderEntity);
+        mRunningEntityList.add(twoWeekRunningOrderEntity);
+        mRunningEntityList.add(goOutedRunningOrderEntity);
+        mRunningEntityList.add(notGoOutedRunningOrderEntity);
+
+
         String userId = SPController.getInstance().getUserInfo().getUserId();
         if (null == userId || userId.isEmpty()) userId = "18616367480";
         mController.getRunningOrderList("HC010108", userId, true);
@@ -109,7 +125,14 @@ public class OrderRunningFragment extends BaseFragment implements OnRecycleItemC
 
     @Override
     public void onRecycleItemClick(int position) {
-
+        OrderRunningListEntity orderRunningListEntity = mOrderRunningList.get(position);
+        if (null != orderRunningListEntity) {
+            Logger.I("RunningFragment onRecycleItemClick " + orderRunningListEntity.toString());
+            Intent intent = new Intent(getContext(), OrderInfoActivity.class);
+            intent.putExtra("type", "running");
+            intent.putExtra("running", orderRunningListEntity);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -138,7 +161,12 @@ public class OrderRunningFragment extends BaseFragment implements OnRecycleItemC
             if (mOrderRunningList.size() > 0) {
                 OrderRunningListEntity orderRunningEntity = mOrderRunningList.get(0);
                 SPController.getInstance().putString(USER_CAR_MODEL_ID, orderRunningEntity.getCarModelID());
-                SPController.getInstance().putString(USER_CAR_BRAND_ID, orderRunningEntity.getCarBrandID());
+                SPController.getInstance().putString(USER_CAR_BRAND_ID, orderRunningEntity.getCarBrandName());
+
+                List<String> orderToday = orderRunningEntity.getOrderToday();
+                List<String> orderWeek = orderRunningEntity.getOrderWeek();
+                List<String> orderTripConfirm = orderRunningEntity.getOrderTripConfirm();
+                List<String> wOrderTripConfirm = orderRunningEntity.getWOrderTripConfirm();
             }
 
             Logger.I("onGetRunningOrderListSuccess : " + baseEntity.toString());

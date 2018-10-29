@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/order_info_bottom_view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="102dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/order_user_icon_view"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:layout_marginTop="@dimen/dimen_15" />
+
+                <RelativeLayout
+                    android:id="@+id/order_layout_rl_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/order_user_icon_view"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:layout_marginRight="@dimen/dimen_15"
+                    android:layout_toRightOf="@+id/order_user_icon_view">
+
+                    <TextView
+                        android:id="@+id/order_info_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="高先生"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="2018年12月23日"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/order_info_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/order_layout_rl_view"
+                    android:layout_below="@+id/order_layout_rl_view"
+                    android:layout_marginRight="@dimen/dimen_15"
+                    android:layout_marginTop="@dimen/dimen_5"
+                    android:drawableRight="@drawable/sign_main"
+                    android:text="订单号:20184444"
+                    android:textColor="@color/text_main_gray"
+                    android:textSize="@dimen/sp_12" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/order_info_id"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:layout_marginTop="@dimen/dimen_10"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/order_info_car_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/icon_car"
+                        android:drawablePadding="@dimen/dimen_5"
+                        android:text="奥迪A6L"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_duration_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:drawableLeft="@drawable/icon_time"
+                        android:drawablePadding="@dimen/dimen_5"
+                        android:text="5小时"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_km"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:drawableLeft="@drawable/icon_road"
+                        android:drawablePadding="@dimen/dimen_5"
+                        android:text="50公里"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_space"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:drawableLeft="@drawable/icon_area"
+                        android:drawablePadding="@dimen/dimen_5"
+                        android:text="松江区"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/text_main_gray" />
+
+            <TextView
+                android:id="@+id/order_info_title"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:drawableLeft="@drawable/tab_order"
+                android:drawablePadding="@dimen/dimen_15"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dimen_15"
+                android:text="接亲信息"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/sp_14" />
+
+            <com.amap.api.maps.MapView
+                android:id="@+id/order_info_map_view"
+                android:layout_width="match_parent"
+                android:layout_height="180dp" />
+
+            <LinearLayout
+                android:id="@+id/order_info_space_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:text="新郎家地址:"
+                        android:textColor="@color/text_main_gray"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_map_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:layout_marginRight="@dimen/dimen_15"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="松江区乐都路312号"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/text_main_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:text="新娘家地址:"
+                        android:textColor="@color/text_main_gray"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_map_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:layout_marginRight="@dimen/dimen_15"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="松江区乐都路312号"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/text_main_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:text="结束地地址:"
+                        android:textColor="@color/text_main_gray"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_map_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:layout_marginRight="@dimen/dimen_15"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="松江区乐都路312号"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/text_main_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:text="具体行驶路线以新人要求为准"
+                        android:textColor="@color/text_main_gray"
+                        android:textSize="@dimen/sp_11" />
+
+                    <TextView
+                        android:id="@+id/order_info_more_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:layout_marginRight="@dimen/dimen_15"
+                        android:layout_marginTop="@dimen/dimen_5"
+                        android:text="当天超出费用: 100/小时 10/公里"
+                        android:textColor="@color/text_main_gray"
+                        android:textSize="@dimen/sp_11" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/text_main_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:text="备注信息:"
+                        android:textColor="@color/text_main_gray"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_note"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_15"
+                        android:layout_marginRight="@dimen/dimen_15"
+                        android:ellipsize="start"
+                        android:maxLines="3"
+                        android:singleLine="false"
+                        android:text="备注信息备注信息备注信息备注信息备注信息"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/order_info_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前平均出价:"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/order_info_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:text="460元"
+                android:textColor="@color/text_main_red"
+                android:textSize="@dimen/sp_14" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/order_info_sign_up_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/bg_main_red"
+            android:text="我要报名"
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/sp_14" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/order_info_service_button"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_above="@+id/order_info_bottom_view"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/dimen_15"
+        android:layout_marginRight="@dimen/dimen_15"
+        android:background="@drawable/order_info_service"
+        android:src="@drawable/nav_service" />
+
+</RelativeLayout>

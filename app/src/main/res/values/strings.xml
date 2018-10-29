@@ -34,4 +34,5 @@
     <string name="city_name">上海市</string>
     <string name="robbing_my_type">我的车型</string>
     <string name="robbing_all_type">全部车型</string>
+    <string name="order_info_title">订单详情</string>
 </resources>

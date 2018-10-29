@@ -1,6 +1,7 @@
 package com.weddingcar.driver.function.main.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,12 +17,16 @@ import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.controller.NetworkController;
 import com.network.library.utils.Logger;
 import com.network.library.view.BaseNetView;
+import com.network.library.view.DeleteInvalidView;
 import com.network.library.view.GetOrderView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.callback.OnRecycleItemClick;
 import com.weddingcar.driver.common.manager.SPController;
+import com.weddingcar.driver.common.ui.MaterialDialog;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
+import com.weddingcar.driver.function.main.activity.OrderInfoActivity;
+import com.weddingcar.driver.function.main.adapter.OrderInvalidAdapter;
 import com.weddingcar.driver.function.main.adapter.OrderWaitAdapter;
 
 import java.util.ArrayList;
@@ -32,7 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemClick,
-        GetOrderView {
+        GetOrderView, OrderInvalidAdapter.OnInvalidDeleteListener, DeleteInvalidView {
 
     private static final String state = "已失效";
 
@@ -47,7 +52,7 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
 
     private NetworkController<BaseNetView> mController;
 
-    private OrderWaitAdapter mOrderInvalidAdapter;
+    private OrderInvalidAdapter mOrderInvalidAdapter;
     private List<OrderWaitListEntity> mOrderInvalidList = new ArrayList<>();
 
     private boolean mRequestComplete = false;
@@ -79,7 +84,8 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (null == mOrderInvalidAdapter)
-            mOrderInvalidAdapter = new OrderWaitAdapter(mOrderInvalidList, this);
+            mOrderInvalidAdapter = new OrderInvalidAdapter(mOrderInvalidList, this);
+        mOrderInvalidAdapter.setOnDeleteOrderViewClickListener(this);
         mInvalidRecycleView.setAdapter(mOrderInvalidAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(UIUtils.getContext(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(UIUtils.getDrawable(R.drawable.recycleview_divider));
@@ -102,12 +108,19 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
         if (mRequestComplete) return;
         String userId = SPController.getInstance().getUserInfo().getUserId();
         if (null == userId || userId.isEmpty()) userId = "18616367480";
-        mController.getCompleteOrderList("HC010312", userId, state, true);
+        mController.getWaitOrderList("HC010312", userId, state, true);
     }
 
     @Override
     public void onRecycleItemClick(int position) {
+        OrderWaitListEntity orderWaitListEntity = mOrderInvalidList.get(position);
+        if (null != orderWaitListEntity){
 
+            Intent intent = new Intent(getContext(), OrderInfoActivity.class);
+            intent.putExtra("type", "invalid");
+            intent.putExtra("invalid", orderWaitListEntity);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -140,6 +153,48 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
             mOrderInvalidList.addAll(listEntities);
             mOrderInvalidAdapter.notifyDataSetChanged();
             Logger.I("onGetInvalidOrderListSuccess : " + baseEntity.toString());
+        }
+    }
+
+    @Override
+    public void onInvalidOrderDelete(int position) {
+        MaterialDialog materialDialog = new MaterialDialog(getContext());
+        materialDialog.setMessage("确定要删除订单吗?");
+        materialDialog.setNegativeButton("取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materialDialog.dismiss();
+            }
+        });
+        materialDialog.setPositiveButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materialDialog.dismiss();
+
+                Logger.I("onInvalidOrderDelete position = " + position);
+                OrderWaitListEntity orderWaitListEntity = mOrderInvalidList.get(position);
+                String ID = orderWaitListEntity.getID();
+                mController.deleteInvalidOrder("HC020312", ID, true);
+            }
+        });
+        materialDialog.show();
+    }
+
+    @Override
+    public void onDeleteInvalidOrderSuccess(BaseEntity baseEntity) {
+        if (null != baseEntity) {
+            mRequestComplete = false;
+            String status = baseEntity.getStatus();
+            String msg = baseEntity.getMsg();
+            String count = baseEntity.getCount();
+
+            if (StringUtils.equals(count, "0")) {
+                mInvalidRecycleView.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
+                UIUtils.showToastSafe(msg);
+                return;
+            }
+            visible();
         }
     }
 }

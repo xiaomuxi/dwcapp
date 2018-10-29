@@ -6,13 +6,13 @@
     android:gravity="center"
     android:orientation="vertical">
 
-
-    <android.support.v7.widget.RecyclerView
+    <ExpandableListView
         android:id="@+id/order_running_recycle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        android:divider="@drawable/recycleview_divider"
+        android:dividerHeight="10dp"
+        android:scrollbars="none" />
 
     <TextView
         android:id="@+id/empty_order_list_view"
