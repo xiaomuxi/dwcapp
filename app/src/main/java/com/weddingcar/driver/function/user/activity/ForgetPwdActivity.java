@@ -38,19 +38,22 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
     private String targetPhone;
 
     private NetworkController mControllerVerifyCode;
-
+    private String title;
+    private boolean fromMine = false;
     @Override
     protected void init() {
         super.init();
         setContentView(R.layout.activity_forget_password);
         ButterKnife.bind(this);
+        fromMine = StringUtils.equals(getIntent().getStringExtra("FROM"), "MINE");
+        title = fromMine ? "忘记密码" : "验证手机号";
     }
 
     @Override
     protected void initActionBar() {
         super.initActionBar();
         setActionBar(R.layout.common_top_bar);
-        setTopTitleAndLeft("忘记密码");
+        setTopTitleAndLeft(title);
     }
 
     @Override
