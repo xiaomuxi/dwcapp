@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dimen_15"
+        android:background="@color/bg_white"
+        android:paddingBottom="13dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:drawableTop="@drawable/ic_order"
+            android:drawablePadding="@dimen/dimen_10"
+            android:text="订单"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/text_black"
+            />
+
+        <TextView
+            android:id="@+id/tv_notification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:drawableTop="@drawable/ic_notice"
+            android:drawablePadding="@dimen/dimen_10"
+            android:text="通知"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/text_main_gray"
+            />
+
+        <TextView
+            android:id="@+id/tv_activity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:drawableTop="@drawable/ic_activity"
+            android:drawablePadding="@dimen/dimen_10"
+            android:text="活动"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/text_main_gray"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_message"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="暂无消息内容"
+        android:textColor="@color/text_main_gray"
+        android:textSize="@dimen/sp_18"/>
+</LinearLayout>

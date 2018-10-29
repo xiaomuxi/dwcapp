@@ -14,4 +14,5 @@ public class HttpAction {
     public final static String ACTION_GET_BALANCE_INFO = "ACTION_GET_BALANCE_INFO";
     public final static String ACTION_GET_DRIVER_CAR_INFO = "ACTION_GET_DRIVER_CAR_INFO";
     public final static String ACTION_GET_BALANCE_DETAIL_LIST = "ACTION_GET_BALANCE_DETAIL_LIST";
+    public final static String ACTION_GET_EVALUATE_LIST = "ACTION_GET_EVALUATE_LIST";
 }

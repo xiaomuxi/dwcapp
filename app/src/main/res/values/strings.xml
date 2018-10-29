@@ -37,4 +37,7 @@
     <string name="city_name">上海市</string>
     <string name="robbing_my_type">我的车型</string>
     <string name="robbing_all_type">全部车型</string>
+
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+    <string name="text_order_id">订单号：%s</string>
 </resources>

@@ -29,7 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="订单号：12341234123"
+                android:text="@string/text_order_id"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/sp_14"/>
             <TextView

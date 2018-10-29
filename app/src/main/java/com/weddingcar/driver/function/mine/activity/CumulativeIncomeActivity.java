@@ -5,8 +5,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.TextView;
 
-import com.network.library.bean.mine.request.GetBalanceDetailListRequest;
-import com.network.library.bean.mine.response.BalanceDetailEntity;
+import com.network.library.bean.mine.request.GetEvaluateListRequest;
+import com.network.library.bean.mine.response.EvaluateEntity;
 import com.network.library.constant.HttpAction;
 import com.network.library.controller.NetworkController;
 import com.network.library.view.NormalView;
@@ -19,65 +19,63 @@ import com.weddingcar.driver.common.ui.LoadMoreListView;
 import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
-import com.weddingcar.driver.function.mine.adapter.BalanceListAdapter;
+import com.weddingcar.driver.function.mine.adapter.EvaluateListAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BalanceDetailActivity extends BaseActivity implements LoadMoreListView.OnRefreshListener {
+public class CumulativeIncomeActivity extends BaseActivity implements LoadMoreListView.OnRefreshListener {
 
-    @BindView(R.id.lv_balance)
-    LoadMoreListView lv_balance;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.lv_income)
+    LoadMoreListView lv_income;
     @BindView(R.id.tv_empty)
     TextView tv_empty;
+    EvaluateListAdapter evaluateListAdapter;
+    List<EvaluateEntity.Data> mDataList;
 
     NetworkController networkController;
-    BalanceListAdapter balanceListAdapter;
     UserInfo userInfo;
-    String type;
-    private int pageNum = 1;
-    private int pageSize = 15;
+
+    int pageNum = 1;
+    int pageSize = 15;
     private boolean hasMore = true;
 
-    private List<BalanceDetailEntity.Data> mDataList;
+
     @Override
     protected void init() {
         super.init();
         userInfo = SPController.getInstance().getUserInfo();
-        setContentView(R.layout.activity_balance_detail);
+        setContentView(R.layout.activity_cumulative_income);
         ButterKnife.bind(this);
-        type = getIntent().getStringExtra("TYPE");
     }
 
     @Override
     protected void initActionBar() {
         super.initActionBar();
         setActionBar(R.layout.common_top_bar);
-        String title = StringUtils.equals(type, "ACCOUNT") ? "余额明细" : "保证金明细";
-        setTopTitleAndLeft(title);
+        setTopTitleAndLeft("累计收入");
     }
 
     @Override
     protected void initView() {
         super.initView();
-        mDataList = new ArrayList<>();
+
         networkController = new NetworkController();
-        networkController.attachView(getBalanceDetailList);
+        networkController.attachView(getEvaluateListView);
 
-        balanceListAdapter = new BalanceListAdapter(this);
-        lv_balance.setAdapter(balanceListAdapter);
+        evaluateListAdapter = new EvaluateListAdapter(this);
+        lv_income.setAdapter(evaluateListAdapter);
 
-        initData();
         initRefreshLayout();
+        initData();
     }
 
     private void initRefreshLayout() {
-        lv_balance.setOnRefreshListener(this);
+        lv_income.setOnRefreshListener(this);
         //设置刷新的颜色
         swipeRefreshLayout.setColorSchemeResources(
                 android.R.color.background_dark,
@@ -101,39 +99,39 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
         });
     }
 
-    private void checkData() {
-        tv_empty.setVisibility(mDataList.size() == 0 ? View.VISIBLE : View.GONE);
-        lv_balance.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
-    }
-
     private void initData() {
-        GetBalanceDetailListRequest request = new GetBalanceDetailListRequest();
-        GetBalanceDetailListRequest.Query query = new GetBalanceDetailListRequest.Query();
-        query.setApiId(StringUtils.equals(type, "ACCOUNT") ? "HC0206201" : "HC0206200");
+        GetEvaluateListRequest request = new GetEvaluateListRequest();
+        GetEvaluateListRequest.Query query = new GetEvaluateListRequest.Query();
+        query.setApiId("HC010113");
         query.setCustomerId(userInfo.getUserId());
         query.setPageIndex(pageNum);
         query.setPageSize(pageSize);
         request.setQuery(query);
 
-        networkController.sendRequest(HttpAction.ACTION_GET_BALANCE_DETAIL_LIST, request);
+        networkController.sendRequest(HttpAction.ACTION_GET_EVALUATE_LIST, request);
     }
 
-    private NormalView<BalanceDetailEntity> getBalanceDetailList = new NormalView<BalanceDetailEntity>() {
+    private void checkData() {
+        tv_empty.setVisibility(mDataList.size() == 0 ? View.VISIBLE : View.GONE);
+        lv_income.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+    }
+
+    private NormalView<EvaluateEntity> getEvaluateListView = new NormalView<EvaluateEntity>() {
         @Override
-        public void onSuccess(BalanceDetailEntity entity) {
+        public void onSuccess(EvaluateEntity entity) {
             LogUtils.i(TAG, entity.toString());
             hasMore = entity.getData().size() == pageSize;
             if (1 == pageNum) {
                 mDataList = entity.getData();
             } else {
-                lv_balance.loadMoreComplete();
+                lv_income.loadMoreComplete();
                 mDataList.addAll(entity.getData());
             }
             if (swipeRefreshLayout.isRefreshing()) {
                 //完成后调用完成的方法
                 swipeRefreshLayout.setRefreshing(false);
             }
-            balanceListAdapter.setData(mDataList);
+            evaluateListAdapter.setData(mDataList);
             checkData();
         }
 
@@ -164,8 +162,7 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
             pageNum++;
             initData();
         } else {
-            lv_balance.loadMoreComplete();
+            lv_income.loadMoreComplete();
         }
     }
 }
-

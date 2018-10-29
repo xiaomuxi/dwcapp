@@ -22,8 +22,6 @@ import butterknife.ButterKnife;
 
 public class WalletActivity extends BaseActivity implements View.OnClickListener{
 
-    private static int REQUEST_CODE_BALANCE_DETAIL = 1001;
-
     @BindView(R.id.tv_account_balance)
     TextView tv_account_balance;
     //明细
@@ -130,6 +128,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.tv_account_cash:
                 //账户余额提现
+                goToDrawCashActivity("ACCOUNT");
                 break;
             case R.id.tv_bond_detail:
                 //保证金余额明细
@@ -137,6 +136,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.tv_bond_cash:
                 //保证金余额提现
+                goToDrawCashActivity("BOND");
                 break;
             case R.id.tv_bond_recharge:
                 //保证金余额充值
@@ -152,6 +152,12 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     private void goToBalanceDetailActivity(String type) {
         Intent intent = new Intent(this, BalanceDetailActivity.class);
         intent.putExtra("TYPE", type);
-        startActivityForResult(intent, REQUEST_CODE_BALANCE_DETAIL);
+        startActivity(intent);
+    }
+
+    private void goToDrawCashActivity(String type) {
+        Intent intent = new Intent(this, DrawCashActivity.class);
+        intent.putExtra("TYPE", type);
+        startActivity(intent);
     }
 }

@@ -236,6 +236,13 @@ public class RetrofitUtil {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(subscriber);
                 break;
+            case HttpAction.ACTION_GET_EVALUATE_LIST:
+                mNetworkService.getEvaluateList(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
         }
     }
 
