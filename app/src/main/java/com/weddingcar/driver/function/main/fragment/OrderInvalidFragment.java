@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
     private List<OrderWaitListEntity> mOrderInvalidList = new ArrayList<>();
 
     private boolean mRequestComplete = false;
+    private SwipeRefreshLayout mRefreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,7 +106,9 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
         unbinder.unbind();
     }
 
-    public void visible() {
+    public void visible(boolean isRefresh, SwipeRefreshLayout refreshLayout) {
+        this.mRefreshLayout = refreshLayout;
+        mRequestComplete = !isRefresh;
         if (mRequestComplete) return;
         String userId = SPController.getInstance().getUserInfo().getUserId();
         if (null == userId || userId.isEmpty()) userId = "18616367480";
@@ -114,7 +118,7 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
     @Override
     public void onRecycleItemClick(int position) {
         OrderWaitListEntity orderWaitListEntity = mOrderInvalidList.get(position);
-        if (null != orderWaitListEntity){
+        if (null != orderWaitListEntity) {
 
             Intent intent = new Intent(getContext(), OrderInfoActivity.class);
             intent.putExtra("type", "invalid");
@@ -128,10 +132,14 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
         super.onRequestError(errorMsg, methodName);
         mInvalidRecycleView.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.VISIBLE);
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onGetOrderListSuccess(BaseEntity baseEntity) {
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
         if (null != baseEntity) {
             mRequestComplete = true;
             String status = baseEntity.getStatus();
@@ -194,7 +202,7 @@ public class OrderInvalidFragment extends BaseFragment implements OnRecycleItemC
                 UIUtils.showToastSafe(msg);
                 return;
             }
-            visible();
+            visible(true, mRefreshLayout);
         }
     }
 }

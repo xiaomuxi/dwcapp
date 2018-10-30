@@ -30,7 +30,7 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
     private Context mContext;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-    private OnDeleteOrderClickListener mCallback;
+    private OnCatAssessClickListener mCallback;
 
     public OrderCompleteAdapter(List<OrderWaitListEntity> list, OnRecycleItemClick listener) {
         this.mData = list;
@@ -64,12 +64,14 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
         String userHeadUrl = Config.getAppHtmlUrl() + "/LJTP/CATP/" + customerAvator;
         String customerName = orderWaitListEntity.getCustomerName();
         String customerSex = orderWaitListEntity.getCustomerSex();
-        String code = orderWaitListEntity.getID();
-        holder.orderCatLocation.setText("删除");
+        String code = "订单号:" + orderWaitListEntity.getID();
+        holder.orderStatusTxView.setVisibility(View.GONE);
+        holder.orderCatLocation.setText("查看评价");
+        holder.orderCatLocation.setTextColor(mContext.getResources().getColor(R.color.text_black));
         holder.orderCatLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (null != mCallback) mCallback.onDeleteOrderClick(position);
+                if (null != mCallback) mCallback.onCatAssessClick(position);
             }
         });
         holder.orderNumber.setText(code);
@@ -98,7 +100,7 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
         return mData.size();
     }
 
-    public void setOnDeleteOrderViewClickListener(OnDeleteOrderClickListener listener) {
+    public void setOnCatAssessViewClickListener(OnCatAssessClickListener listener) {
         this.mCallback = listener;
     }
 
@@ -135,7 +137,7 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
         }
     }
 
-    public interface OnDeleteOrderClickListener {
-        void onDeleteOrderClick(int position);
+    public interface OnCatAssessClickListener {
+        void onCatAssessClick(int position);
     }
 }

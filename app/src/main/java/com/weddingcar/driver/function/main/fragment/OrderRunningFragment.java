@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class OrderRunningFragment extends BaseFragment implements OnRecycleItemC
     private List<OrderRunningListEntity> mOrderRunningList = new ArrayList<>();
 
     private boolean mRequestComplete = false;
+    private SwipeRefreshLayout mRefreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +94,7 @@ public class OrderRunningFragment extends BaseFragment implements OnRecycleItemC
     }
 
     private void requestDataFromNet() {
+        mRunningEntityList.clear();
         RunningOrderEntity todayRunningOrderEntity = new RunningOrderEntity();
         todayRunningOrderEntity.setTitle("今日订单");
         RunningOrderEntity twoWeekRunningOrderEntity = new RunningOrderEntity();
@@ -136,7 +139,16 @@ public class OrderRunningFragment extends BaseFragment implements OnRecycleItemC
     }
 
     @Override
+    public void onRequestError(String errorMsg, String methodName) {
+        super.onRequestError(errorMsg, methodName);
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void onGetOrderListSuccess(BaseEntity baseEntity) {
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
         if (null != baseEntity) {
             mRequestComplete = true;
             String status = baseEntity.getStatus();
@@ -173,7 +185,11 @@ public class OrderRunningFragment extends BaseFragment implements OnRecycleItemC
         }
     }
 
-    public void visible() {
+    public void visible(boolean isRefresh, SwipeRefreshLayout refreshLayout) {
+        mRefreshLayout = refreshLayout;
+        mRequestComplete = !isRefresh;
         if (mRequestComplete) return;
+
+        requestDataFromNet();
     }
 }

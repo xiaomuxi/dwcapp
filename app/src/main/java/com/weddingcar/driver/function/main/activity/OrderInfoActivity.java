@@ -1,19 +1,23 @@
 package com.weddingcar.driver.function.main.activity;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.Text;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.user.response.OrderInfoEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
@@ -96,6 +100,44 @@ public class OrderInfoActivity extends BaseActivity implements BaseNetView, GetO
     ImageButton orderPriceAdd1000;
     Button orderPriceReset;
     Button orderPriceConfirm;
+    @BindView(R.id.order_info_set_title)
+    TextView orderInfoSetTitle;
+    @BindView(R.id.order_info_set_time)
+    TextView orderInfoSetTime;
+    @BindView(R.id.order_info_set_addr)
+    TextView orderInfoSetAddr;
+    @BindView(R.id.order_info_set_addr_info)
+    TextView orderInfoSetAddrInfo;
+    @BindView(R.id.order_info_set_contact)
+    TextView orderInfoSetContact;
+    @BindView(R.id.order_info_set_view)
+    LinearLayout orderInfoSetView;
+    @BindView(R.id.order_info_car_title)
+    TextView orderInfoCarTitle;
+    @BindView(R.id.order_info_car_info_view)
+    LinearLayout orderInfoCarInfoView;
+    @BindView(R.id.order_layout_rl_view)
+    RelativeLayout orderLayoutRlView;
+    @BindView(R.id.sign_up_icon)
+    CircleImageView signUpIcon;
+    @BindView(R.id.sign_up_car_nick)
+    TextView signUpCarNick;
+    @BindView(R.id.sign_up_car_star)
+    TextView signUpCarStar;
+    @BindView(R.id.sign_up_car_color)
+    TextView signUpCarColor;
+    @BindView(R.id.sign_up_car_number)
+    TextView signUpCarNumber;
+    @BindView(R.id.sign_up_car_count)
+    TextView signUpCarCount;
+    @BindView(R.id.sign_up_price)
+    TextView signUpPrice;
+    @BindView(R.id.status_tx_view)
+    TextView statusTxView;
+    @BindView(R.id.store_view)
+    LinearLayout storeView;
+    @BindView(R.id.add_store_view)
+    LinearLayout addStoreView;
 
     private Unbinder unbinder;
     private NetworkController<BaseNetView> mController;
@@ -133,24 +175,77 @@ public class OrderInfoActivity extends BaseActivity implements BaseNetView, GetO
         mController.attachView(this);
 
         mType = getIntent().getStringExtra("type");
-        if (mType.equals("running") || mType.equals("complete") || mType.equals("invalid")) {
+        if (("running").equals(mType) || ("complete").equals(mType) || ("invalid").equals(mType)) {
+            //隐藏出价界面的View
             orderInfoMapView.setVisibility(View.GONE);
             mOrderInfoSpaceView.setVisibility(View.GONE);
+
+            //显示订单详情的View
             orderInfoServiceButton.setVisibility(View.GONE);
             mOrderInfoBottomView.setVisibility(View.GONE);
             mOrderInfoTitle.setText("订单详情");
+            Drawable right = getResources().getDrawable(R.drawable.icon_more_down);
+            right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
+            Drawable left = getResources().getDrawable(R.drawable.tab_order);
+            left.setBounds(0, 0, left.getIntrinsicWidth(), left.getIntrinsicHeight());
+            mOrderInfoTitle.setCompoundDrawables(left, null, right, null);
             mOrderInfoTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     orderInfoMapView.setVisibility(orderInfoMapView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                    mOrderInfoSpaceView.setVisibility(mOrderInfoSpaceView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                    if (orderInfoMapView.getVisibility() == View.VISIBLE) {
+                        Drawable drawable = getResources().getDrawable(R.drawable.icon_more_up);
+                        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                        Drawable left = getResources().getDrawable(R.drawable.tab_order);
+                        left.setBounds(0, 0, left.getIntrinsicWidth(), left.getIntrinsicHeight());
+                        mOrderInfoTitle.setCompoundDrawables(left, null, drawable, null);
+                    } else {
+                        Drawable drawable = getResources().getDrawable(R.drawable.icon_more_down);
+                        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                        Drawable left = getResources().getDrawable(R.drawable.tab_order);
+                        left.setBounds(0, 0, left.getIntrinsicWidth(), left.getIntrinsicHeight());
+                        mOrderInfoTitle.setCompoundDrawables(left, null, drawable, null);
+                    }
                 }
             });
+
+            //集合信息
+            orderInfoSetTitle.setVisibility(View.VISIBLE);
+            orderInfoSetTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    orderInfoSetView.setVisibility(orderInfoSetView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                    if (orderInfoSetView.getVisibility() == View.VISIBLE) {
+                        Drawable drawable = getResources().getDrawable(R.drawable.icon_more_up);
+                        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                        Drawable left = getResources().getDrawable(R.drawable.tab_order);
+                        left.setBounds(0, 0, left.getIntrinsicWidth(), left.getIntrinsicHeight());
+                        orderInfoSetTitle.setCompoundDrawables(left, null, drawable, null);
+                    } else {
+                        Drawable drawable = getResources().getDrawable(R.drawable.icon_more_down);
+                        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                        Drawable left = getResources().getDrawable(R.drawable.tab_order);
+                        left.setBounds(0, 0, left.getIntrinsicWidth(), left.getIntrinsicHeight());
+                        orderInfoSetTitle.setCompoundDrawables(left, null, drawable, null);
+                    }
+                }
+            });
+
+            //婚车信息
+            orderInfoCarTitle.setVisibility(View.VISIBLE);
+            orderInfoCarInfoView.setVisibility(View.VISIBLE);
+            orderInfoCarInfoView.setBackgroundColor(Color.parseColor("#f5f5f5"));
+            storeView.setVisibility(View.VISIBLE);
+
             if (mType.equals("running")) {
                 mHomeRunningEntity = (OrderRunningListEntity) getIntent().getSerializableExtra(mType);
             } else if (mType.equals("invalid")) {
                 mHomeWaitEntity = (OrderWaitListEntity) getIntent().getSerializableExtra(mType);
+                initRobingData(mHomeWaitEntity.getID());
             } else if (mType.equals("complete")) {
                 mHomeCompleteEntity = (OrderWaitListEntity) getIntent().getSerializableExtra(mType);
+                initRobingData(mHomeCompleteEntity.getID());
             }
         } else {
             mRobbingInfo = (RobbingInfoEntity) getIntent().getSerializableExtra("RobbingInfo");
@@ -160,23 +255,58 @@ public class OrderInfoActivity extends BaseActivity implements BaseNetView, GetO
     }
 
     private void initRobingData(String orderId) {
-        String avator = mRobbingInfo.getCustomerAvator();
-        String customerName = mRobbingInfo.getCustomerName();
-        String theWeddingDate = mRobbingInfo.getTheWeddingDate();
-        String id = mRobbingInfo.getID();
-        String carBrandName = mRobbingInfo.getCarBrandName();
-        String carModelName = mRobbingInfo.getCarModelName();
-        String carType = carBrandName + carModelName;
-        String hourChoose = mRobbingInfo.getHourChoose() + "小时";
-        String km = mRobbingInfo.getJourneyChoose() + "公里";
-        String areaName = mRobbingInfo.getAreaName();
+        String avator = null;
+        String customerName = null;
+        String theWeddingDate = null;
+        String id = null;
+        String carBrandName = null;
+        String carModelName = null;
+        String carType = null;
+        String hourChoose = null;
+        String km = null;
+        String areaName = null;
+
+        if (null != mRobbingInfo) {
+            avator = mRobbingInfo.getCustomerAvator();
+            customerName = mRobbingInfo.getCustomerName();
+            theWeddingDate = mRobbingInfo.getTheWeddingDate();
+            id = mRobbingInfo.getID();
+            carBrandName = mRobbingInfo.getCarBrandName();
+            carModelName = mRobbingInfo.getCarModelName();
+            carType = carBrandName + carModelName;
+            hourChoose = mRobbingInfo.getHourChoose() + "小时";
+            km = mRobbingInfo.getJourneyChoose() + "公里";
+            areaName = mRobbingInfo.getAreaName();
+        } else if (null != mHomeWaitEntity) {
+            avator = mHomeWaitEntity.getCustomerAvator();
+            customerName = mHomeWaitEntity.getCustomerName();
+            theWeddingDate = mHomeWaitEntity.getTheWeddingDate();
+            id = mHomeWaitEntity.getID();
+            carBrandName = mHomeWaitEntity.getCarBrandName();
+            carModelName = mHomeWaitEntity.getCarModelName();
+            carType = carBrandName + carModelName;
+            hourChoose = mHomeWaitEntity.getHourChoose() + "小时";
+            km = mHomeWaitEntity.getJourneyChoose() + "公里";
+            areaName = mHomeWaitEntity.getAreaName();
+        } else if (null != mHomeCompleteEntity) {
+            avator = mHomeCompleteEntity.getCustomerAvator();
+            customerName = mHomeCompleteEntity.getCustomerName();
+            theWeddingDate = mHomeCompleteEntity.getTheWeddingDate();
+            id = mHomeCompleteEntity.getID();
+            carBrandName = mHomeCompleteEntity.getCarBrandName();
+            carModelName = mHomeCompleteEntity.getCarModelName();
+            carType = carBrandName + carModelName;
+            hourChoose = mHomeCompleteEntity.getHourChoose() + "小时";
+            km = mHomeCompleteEntity.getJourneyChoose() + "公里";
+            areaName = mHomeCompleteEntity.getAreaName();
+        }
 
         String userHeadUrl = Config.getAppHtmlUrl() + "/LJTP/CATP/" + avator;
         GlideUtils.loadShow(this, userHeadUrl, orderUserIconView);
 
         orderInfoName.setText(customerName);
         orderInfoTime.setText(new SimpleDateFormat("yyyy年MM月dd日").format(new Date(Long.parseLong(theWeddingDate))));
-        orderInfoId.setText(id);
+        orderInfoId.setText("订单号:" + id);
         orderInfoCarType.setText(carType);
         orderInfoDurationTime.setText(hourChoose);
         orderInfoKm.setText(km);
@@ -184,7 +314,7 @@ public class OrderInfoActivity extends BaseActivity implements BaseNetView, GetO
         getOrderInfoById(orderId);
     }
 
-    private void getOrderInfoById(String orderId){
+    private void getOrderInfoById(String orderId) {
         mController.getOrderInfo("HC010303", orderId, true);
     }
 
@@ -378,6 +508,66 @@ public class OrderInfoActivity extends BaseActivity implements BaseNetView, GetO
             orderInfoMorePrice.setText("当天超出费用: " + priceBaseTimeout + "/小时 " + priceBaseDistance + "/公里");
             orderInfoPrice.setText(orderInfoEntity.getAmountAverage() + "元");
             orderInfoNote.setText(orderInfoEntity.getNote());
+
+            if (null != mType) {
+                orderInfoSetTime.setText(orderInfoEntity.getGatherTime());
+                orderInfoSetAddr.setText(orderInfoEntity.getGatherCoordinateName());
+                orderInfoSetAddrInfo.setText(orderInfoEntity.getDetailedAddress());
+                orderInfoSetContact.setText(orderInfoEntity.getOrderRl());
+
+                orderInfoSetContact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO call telephone
+                    }
+                });
+
+                //婚车信息
+                OrderInfoEntity.Drivers driver = null;
+                List<OrderInfoEntity.Drivers> drivers = orderInfoEntity.getDrivers();
+                if (null != drivers && drivers.size() > 0)
+                    driver = drivers.get(0);
+                if (null != driver) {
+                    String customerName = driver.getCustomerName();
+                    String customerTel = driver.getCustomerTel();
+                    String carPlate = driver.getCarPlate();
+                    String offerPrice = driver.getOfferPrice();
+                    String offerPricesj = driver.getOfferPricesj();
+                    String isConfirmDistance = driver.getIsConfirmDistance();
+                    String carPhone = driver.getCarPhone();
+                    String avator = driver.getAvator();
+                    String amount = driver.getAmount();
+                    String driverID = driver.getDriverID();
+                    String colorName = driver.getColorName();
+                    String score = driver.getScore();
+                    String orderQuantity = driver.getOrderQuantity() + "单";
+                    String orderOfferID = driver.getOrderOfferID();
+                    String odState = driver.getQdState();
+
+                    String userHeadUrl = Config.getAppHtmlUrl() + "/LJTP/CATP/" + avator;
+                    GlideUtils.loadShow(getApplicationContext(), userHeadUrl, signUpIcon);
+
+                    signUpCarNick.setText(customerName);
+                    signUpCarStar.setText(score);
+                    signUpCarColor.setText(colorName);
+                    signUpCarNumber.setText(carPlate);
+                    signUpCarCount.setText(orderQuantity);
+
+                    signUpPrice.setText(String.valueOf("￥" + Integer.valueOf(amount.substring(0, amount.indexOf(".")))));
+                    int value = Math.round(Float.valueOf(score));
+                    statusTxView.setText(odState);
+                    addStoreView.removeAllViews();
+                    for (int i = 0; i < value; i++) {
+                        ImageView imageView = new ImageView(OrderInfoActivity.this);
+                        imageView.setImageResource(R.drawable.ic_star_2_1);
+                        imageView.setPadding(2, 0, 2, 0);
+                        addStoreView.addView(imageView);
+                    }
+                }
+            } else {
+
+            }
+
             Logger.I("onGetOrderInfoSuccess : " + baseEntity.toString());
         }
     }

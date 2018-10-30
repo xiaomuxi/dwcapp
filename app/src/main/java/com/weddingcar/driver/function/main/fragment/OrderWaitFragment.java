@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -58,6 +59,7 @@ public class OrderWaitFragment extends BaseFragment implements OnRecycleItemClic
     private List<OrderWaitListEntity> mOrderWaitList = new ArrayList<>();
 
     private boolean mRequestComplete = false;
+    private SwipeRefreshLayout mRefreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,7 +101,7 @@ public class OrderWaitFragment extends BaseFragment implements OnRecycleItemClic
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(CancelSignEvent event) {
         mRequestComplete = false;
-        visible();
+        visible(true, mRefreshLayout);
     }
 
     @Override
@@ -115,7 +117,9 @@ public class OrderWaitFragment extends BaseFragment implements OnRecycleItemClic
         unbinder.unbind();
     }
 
-    public void visible() {
+    public void visible(boolean isRefresh, SwipeRefreshLayout refreshLayout) {
+        this.mRefreshLayout = refreshLayout;
+        mRequestComplete = !isRefresh;
         if (mRequestComplete) return;
         String userId = SPController.getInstance().getUserInfo().getUserId();
         if (null == userId || userId.isEmpty()) userId = "18616367480";
@@ -140,10 +144,14 @@ public class OrderWaitFragment extends BaseFragment implements OnRecycleItemClic
         super.onRequestError(errorMsg, methodName);
         mWaitRecycleView.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.VISIBLE);
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onGetOrderListSuccess(BaseEntity baseEntity) {
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
         if (null != baseEntity) {
             mRequestComplete = true;
             String status = baseEntity.getStatus();

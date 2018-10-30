@@ -68,21 +68,23 @@ public class OrderWaitAdapter extends RecyclerView.Adapter<OrderWaitAdapter.Orde
         String customerName = orderWaitListEntity.getCustomerName();
         String customerSex = orderWaitListEntity.getCustomerSex();
         String code = orderWaitListEntity.getID();
-        holder.orderCatLocation.setText("查看报名");
+        holder.orderCatLocation.setText("查看出价");
+        holder.orderCatLocation.setTextColor(mContext.getResources().getColor(R.color.text_black));
         holder.orderNumber.setText("订单号:" + code);
         if (customerSex.equals("男")) {
             holder.orderUserName.setText(customerName + "先生");
         } else if (customerSex.equals("女")) {
             holder.orderUserName.setText(customerName + "女士");
+        }else {
+            holder.orderUserName.setText(customerName);
         }
         GlideUtils.loadShow(mContext, userHeadUrl, holder.orderUserIconView);
-        holder.orderMoneyTxView.setText("$" + amount);
+        holder.orderMoneyTxView.setText("￥" + amount);
         holder.orderDurationTxView.setText(hourChoose + "小时");
         holder.orderRoadTxView.setText(journeyChoose + "公里");
         holder.orderSpaceTxView.setText(areaName);
         holder.orderCarTypeTxView.setText(carBrandName + carModelName);
         holder.orderTimeTxView.setText(sdf.format(new Date(Long.parseLong(theWeddingDate))));
-        holder.orderCatLocation.setText("查看报名");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

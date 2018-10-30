@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +18,6 @@ import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.controller.NetworkController;
 import com.network.library.utils.Logger;
 import com.network.library.view.BaseNetView;
-import com.network.library.view.DeleteInvalidView;
 import com.network.library.view.GetOrderView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.callback.OnRecycleItemClick;
@@ -37,7 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class OrderCompleteFragment extends BaseFragment implements OnRecycleItemClick,
-        GetOrderView, OrderCompleteAdapter.OnDeleteOrderClickListener, DeleteInvalidView {
+        GetOrderView, OrderCompleteAdapter.OnCatAssessClickListener {
 
     private static final String state = "已结束";
 
@@ -56,6 +56,7 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
     private List<OrderWaitListEntity> mOrderCompleteList = new ArrayList<>();
 
     private boolean mRequestComplete = false;
+    private SwipeRefreshLayout mRefreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
         super.onViewCreated(view, savedInstanceState);
         if (null == mOrderCompleteAdapter)
             mOrderCompleteAdapter = new OrderCompleteAdapter(mOrderCompleteList, this);
-        mOrderCompleteAdapter.setOnDeleteOrderViewClickListener(this);
+        mOrderCompleteAdapter.setOnCatAssessViewClickListener(this);
         mCompleteRecycleView.setAdapter(mOrderCompleteAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(UIUtils.getContext(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(UIUtils.getDrawable(R.drawable.recycleview_divider));
@@ -104,7 +105,9 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
         unbinder.unbind();
     }
 
-    public void visible() {
+    public void visible(boolean isRefresh, SwipeRefreshLayout refreshLayout) {
+        mRefreshLayout = refreshLayout;
+        mRequestComplete = !isRefresh;
         if (mRequestComplete) return;
         String userId = SPController.getInstance().getUserInfo().getUserId();
         if (null == userId || userId.isEmpty()) userId = "18616367480";
@@ -114,7 +117,7 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
     @Override
     public void onRecycleItemClick(int position) {
         OrderWaitListEntity orderWaitListEntity = mOrderCompleteList.get(position);
-        if (null != orderWaitListEntity){
+        if (null != orderWaitListEntity) {
 
             Intent intent = new Intent(getContext(), OrderInfoActivity.class);
             intent.putExtra("type", "complete");
@@ -128,10 +131,14 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
         super.onRequestError(errorMsg, methodName);
         mCompleteRecycleView.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.VISIBLE);
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onGetOrderListSuccess(BaseEntity baseEntity) {
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
         if (null != baseEntity) {
             mRequestComplete = true;
             String status = baseEntity.getStatus();
@@ -157,44 +164,14 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
     }
 
     @Override
-    public void onDeleteOrderClick(int position) {
-        MaterialDialog materialDialog = new MaterialDialog(getContext());
-        materialDialog.setMessage("确定要删除订单吗?");
-        materialDialog.setNegativeButton("取消", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
-            }
-        });
-        materialDialog.setPositiveButton("确定", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                materialDialog.dismiss();
+    public void onCatAssessClick(int position) {
+        OrderWaitListEntity orderWaitListEntity = mOrderCompleteList.get(position);
+        if (null != orderWaitListEntity) {
 
-                Logger.I("onInvalidOrderDelete position = " + position);
-                OrderWaitListEntity orderWaitListEntity = mOrderCompleteList.get(position);
-                String ID = orderWaitListEntity.getID();
-                mController.deleteInvalidOrder("HC020312", ID, true);
-            }
-        });
-        materialDialog.show();
-    }
-
-    @Override
-    public void onDeleteInvalidOrderSuccess(BaseEntity baseEntity) {
-        if (null != baseEntity) {
-            mRequestComplete = false;
-            String status = baseEntity.getStatus();
-            String msg = baseEntity.getMsg();
-            String count = baseEntity.getCount();
-
-            if (StringUtils.equals(count, "0")) {
-                mCompleteRecycleView.setVisibility(View.GONE);
-                mEmptyView.setVisibility(View.VISIBLE);
-                UIUtils.showToastSafe(msg);
-                return;
-            }
-            visible();
+            Intent intent = new Intent(getContext(), OrderInfoActivity.class);
+            intent.putExtra("type", "complete");
+            intent.putExtra("complete", orderWaitListEntity);
+            startActivity(intent);
         }
     }
 }

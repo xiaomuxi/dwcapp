@@ -10,17 +10,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.network.library.bean.BaseEntity;
-import com.network.library.controller.NetworkController;
-import com.network.library.utils.Logger;
-import com.network.library.view.BaseNetView;
-import com.network.library.view.GetOrderView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
@@ -33,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class OrderFragment extends BaseFragment {
+public class OrderFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.order_tab_layout)
     TabLayout mOrderTabLayout;
@@ -47,6 +43,10 @@ public class OrderFragment extends BaseFragment {
     LinearLayout ll_order;
     LinearLayout mStatusBarView;
     Unbinder unbinder;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    private int mDefaultPositionIndex = 0;
 
     private String mFragmentTag;
 
@@ -90,6 +90,7 @@ public class OrderFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        swipeRefreshLayout.setOnRefreshListener(this);
         initActionBar();
         initTabLayout();
         initViewPager();
@@ -160,7 +161,8 @@ public class OrderFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                pageChanged(position);
+                mDefaultPositionIndex = position;
+                pageChanged(position, true);
             }
 
             @Override
@@ -170,23 +172,23 @@ public class OrderFragment extends BaseFragment {
         });
     }
 
-    private void pageChanged(int position) {
+    private void pageChanged(int position, boolean isRefresh) {
         switch (position) {
             case 0:
                 if (null != mRunningFragment)
-                    mRunningFragment.visible();
+                    mRunningFragment.visible(isRefresh, swipeRefreshLayout);
                 break;
             case 1:
                 if (null != mWaitFragment)
-                    mWaitFragment.visible();
+                    mWaitFragment.visible(isRefresh, swipeRefreshLayout);
                 break;
             case 2:
                 if (null != mCompleteFragment)
-                    mCompleteFragment.visible();
+                    mCompleteFragment.visible(isRefresh, swipeRefreshLayout);
                 break;
             case 3:
                 if (null != mInvalidFragment)
-                    mInvalidFragment.visible();
+                    mInvalidFragment.visible(isRefresh, swipeRefreshLayout);
                 break;
             default:
                 break;
@@ -197,5 +199,11 @@ public class OrderFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        pageChanged(mDefaultPositionIndex, true);
     }
 }

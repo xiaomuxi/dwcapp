@@ -16,7 +16,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="102dp">
+                android:layout_height="102dp"
+                android:background="@color/text_white">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/order_user_icon_view"
@@ -36,7 +37,7 @@
 
                     <TextView
                         android:id="@+id/order_info_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="高先生"
                         android:textColor="@color/text_black"
@@ -131,10 +132,12 @@
                 android:id="@+id/order_info_title"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
+                android:background="@color/text_white"
                 android:drawableLeft="@drawable/tab_order"
                 android:drawablePadding="@dimen/dimen_15"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/dimen_15"
+                android:paddingRight="@dimen/dimen_15"
                 android:text="接亲信息"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/sp_14" />
@@ -148,8 +151,8 @@
                 android:id="@+id/order_info_space_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/text_white"
                 android:orientation="vertical">
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -311,6 +314,197 @@
 
                 </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/order_info_set_title"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="@dimen/dimen_15"
+                android:background="@color/text_white"
+                android:drawableLeft="@drawable/tab_order"
+                android:drawablePadding="@dimen/dimen_15"
+                android:drawableRight="@drawable/icon_more_down"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dimen_15"
+                android:paddingRight="@dimen/dimen_15"
+                android:text="集合信息"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/sp_14"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/order_info_set_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/text_white"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/text_main_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_vertical"
+                        android:text="集合时间:"
+                        android:textColor="@color/text_main_gray"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_set_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:background="@color/text_main_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_vertical"
+                        android:text="集合地点:"
+                        android:textColor="@color/text_main_gray"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_set_addr"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:background="@color/text_main_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_vertical"
+                        android:text="详细地址:"
+                        android:textColor="@color/text_main_gray"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_set_addr_info"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:background="@color/text_main_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_vertical"
+                        android:text="联 系 人:"
+                        android:textColor="@color/text_main_gray"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/order_info_set_contact"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:drawableRight="@drawable/btn_call"
+                        android:gravity="center_vertical"
+                        android:paddingRight="80dp"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_14" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/order_info_car_title"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="@dimen/dimen_15"
+                android:background="@color/text_white"
+                android:drawableLeft="@drawable/tab_order"
+                android:drawablePadding="@dimen/dimen_15"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dimen_15"
+                android:paddingRight="@dimen/dimen_15"
+                android:text="婚车信息"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/sp_14"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/text_main_gray" />
+
+            <include
+                android:id="@+id/order_info_car_info_view"
+                layout="@layout/item_sign_up_view"
+                android:visibility="gone" />
+
         </LinearLayout>
 
     </ScrollView>
