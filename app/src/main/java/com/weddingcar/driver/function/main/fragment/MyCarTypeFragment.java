@@ -1,6 +1,7 @@
 package com.weddingcar.driver.function.main.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.weddingcar.driver.common.callback.OnRecycleItemClick;
 import com.weddingcar.driver.common.manager.SPController;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
+import com.weddingcar.driver.function.main.activity.OrderInfoActivity;
 import com.weddingcar.driver.function.main.adapter.OrderMyCarTypeAdapter;
 
 import java.util.ArrayList;
@@ -148,6 +150,15 @@ public class MyCarTypeFragment extends BaseFragment implements GetRobbingView, O
         RobbingInfoEntity infoEntity = mOrderMyCarList.get(position);
         if (null != infoEntity) {
             Logger.I("MyCarTypeFragment onRecycleItemClick \n" + infoEntity.toString());
+
+            if (null != infoEntity.getState() && infoEntity.getState().equals("已结束")) {
+                UIUtils.showToastSafe("该订单已召齐");
+                return;
+            }
+
+            Intent intent = new Intent(mContext, OrderInfoActivity.class);
+            intent.putExtra("RobbingInfo", infoEntity);
+            startActivity(intent);
         }
     }
 

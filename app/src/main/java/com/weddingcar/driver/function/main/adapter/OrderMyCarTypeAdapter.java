@@ -1,6 +1,7 @@
 package com.weddingcar.driver.function.main.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -71,7 +72,7 @@ public class OrderMyCarTypeAdapter extends RecyclerView.Adapter<OrderMyCarTypeAd
         String userHeadUrl = Config.getAppHtmlUrl() + "/LJTP/CATP/" + customerAvator;
         String customerName = mycarTypeEntity.getCustomerName();
         String customerSex = mycarTypeEntity.getCustomerSex();
-        String code = mycarTypeEntity.getCode();
+        String code = mycarTypeEntity.getID();
 
         holder.orderNumber.setText("订单号:" + code);
         if (customerSex.equals("男")) {
@@ -101,8 +102,28 @@ public class OrderMyCarTypeAdapter extends RecyclerView.Adapter<OrderMyCarTypeAd
 
         if (state.equals("已结束")) {
             holder.orderCatLocation.setText("该订单已经召齐");
+
+            holder.mRootView.setBackgroundColor(Color.parseColor("#EFEFF3"));
+            holder.orderNumber.setTextColor(Color.parseColor("#BDBDBD"));
+            holder.orderUserName.setTextColor(Color.parseColor("#BDBDBD"));
+            holder.orderTimeTxView.setTextColor(Color.parseColor("#BDBDBD"));
+            holder.orderDurationTxView.setTextColor(Color.parseColor("#BDBDBD"));
+            holder.orderRoadTxView.setTextColor(Color.parseColor("#BDBDBD"));
+            holder.orderSpaceTxView.setTextColor(Color.parseColor("#BDBDBD"));
+            holder.orderCatLocation.setTextColor(Color.parseColor("#BDBDBD"));
+            holder.orderCarModel.setTextColor(Color.parseColor("#BDBDBD"));
         } else {
             holder.orderCatLocation.setText("已报名:" + mycarTypeEntity.getCarCount() + "辆");
+
+            holder.mRootView.setBackgroundColor(Color.WHITE);
+            holder.orderNumber.setTextColor(mContext.getResources().getColor(R.color.text_main_gray));
+            holder.orderUserName.setTextColor(mContext.getResources().getColor(R.color.text_main_gray));
+            holder.orderTimeTxView.setTextColor(mContext.getResources().getColor(R.color.text_black));
+            holder.orderDurationTxView.setTextColor(mContext.getResources().getColor(R.color.text_main_gray));
+            holder.orderRoadTxView.setTextColor(mContext.getResources().getColor(R.color.text_black));
+            holder.orderSpaceTxView.setTextColor(mContext.getResources().getColor(R.color.text_black));
+            holder.orderCatLocation.setTextColor(mContext.getResources().getColor(R.color.text_black));
+            holder.orderCarModel.setTextColor(mContext.getResources().getColor(R.color.text_main_gray));
         }
 
         holder.orderTimeTxView.setText(sdf.format(new Date(Long.parseLong(theWeddingDate))));
@@ -156,6 +177,8 @@ public class OrderMyCarTypeAdapter extends RecyclerView.Adapter<OrderMyCarTypeAd
         TextView orderCatLocation;
         @BindView(R.id.order_left_view)
         TextView orderCarModel;
+        @BindView(R.id.root_view)
+        View mRootView;
 
         public OrderRunningViewHolder(@NonNull View itemView) {
             super(itemView);

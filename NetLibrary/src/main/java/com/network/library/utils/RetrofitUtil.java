@@ -7,6 +7,7 @@ import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.bean.user.response.LoginEntity;
+import com.network.library.bean.user.response.OrderInfoEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
@@ -351,8 +352,53 @@ public class RetrofitUtil {
 //    }
 
     public void getRobbingList(Subscriber<BaseEntity<List<RobbingInfoEntity>>> subscriber, String apiId, String customerId, String carBrandId, String carModelId) {
-        Logger.I("[ getRobbingList ] apiId = " + apiId + " , customerId = " + customerId);
+        Logger.I("[ getRobbingList ] apiId = " + apiId + " , customerId = " + customerId + " carBrandId = " + carBrandId + " carModelId = " + carModelId);
         mNetworkService.getRobbingList(apiId, customerId, carBrandId, carModelId)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void getOrderInfo(Subscriber<BaseEntity<List<OrderInfoEntity>>> subscriber, String apiId, String orderId) {
+        Logger.I("[ getOrderInfo ] apiId = " + apiId + " , orderId = " + orderId);
+        mNetworkService.getOrderInfo(apiId, orderId)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void signUpOrder(Subscriber<BaseEntity> subscriber, String apiId, String customerId, String OrderID, int Amount) {
+        Logger.I("[ signUpOrder ] apiId = " + apiId + " , customerId = " + customerId + " OrderID = " + OrderID + " Amount = " + Amount);
+        mNetworkService.signUpOrder(apiId, customerId, OrderID, Amount)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void cancelSignUp(Subscriber<BaseEntity> subscriber, String apiId, String customerId, String orderId) {
+        Logger.I("[ cancelSignUp ] apiId = " + apiId + " , customerId = " + customerId + " OrderID = " + orderId);
+        mNetworkService.cancelSignUp(apiId, customerId, orderId)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void deleteInvalidOrder(Subscriber<BaseEntity> subscriber, String apiId, String ID) {
+        Logger.I("[ deleteInvalidOrder ] apiId = " + apiId + " , ID = " + ID);
+        mNetworkService.deleteInvalidOrder(apiId, ID)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void getCompleteOrderList(Subscriber<BaseEntity<List<OrderWaitListEntity>>> subscriber, String apiId, String customerId, String state) {
+        Logger.I("[ getCompleteOrderList ] apiId = " + apiId + " , customerId = " + customerId + " state = " + state);
+        mNetworkService.getCompleteOrderList(apiId, customerId, state)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

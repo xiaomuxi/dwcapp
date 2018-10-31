@@ -31,6 +31,33 @@ public class OrderInfoEntity implements Serializable {
     private String CarModelName;
     private int Count;
     private String ColorName;
+    private String DetailedAddress;
+    private String OrderRl;
+    private String OrderRlTel;
+
+    public String getDetailedAddress() {
+        return DetailedAddress;
+    }
+
+    public void setDetailedAddress(String detailedAddress) {
+        DetailedAddress = detailedAddress;
+    }
+
+    public String getOrderRl() {
+        return OrderRl;
+    }
+
+    public void setOrderRl(String orderRl) {
+        OrderRl = orderRl;
+    }
+
+    public String getOrderRlTel() {
+        return OrderRlTel;
+    }
+
+    public void setOrderRlTel(String orderRlTel) {
+        OrderRlTel = orderRlTel;
+    }
 
     public void setTheWeddingDateString(String TheWeddingDateString) {
         this.TheWeddingDateString = TheWeddingDateString;
@@ -285,6 +312,16 @@ public class OrderInfoEntity implements Serializable {
         public String getLatitude() {
             return Latitude;
         }
+
+        @Override
+        public String toString() {
+            return "MapInfos{" +
+                    "Number='" + Number + '\'' +
+                    ", CoordinateName='" + CoordinateName + '\'' +
+                    ", Longitude='" + Longitude + '\'' +
+                    ", Latitude='" + Latitude + '\'' +
+                    '}';
+        }
     }
 
     public static class Drivers implements Serializable {
@@ -294,6 +331,17 @@ public class OrderInfoEntity implements Serializable {
         private String offerPrice;
         private String offerPricesj;
         private String isConfirmDistance;
+        private String carPhone;
+        private String Name;
+        private String Sex;
+        private String Avator;
+        private String Amount;
+        private String DriverID;
+        private String ColorName;
+        private String Score;
+        private String OrderQuantity;
+        private String OrderOfferID;
+        private String QdState;
 
         public void setCustomerName(String CustomerName) {
             this.CustomerName = CustomerName;
@@ -342,5 +390,152 @@ public class OrderInfoEntity implements Serializable {
         public String getIsConfirmDistance() {
             return isConfirmDistance;
         }
+
+        public String getCarPhone() {
+            return carPhone;
+        }
+
+        public void setCarPhone(String carPhone) {
+            this.carPhone = carPhone;
+        }
+
+        public String getName() {
+            return Name;
+        }
+
+        public void setName(String name) {
+            Name = name;
+        }
+
+        public String getSex() {
+            return Sex;
+        }
+
+        public void setSex(String sex) {
+            Sex = sex;
+        }
+
+        public String getAvator() {
+            return Avator;
+        }
+
+        public void setAvator(String avator) {
+            Avator = avator;
+        }
+
+        public String getAmount() {
+            return Amount;
+        }
+
+        public void setAmount(String amount) {
+            Amount = amount;
+        }
+
+        public String getDriverID() {
+            return DriverID;
+        }
+
+        public void setDriverID(String driverID) {
+            DriverID = driverID;
+        }
+
+        public String getColorName() {
+            return ColorName;
+        }
+
+        public void setColorName(String colorName) {
+            ColorName = colorName;
+        }
+
+        public String getScore() {
+            return Score;
+        }
+
+        public void setScore(String score) {
+            Score = score;
+        }
+
+        public String getOrderQuantity() {
+            return OrderQuantity;
+        }
+
+        public void setOrderQuantity(String orderQuantity) {
+            OrderQuantity = orderQuantity;
+        }
+
+        public String getOrderOfferID() {
+            return OrderOfferID;
+        }
+
+        public void setOrderOfferID(String orderOfferID) {
+            OrderOfferID = orderOfferID;
+        }
+
+        public String getQdState() {
+            return QdState;
+        }
+
+        public void setQdState(String qdState) {
+            QdState = qdState;
+        }
+
+        @Override
+        public String toString() {
+            return "Drivers{" +
+                    "CustomerName='" + CustomerName + '\'' +
+                    ", CustomerTel='" + CustomerTel + '\'' +
+                    ", CarPlate='" + CarPlate + '\'' +
+                    ", offerPrice='" + offerPrice + '\'' +
+                    ", offerPricesj='" + offerPricesj + '\'' +
+                    ", isConfirmDistance='" + isConfirmDistance + '\'' +
+                    ", carPhone='" + carPhone + '\'' +
+                    ", Name='" + Name + '\'' +
+                    ", Sex='" + Sex + '\'' +
+                    ", Avator='" + Avator + '\'' +
+                    ", Amount='" + Amount + '\'' +
+                    ", DriverID='" + DriverID + '\'' +
+                    ", ColorName='" + ColorName + '\'' +
+                    ", Score='" + Score + '\'' +
+                    ", OrderQuantity='" + OrderQuantity + '\'' +
+                    ", OrderOfferID='" + OrderOfferID + '\'' +
+                    ", QdState='" + QdState + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "OrderInfoEntity{" +
+                "TheWeddingDateString='" + TheWeddingDateString + '\'' +
+                ", JourneyChoose=" + JourneyChoose +
+                ", HourChoose=" + HourChoose +
+                ", AreaName='" + AreaName + '\'' +
+                ", PriceBaseTimeout=" + PriceBaseTimeout +
+                ", PriceBaseDistance=" + PriceBaseDistance +
+                ", OfferCount=" + OfferCount +
+                ", AmountAverage=" + AmountAverage +
+                ", Note='" + Note + '\'' +
+                ", GatherTime='" + GatherTime + '\'' +
+                ", GatherCoordinateName='" + GatherCoordinateName + '\'' +
+                ", CustomerAvator='" + CustomerAvator + '\'' +
+                ", MapInfos=" + MapInfos +
+                ", Drivers=" + Drivers +
+                ", Tel='" + Tel + '\'' +
+                ", AmountAverages=" + AmountAverages +
+                ", GatherCoordinateLongitude='" + GatherCoordinateLongitude + '\'' +
+                ", GatherCoordinateLatitude='" + GatherCoordinateLatitude + '\'' +
+                ", AmountAveragesj=" + AmountAveragesj +
+                ", Iscar='" + Iscar + '\'' +
+                ", CustomerName='" + CustomerName + '\'' +
+                ", CustomerSex='" + CustomerSex + '\'' +
+                ", Code='" + Code + '\'' +
+                ", CarBrandName='" + CarBrandName + '\'' +
+                ", CarModelName='" + CarModelName + '\'' +
+                ", Count=" + Count +
+                ", ColorName='" + ColorName + '\'' +
+                ", DetailedAddress='" + DetailedAddress + '\'' +
+                ", OrderRl='" + OrderRl + '\'' +
+                ", OrderRlTel='" + OrderRlTel + '\'' +
+                '}';
     }
 }

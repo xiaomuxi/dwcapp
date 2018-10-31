@@ -2,6 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
 
     <!--test size-->
+    <dimen name="sp_11">11.0sp</dimen>
     <dimen name="sp_12">12.0sp</dimen>
     <dimen name="sp_13">13.0sp</dimen>
     <dimen name="sp_14">14.0sp</dimen>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.network.library.bean.BaseEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.controller.NetworkController;
+import com.network.library.eventbus.CancelSignEvent;
 import com.network.library.utils.Logger;
 import com.network.library.view.BaseNetView;
 import com.network.library.view.GetOrderView;
@@ -26,6 +28,10 @@ import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.main.activity.LookSignUpCarActivity;
 import com.weddingcar.driver.function.main.adapter.OrderWaitAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +59,7 @@ public class OrderWaitFragment extends BaseFragment implements OnRecycleItemClic
     private List<OrderWaitListEntity> mOrderWaitList = new ArrayList<>();
 
     private boolean mRequestComplete = false;
+    private SwipeRefreshLayout mRefreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +82,12 @@ public class OrderWaitFragment extends BaseFragment implements OnRecycleItemClic
         super.onAttach(context);
         mController = new NetworkController<>();
         mController.attachView(this);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -83,6 +96,12 @@ public class OrderWaitFragment extends BaseFragment implements OnRecycleItemClic
         if (null == mOrderWaitAdapter)
             mOrderWaitAdapter = new OrderWaitAdapter(mOrderWaitList, this);
         mWaitRecycleView.setAdapter(mOrderWaitAdapter);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(CancelSignEvent event) {
+        mRequestComplete = false;
+        visible(true, mRefreshLayout);
     }
 
     @Override
@@ -94,10 +113,13 @@ public class OrderWaitFragment extends BaseFragment implements OnRecycleItemClic
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
         unbinder.unbind();
     }
 
-    public void visible() {
+    public void visible(boolean isRefresh, SwipeRefreshLayout refreshLayout) {
+        this.mRefreshLayout = refreshLayout;
+        mRequestComplete = !isRefresh;
         if (mRequestComplete) return;
         String userId = SPController.getInstance().getUserInfo().getUserId();
         if (null == userId || userId.isEmpty()) userId = "18616367480";
@@ -105,8 +127,13 @@ public class OrderWaitFragment extends BaseFragment implements OnRecycleItemClic
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onRecycleItemClick(int position) {
-        Intent intent = new Intent(getContext(), LookSignUpCarActivity.class);
+        Intent intent = new Intent(getActivity(), LookSignUpCarActivity.class);
         OrderWaitListEntity orderWaitEntity = mOrderWaitList.get(position);
         intent.putExtra("orderNumber", orderWaitEntity);
         startActivity(intent);
@@ -117,10 +144,14 @@ public class OrderWaitFragment extends BaseFragment implements OnRecycleItemClic
         super.onRequestError(errorMsg, methodName);
         mWaitRecycleView.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.VISIBLE);
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onGetOrderListSuccess(BaseEntity baseEntity) {
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
         if (null != baseEntity) {
             mRequestComplete = true;
             String status = baseEntity.getStatus();

@@ -1,9 +1,11 @@
 package com.weddingcar.driver.function.main.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,8 +22,11 @@ import com.network.library.view.GetOrderView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.callback.OnRecycleItemClick;
 import com.weddingcar.driver.common.manager.SPController;
+import com.weddingcar.driver.common.ui.MaterialDialog;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
+import com.weddingcar.driver.function.main.activity.OrderInfoActivity;
+import com.weddingcar.driver.function.main.adapter.OrderCompleteAdapter;
 import com.weddingcar.driver.function.main.adapter.OrderWaitAdapter;
 
 import java.util.ArrayList;
@@ -32,9 +37,9 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class OrderCompleteFragment extends BaseFragment implements OnRecycleItemClick,
-        GetOrderView {
+        GetOrderView, OrderCompleteAdapter.OnCatAssessClickListener {
 
-    private static final String state = "已完成";
+    private static final String state = "已结束";
 
     @BindView(R.id.order_running_recycle)
     RecyclerView mCompleteRecycleView;
@@ -47,10 +52,11 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
 
     private NetworkController<BaseNetView> mController;
 
-    private OrderWaitAdapter mOrderCompleteAdapter;
+    private OrderCompleteAdapter mOrderCompleteAdapter;
     private List<OrderWaitListEntity> mOrderCompleteList = new ArrayList<>();
 
     private boolean mRequestComplete = false;
+    private SwipeRefreshLayout mRefreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,7 +85,8 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (null == mOrderCompleteAdapter)
-            mOrderCompleteAdapter = new OrderWaitAdapter(mOrderCompleteList, this);
+            mOrderCompleteAdapter = new OrderCompleteAdapter(mOrderCompleteList, this);
+        mOrderCompleteAdapter.setOnCatAssessViewClickListener(this);
         mCompleteRecycleView.setAdapter(mOrderCompleteAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(UIUtils.getContext(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(UIUtils.getDrawable(R.drawable.recycleview_divider));
@@ -98,16 +105,25 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
         unbinder.unbind();
     }
 
-    public void visible() {
+    public void visible(boolean isRefresh, SwipeRefreshLayout refreshLayout) {
+        mRefreshLayout = refreshLayout;
+        mRequestComplete = !isRefresh;
         if (mRequestComplete) return;
         String userId = SPController.getInstance().getUserInfo().getUserId();
         if (null == userId || userId.isEmpty()) userId = "18616367480";
-        mController.getCompleteOrderList("HC010312", userId, state, true);
+        mController.getCompleteOrderList("HC0103122", userId, state, true);
     }
 
     @Override
     public void onRecycleItemClick(int position) {
+        OrderWaitListEntity orderWaitListEntity = mOrderCompleteList.get(position);
+        if (null != orderWaitListEntity) {
 
+            Intent intent = new Intent(getContext(), OrderInfoActivity.class);
+            intent.putExtra("type", "complete");
+            intent.putExtra("complete", orderWaitListEntity);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -115,10 +131,14 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
         super.onRequestError(errorMsg, methodName);
         mCompleteRecycleView.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.VISIBLE);
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onGetOrderListSuccess(BaseEntity baseEntity) {
+        if (null != mRefreshLayout)
+            mRefreshLayout.setRefreshing(false);
         if (null != baseEntity) {
             mRequestComplete = true;
             String status = baseEntity.getStatus();
@@ -140,6 +160,18 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
             mOrderCompleteList.addAll(listEntities);
             mOrderCompleteAdapter.notifyDataSetChanged();
             Logger.I("onGetCompleteOrderListSuccess : " + baseEntity.toString());
+        }
+    }
+
+    @Override
+    public void onCatAssessClick(int position) {
+        OrderWaitListEntity orderWaitListEntity = mOrderCompleteList.get(position);
+        if (null != orderWaitListEntity) {
+
+            Intent intent = new Intent(getContext(), OrderInfoActivity.class);
+            intent.putExtra("type", "complete");
+            intent.putExtra("complete", orderWaitListEntity);
+            startActivity(intent);
         }
     }
 }

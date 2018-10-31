@@ -85,13 +85,49 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/sign_up_price"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginRight="@dimen/dimen_15"
-        android:text="$510"
-        android:textColor="@color/text_main_red"
-        android:textSize="@dimen/sp_15" />
+        android:gravity="center_vertical|right"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sign_up_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$510"
+            android:textColor="@color/text_main_red"
+            android:textSize="@dimen/sp_15" />
+
+        <LinearLayout
+            android:id="@+id/store_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/status_tx_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/text_main_gray"
+                android:textSize="@dimen/sp_12" />
+
+            <LinearLayout
+                android:id="@+id/add_store_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

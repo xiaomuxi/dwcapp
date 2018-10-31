@@ -67,7 +67,7 @@ public class OrderRunningAdapter extends RecyclerView.Adapter<OrderRunningAdapte
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return null == mData ? 0 : mData.size();
     }
 
     public static class OrderRunningViewHolder extends RecyclerView.ViewHolder {

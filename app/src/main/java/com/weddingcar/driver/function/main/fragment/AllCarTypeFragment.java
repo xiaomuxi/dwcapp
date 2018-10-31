@@ -1,6 +1,7 @@
 package com.weddingcar.driver.function.main.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,11 +19,13 @@ import com.network.library.utils.Logger;
 import com.network.library.view.BaseNetView;
 import com.network.library.view.GetRobbingView;
 import com.weddingcar.driver.R;
+import com.weddingcar.driver.common.bean.UserInfo;
 import com.weddingcar.driver.common.callback.FilterListener;
 import com.weddingcar.driver.common.callback.OnRecycleItemClick;
 import com.weddingcar.driver.common.manager.SPController;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
+import com.weddingcar.driver.function.main.activity.OrderInfoActivity;
 import com.weddingcar.driver.function.main.adapter.OrderMyCarTypeAdapter;
 
 import java.util.ArrayList;
@@ -145,6 +148,25 @@ public class AllCarTypeFragment extends BaseFragment implements GetRobbingView, 
         RobbingInfoEntity infoEntity = mOrderAllCarList.get(position);
         if (null != infoEntity) {
             Logger.I("AllCarTypeFragment onItemClick \n" + infoEntity.toString());
+
+            if (null != infoEntity.getState() && infoEntity.getState().equals("已结束")) {
+                UIUtils.showToastSafe("该订单已召齐");
+                return;
+            } else if (null != infoEntity.getCarBrandName() && null != infoEntity.getCarModelName()) {
+                String car = infoEntity.getCarBrandName() + infoEntity.getCarModelName();
+                UserInfo userInfo = SPController.getInstance().getUserInfo();
+                String carModelId = userInfo.getCarModelId();
+                String carBrandId = userInfo.getCarBrandId();
+                String myCar = carBrandId + carModelId;
+                if (!car.equals(myCar)) {
+                    UIUtils.showToastSafe("车型不符");
+                    return;
+                }
+            }
+
+            Intent intent = new Intent(mContext, OrderInfoActivity.class);
+            intent.putExtra("RobbingInfo", infoEntity);
+            startActivity(intent);
         }
     }
 
@@ -154,7 +176,7 @@ public class AllCarTypeFragment extends BaseFragment implements GetRobbingView, 
     }
 
     public void filter(String searchId) {
-        if (null != mOrderAllCarAdapter){
+        if (null != mOrderAllCarAdapter) {
             mOrderAllCarAdapter.getFilter().filter(searchId);
         }
     }

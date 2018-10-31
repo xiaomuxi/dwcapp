@@ -10,13 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.network.library.bean.user.response.OrderRunningListEntity;
 import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.utils.GlideUtils;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.callback.OnRecycleItemClick;
 import com.weddingcar.driver.common.config.Config;
-import com.weddingcar.driver.common.utils.UIUtils;
+import com.weddingcar.driver.function.main.fragment.OrderInvalidFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,15 +25,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class OrderWaitAdapter extends RecyclerView.Adapter<OrderWaitAdapter.OrderRunningViewHolder> {
+public class OrderInvalidAdapter extends RecyclerView.Adapter<OrderInvalidAdapter.OrderRunningViewHolder> {
 
     private List<OrderWaitListEntity> mData;
     private OnRecycleItemClick callback;
     private Context mContext;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+    private OnInvalidDeleteListener mCallback;
 
-    public OrderWaitAdapter(List<OrderWaitListEntity> list, OnRecycleItemClick listener) {
+    public OrderInvalidAdapter(List<OrderWaitListEntity> list, OnRecycleItemClick listener) {
         this.mData = list;
         this.callback = listener;
     }
@@ -68,18 +68,23 @@ public class OrderWaitAdapter extends RecyclerView.Adapter<OrderWaitAdapter.Orde
         String customerName = orderWaitListEntity.getCustomerName();
         String customerSex = orderWaitListEntity.getCustomerSex();
         String code = orderWaitListEntity.getID();
-        holder.orderCatLocation.setText("查看出价");
-        holder.orderCatLocation.setTextColor(mContext.getResources().getColor(R.color.text_black));
+        holder.orderInvalidView.setVisibility(View.VISIBLE);
+        holder.orderInvalidView.setText("已失效");
+        holder.orderCatLocation.setText("删除");
+        holder.orderCatLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (null != mCallback) mCallback.onInvalidOrderDelete(position);
+            }
+        });
         holder.orderNumber.setText("订单号:" + code);
         if (customerSex.equals("男")) {
             holder.orderUserName.setText(customerName + "先生");
         } else if (customerSex.equals("女")) {
             holder.orderUserName.setText(customerName + "女士");
-        }else {
-            holder.orderUserName.setText(customerName);
         }
         GlideUtils.loadShow(mContext, userHeadUrl, holder.orderUserIconView);
-        holder.orderMoneyTxView.setText("￥" + amount);
+        holder.orderMoneyTxView.setText("$" + amount);
         holder.orderDurationTxView.setText(hourChoose + "小时");
         holder.orderRoadTxView.setText(journeyChoose + "公里");
         holder.orderSpaceTxView.setText(areaName);
@@ -96,6 +101,10 @@ public class OrderWaitAdapter extends RecyclerView.Adapter<OrderWaitAdapter.Orde
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public void setOnDeleteOrderViewClickListener(OnInvalidDeleteListener listener) {
+        this.mCallback = listener;
     }
 
     public static class OrderRunningViewHolder extends RecyclerView.ViewHolder {
@@ -124,10 +133,16 @@ public class OrderWaitAdapter extends RecyclerView.Adapter<OrderWaitAdapter.Orde
         TextView orderSpaceTxView;
         @BindView(R.id.order_cat_location)
         TextView orderCatLocation;
+        @BindView(R.id.order_left_view)
+        TextView orderInvalidView;
 
         public OrderRunningViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnInvalidDeleteListener {
+        void onInvalidOrderDelete(int position);
     }
 }

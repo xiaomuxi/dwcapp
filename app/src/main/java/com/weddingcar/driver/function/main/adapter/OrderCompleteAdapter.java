@@ -30,6 +30,7 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
     private Context mContext;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+    private OnCatAssessClickListener mCallback;
 
     public OrderCompleteAdapter(List<OrderWaitListEntity> list, OnRecycleItemClick listener) {
         this.mData = list;
@@ -63,8 +64,16 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
         String userHeadUrl = Config.getAppHtmlUrl() + "/LJTP/CATP/" + customerAvator;
         String customerName = orderWaitListEntity.getCustomerName();
         String customerSex = orderWaitListEntity.getCustomerSex();
-        String code = orderWaitListEntity.getCode();
-        holder.orderCatLocation.setText("查看报名");
+        String code = "订单号:" + orderWaitListEntity.getID();
+        holder.orderStatusTxView.setVisibility(View.GONE);
+        holder.orderCatLocation.setText("查看评价");
+        holder.orderCatLocation.setTextColor(mContext.getResources().getColor(R.color.text_black));
+        holder.orderCatLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (null != mCallback) mCallback.onCatAssessClick(position);
+            }
+        });
         holder.orderNumber.setText(code);
         if (customerSex.equals("男")) {
             holder.orderUserName.setText(customerName + "先生");
@@ -89,6 +98,10 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public void setOnCatAssessViewClickListener(OnCatAssessClickListener listener) {
+        this.mCallback = listener;
     }
 
     public static class OrderRunningViewHolder extends RecyclerView.ViewHolder {
@@ -122,5 +135,9 @@ public class OrderCompleteAdapter extends RecyclerView.Adapter<OrderCompleteAdap
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnCatAssessClickListener {
+        void onCatAssessClick(int position);
     }
 }
