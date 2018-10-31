@@ -3,6 +3,8 @@ package com.network.library.inter;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.mine.response.BalanceDetailEntity;
 import com.network.library.bean.mine.response.CarColorsEntity;
+import com.network.library.bean.mine.response.CompleteOrderEntity;
+import com.network.library.bean.mine.response.DrawCashEntity;
 import com.network.library.bean.mine.response.EvaluateEntity;
 import com.network.library.bean.mine.response.GetBalanceInfoEntity;
 import com.network.library.bean.mine.response.GetCarBrandsEntity;
@@ -94,4 +96,10 @@ public interface NetworkService {
 
     @GET("ljwy/JSON/HcPlApi01.aspx")
     Observable<EvaluateEntity> getEvaluateList(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi02.aspx")
+    Observable<DrawCashEntity> drawCash(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi02.aspx")
+    Observable<CompleteOrderEntity> getCompleteOrderList(@QueryMap Map<String, String> map);
 }

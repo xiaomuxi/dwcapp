@@ -237,6 +237,7 @@
         </HorizontalScrollView>
 
         <TextView
+            android:id="@+id/tv_evaluate"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50"
             android:gravity="center_vertical"

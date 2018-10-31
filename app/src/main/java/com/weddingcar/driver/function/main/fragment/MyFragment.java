@@ -169,6 +169,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener{
         GetMineInfoRequest request = new GetMineInfoRequest();
         GetMineInfoRequest.Query query = new GetMineInfoRequest.Query();
         query.setApiId("HC010108");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         query.setId(userInfo.getUserId());
         request.setQuery(query);
 
@@ -179,6 +181,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener{
         GetDriverCarInfoRequest request1 = new GetDriverCarInfoRequest();
         GetDriverCarInfoRequest.Query query1 = new GetDriverCarInfoRequest.Query();
         query1.setApiId("HC010305");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         query1.setId(userInfo.getUserId());
         request1.setQuery(query1);
 

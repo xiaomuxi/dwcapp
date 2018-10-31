@@ -2,10 +2,11 @@ package com.network.library.bean.mine.response;
 
 import com.network.library.bean.BaseEntity;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class BalanceDetailEntity extends BaseEntity<List<BalanceDetailEntity.Data>> {
-    public static class Data {
+    public static class Data implements Serializable{
 
         /**
          * Amount : 2000.0

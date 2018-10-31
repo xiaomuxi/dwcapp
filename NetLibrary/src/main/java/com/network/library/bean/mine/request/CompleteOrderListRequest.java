@@ -2,22 +2,31 @@ package com.network.library.bean.mine.request;
 
 import com.network.library.bean.BaseRequest;
 
-public class GetEvaluateListRequest extends BaseRequest<GetEvaluateListRequest.Query, Object> {
+public class CompleteOrderListRequest extends BaseRequest{
     public static class Query {
 
         /**
-         * ApiId : HC010113
          * customerId : 13203861885
-         * pageIndex : 1
+         * state : 已结束
          * pageSize : 10
+         * pageIndex : 3
          */
 
         private String userid;
         private String DEVICEID;
         private String ApiId;
         private String customerId;
-        private int pageIndex;
+        private String state;
         private int pageSize;
+        private int pageIndex;
+
+        public String getApiId() {
+            return ApiId;
+        }
+
+        public void setApiId(String apiId) {
+            ApiId = apiId;
+        }
 
         public String getUserid() {
             return userid;
@@ -35,14 +44,6 @@ public class GetEvaluateListRequest extends BaseRequest<GetEvaluateListRequest.Q
             this.DEVICEID = DEVICEID;
         }
 
-        public String getApiId() {
-            return ApiId;
-        }
-
-        public void setApiId(String apiId) {
-            ApiId = apiId;
-        }
-
         public String getCustomerId() {
             return customerId;
         }
@@ -51,12 +52,12 @@ public class GetEvaluateListRequest extends BaseRequest<GetEvaluateListRequest.Q
             this.customerId = customerId;
         }
 
-        public int getPageIndex() {
-            return pageIndex;
+        public String getState() {
+            return state;
         }
 
-        public void setPageIndex(int pageIndex) {
-            this.pageIndex = pageIndex;
+        public void setState(String state) {
+            this.state = state;
         }
 
         public int getPageSize() {
@@ -67,6 +68,14 @@ public class GetEvaluateListRequest extends BaseRequest<GetEvaluateListRequest.Q
             this.pageSize = pageSize;
         }
 
+        public int getPageIndex() {
+            return pageIndex;
+        }
+
+        public void setPageIndex(int pageIndex) {
+            this.pageIndex = pageIndex;
+        }
+
         @Override
         public String toString() {
             return "Query{" +
@@ -74,8 +83,9 @@ public class GetEvaluateListRequest extends BaseRequest<GetEvaluateListRequest.Q
                     ", DEVICEID='" + DEVICEID + '\'' +
                     ", ApiId='" + ApiId + '\'' +
                     ", customerId='" + customerId + '\'' +
-                    ", pageIndex=" + pageIndex +
+                    ", state='" + state + '\'' +
                     ", pageSize=" + pageSize +
+                    ", pageIndex=" + pageIndex +
                     '}';
         }
     }

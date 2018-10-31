@@ -1,8 +1,10 @@
 package com.weddingcar.driver.function.mine.activity;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.network.library.bean.mine.request.GetBalanceDetailListRequest;
@@ -72,8 +74,21 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
         balanceListAdapter = new BalanceListAdapter(this);
         lv_balance.setAdapter(balanceListAdapter);
 
+        lv_balance.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                goToIncomeDetailActivity(mDataList.get(position));
+            }
+        });
+
         initData();
         initRefreshLayout();
+    }
+
+    private void goToIncomeDetailActivity(BalanceDetailEntity.Data data) {
+        Intent intent = new Intent(this, IncomeDetailActivity.class);
+        intent.putExtra("DATA", data);
+        startActivity(intent);
     }
 
     private void initRefreshLayout() {
@@ -110,6 +125,8 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
         GetBalanceDetailListRequest request = new GetBalanceDetailListRequest();
         GetBalanceDetailListRequest.Query query = new GetBalanceDetailListRequest.Query();
         query.setApiId(StringUtils.equals(type, "ACCOUNT") ? "HC0206201" : "HC0206200");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         query.setCustomerId(userInfo.getUserId());
         query.setPageIndex(pageNum);
         query.setPageSize(pageSize);

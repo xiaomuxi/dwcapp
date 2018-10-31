@@ -1,12 +1,14 @@
 package com.weddingcar.driver.function.mine.activity;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.network.library.bean.mine.request.GetEvaluateListRequest;
-import com.network.library.bean.mine.response.EvaluateEntity;
+import com.network.library.bean.mine.request.GetBalanceDetailListRequest;
+import com.network.library.bean.mine.response.BalanceDetailEntity;
 import com.network.library.constant.HttpAction;
 import com.network.library.controller.NetworkController;
 import com.network.library.view.NormalView;
@@ -19,7 +21,7 @@ import com.weddingcar.driver.common.ui.LoadMoreListView;
 import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
-import com.weddingcar.driver.function.mine.adapter.EvaluateListAdapter;
+import com.weddingcar.driver.function.mine.adapter.BalanceListAdapter;
 
 import java.util.List;
 
@@ -34,8 +36,8 @@ public class CumulativeIncomeActivity extends BaseActivity implements LoadMoreLi
     LoadMoreListView lv_income;
     @BindView(R.id.tv_empty)
     TextView tv_empty;
-    EvaluateListAdapter evaluateListAdapter;
-    List<EvaluateEntity.Data> mDataList;
+    BalanceListAdapter balanceListAdapter;
+    List<BalanceDetailEntity.Data> mDataList;
 
     NetworkController networkController;
     UserInfo userInfo;
@@ -67,11 +69,23 @@ public class CumulativeIncomeActivity extends BaseActivity implements LoadMoreLi
         networkController = new NetworkController();
         networkController.attachView(getEvaluateListView);
 
-        evaluateListAdapter = new EvaluateListAdapter(this);
-        lv_income.setAdapter(evaluateListAdapter);
+        balanceListAdapter = new BalanceListAdapter(this);
+        lv_income.setAdapter(balanceListAdapter);
+        lv_income.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                goToIncomeDetailActivity(mDataList.get(position));
+            }
+        });
 
         initRefreshLayout();
         initData();
+    }
+
+    private void goToIncomeDetailActivity(BalanceDetailEntity.Data data) {
+        Intent intent = new Intent(this, IncomeDetailActivity.class);
+        intent.putExtra("DATA", data);
+        startActivity(intent);
     }
 
     private void initRefreshLayout() {
@@ -100,15 +114,17 @@ public class CumulativeIncomeActivity extends BaseActivity implements LoadMoreLi
     }
 
     private void initData() {
-        GetEvaluateListRequest request = new GetEvaluateListRequest();
-        GetEvaluateListRequest.Query query = new GetEvaluateListRequest.Query();
-        query.setApiId("HC010113");
+        GetBalanceDetailListRequest request = new GetBalanceDetailListRequest();
+        GetBalanceDetailListRequest.Query query = new GetBalanceDetailListRequest.Query();
+        query.setApiId("HC0101161");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         query.setCustomerId(userInfo.getUserId());
         query.setPageIndex(pageNum);
         query.setPageSize(pageSize);
         request.setQuery(query);
 
-        networkController.sendRequest(HttpAction.ACTION_GET_EVALUATE_LIST, request);
+        networkController.sendRequest(HttpAction.ACTION_GET_BALANCE_DETAIL_LIST, request);
     }
 
     private void checkData() {
@@ -116,9 +132,9 @@ public class CumulativeIncomeActivity extends BaseActivity implements LoadMoreLi
         lv_income.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
     }
 
-    private NormalView<EvaluateEntity> getEvaluateListView = new NormalView<EvaluateEntity>() {
+    private NormalView<BalanceDetailEntity> getEvaluateListView = new NormalView<BalanceDetailEntity>() {
         @Override
-        public void onSuccess(EvaluateEntity entity) {
+        public void onSuccess(BalanceDetailEntity entity) {
             LogUtils.i(TAG, entity.toString());
             hasMore = entity.getData().size() == pageSize;
             if (1 == pageNum) {
@@ -131,18 +147,18 @@ public class CumulativeIncomeActivity extends BaseActivity implements LoadMoreLi
                 //完成后调用完成的方法
                 swipeRefreshLayout.setRefreshing(false);
             }
-            evaluateListAdapter.setData(mDataList);
+            balanceListAdapter.setData(mDataList);
             checkData();
         }
 
         @Override
         public void showLoading() {
-
+            showProcess("正在请求数据...");
         }
 
         @Override
         public void hideLoading() {
-
+            hideProcess();
         }
 
         @Override

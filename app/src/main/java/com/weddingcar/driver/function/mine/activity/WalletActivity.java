@@ -82,6 +82,8 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         GetBalanceInfoRequest request = new GetBalanceInfoRequest();
         GetBalanceInfoRequest.Query query = new GetBalanceInfoRequest.Query();
         query.setApiId("HC010101");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         query.setId(userInfo.getUserId());
         request.setQuery(query);
 

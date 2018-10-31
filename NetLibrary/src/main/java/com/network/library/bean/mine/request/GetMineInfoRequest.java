@@ -9,8 +9,26 @@ public class GetMineInfoRequest extends BaseRequest<GetMineInfoRequest.Query, Ob
          * ApiId : HC010108
          */
 
+        private String userid;
+        private String DEVICEID;
         private String ApiId;
         private String id;
+
+        public String getUserid() {
+            return userid;
+        }
+
+        public void setUserid(String userid) {
+            this.userid = userid;
+        }
+
+        public String getDEVICEID() {
+            return DEVICEID;
+        }
+
+        public void setDEVICEID(String DEVICEID) {
+            this.DEVICEID = DEVICEID;
+        }
 
         public String getApiId() {
             return ApiId;
@@ -31,7 +49,9 @@ public class GetMineInfoRequest extends BaseRequest<GetMineInfoRequest.Query, Ob
         @Override
         public String toString() {
             return "Query{" +
-                    "ApiId='" + ApiId + '\'' +
+                    "userid='" + userid + '\'' +
+                    ", DEVICEID='" + DEVICEID + '\'' +
+                    ", ApiId='" + ApiId + '\'' +
                     ", id='" + id + '\'' +
                     '}';
         }

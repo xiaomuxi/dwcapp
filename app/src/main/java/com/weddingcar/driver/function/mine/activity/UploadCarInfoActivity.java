@@ -779,6 +779,8 @@ public class UploadCarInfoActivity extends BaseActivity implements View.OnClickL
         CarAuthRequest request = new CarAuthRequest();
         CarAuthRequest.Query query = new CarAuthRequest.Query();
         query.setApiId("HC020113");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         CarAuthRequest.Body body = new CarAuthRequest.Body();
         body.setCustomerID(userInfo.getUserId());
         body.setCarColorID(carColorID);

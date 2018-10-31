@@ -243,6 +243,20 @@ public class RetrofitUtil {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(subscriber);
                 break;
+            case HttpAction.ACTION_DRAW_CASH:
+                mNetworkService.drawCash(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_COMPLETE_ORDER_LIST:
+                mNetworkService.getCompleteOrderList(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
         }
     }
 

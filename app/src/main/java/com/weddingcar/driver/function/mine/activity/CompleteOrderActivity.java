@@ -5,8 +5,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.TextView;
 
-import com.network.library.bean.mine.request.GetEvaluateListRequest;
-import com.network.library.bean.mine.response.EvaluateEntity;
+import com.network.library.bean.mine.request.CompleteOrderListRequest;
+import com.network.library.bean.mine.response.CompleteOrderEntity;
+import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.constant.HttpAction;
 import com.network.library.controller.NetworkController;
 import com.network.library.view.NormalView;
@@ -19,23 +20,22 @@ import com.weddingcar.driver.common.ui.LoadMoreListView;
 import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
-import com.weddingcar.driver.function.mine.adapter.EvaluateListAdapter;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EvaluateActivity extends BaseActivity implements LoadMoreListView.OnRefreshListener{
+public class CompleteOrderActivity extends BaseActivity implements LoadMoreListView.OnRefreshListener {
 
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.lv_evaluate)
-    LoadMoreListView lv_evaluate;
+    @BindView(R.id.lv_order)
+    LoadMoreListView lv_order;
     @BindView(R.id.tv_empty)
     TextView tv_empty;
-    EvaluateListAdapter evaluateListAdapter;
-    List<EvaluateEntity.Data> mDataList;
+//    BalanceListAdapter balanceListAdapter;
+    List<OrderWaitListEntity> mDataList;
 
     NetworkController networkController;
     UserInfo userInfo;
@@ -48,7 +48,7 @@ public class EvaluateActivity extends BaseActivity implements LoadMoreListView.O
     protected void init() {
         super.init();
         userInfo = SPController.getInstance().getUserInfo();
-        setContentView(R.layout.activity_evaluate);
+        setContentView(R.layout.activity_cumulative_income);
         ButterKnife.bind(this);
     }
 
@@ -56,7 +56,7 @@ public class EvaluateActivity extends BaseActivity implements LoadMoreListView.O
     protected void initActionBar() {
         super.initActionBar();
         setActionBar(R.layout.common_top_bar);
-        setTopTitleAndLeft("客户评价");
+        setTopTitleAndLeft("已完成订单");
     }
 
     @Override
@@ -64,17 +64,29 @@ public class EvaluateActivity extends BaseActivity implements LoadMoreListView.O
         super.initView();
 
         networkController = new NetworkController();
-        networkController.attachView(getEvaluateListView);
+        networkController.attachView(getOrderListView);
 
-        evaluateListAdapter = new EvaluateListAdapter(this);
-        lv_evaluate.setAdapter(evaluateListAdapter);
+//        balanceListAdapter = new BalanceListAdapter(this);
+//        lv_order.setAdapter(balanceListAdapter);
+//        lv_order.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                goToOrderDetailActivity(mDataList.get(position));
+//            }
+//        });
+//
+//        initRefreshLayout();
+//        initData();
+    }
 
-        initRefreshLayout();
-        initData();
+    private void goToOrderDetailActivity(OrderWaitListEntity data) {
+//        Intent intent = new Intent(this, IncomeDetailActivity.class);
+//        intent.putExtra("DATA", data);
+//        startActivity(intent);
     }
 
     private void initRefreshLayout() {
-        lv_evaluate.setOnRefreshListener(this);
+        lv_order.setOnRefreshListener(this);
         //设置刷新的颜色
         swipeRefreshLayout.setColorSchemeResources(
                 android.R.color.background_dark,
@@ -99,9 +111,9 @@ public class EvaluateActivity extends BaseActivity implements LoadMoreListView.O
     }
 
     private void initData() {
-        GetEvaluateListRequest request = new GetEvaluateListRequest();
-        GetEvaluateListRequest.Query query = new GetEvaluateListRequest.Query();
-        query.setApiId("HC010113");
+        CompleteOrderListRequest request = new CompleteOrderListRequest();
+        CompleteOrderListRequest.Query query = new CompleteOrderListRequest.Query();
+        query.setApiId("HC0103122");
         query.setDEVICEID(userInfo.getDeviceId());
         query.setUserid(userInfo.getUserId());
         query.setCustomerId(userInfo.getUserId());
@@ -109,41 +121,41 @@ public class EvaluateActivity extends BaseActivity implements LoadMoreListView.O
         query.setPageSize(pageSize);
         request.setQuery(query);
 
-        networkController.sendRequest(HttpAction.ACTION_GET_EVALUATE_LIST, request);
+        networkController.sendRequest(HttpAction.ACTION_COMPLETE_ORDER_LIST, request);
     }
 
     private void checkData() {
         tv_empty.setVisibility(mDataList.size() == 0 ? View.VISIBLE : View.GONE);
-        lv_evaluate.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+        lv_order.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
     }
 
-    private NormalView<EvaluateEntity> getEvaluateListView = new NormalView<EvaluateEntity>() {
+    private NormalView<CompleteOrderEntity> getOrderListView = new NormalView<CompleteOrderEntity>() {
         @Override
-        public void onSuccess(EvaluateEntity entity) {
+        public void onSuccess(CompleteOrderEntity entity) {
             LogUtils.i(TAG, entity.toString());
             hasMore = entity.getData().size() == pageSize;
             if (1 == pageNum) {
                 mDataList = entity.getData();
             } else {
-                lv_evaluate.loadMoreComplete();
+                lv_order.loadMoreComplete();
                 mDataList.addAll(entity.getData());
             }
             if (swipeRefreshLayout.isRefreshing()) {
                 //完成后调用完成的方法
                 swipeRefreshLayout.setRefreshing(false);
             }
-            evaluateListAdapter.setData(mDataList);
+//            balanceListAdapter.setData(mDataList);
             checkData();
         }
 
         @Override
         public void showLoading() {
-
+            showProcess("正在请求数据...");
         }
 
         @Override
         public void hideLoading() {
-
+            hideProcess();
         }
 
         @Override
@@ -163,7 +175,8 @@ public class EvaluateActivity extends BaseActivity implements LoadMoreListView.O
             pageNum++;
             initData();
         } else {
-            lv_evaluate.loadMoreComplete();
+            lv_order.loadMoreComplete();
         }
     }
 }
+
