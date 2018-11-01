@@ -1,10 +1,13 @@
 package com.weddingcar.driver.function.mine.activity;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -48,8 +51,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class UploadCarInfoActivity extends BaseActivity implements View.OnClickListener{
+public class UploadCarInfoActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks{
+
+    private static final int REQUEST_CODE_PERMISSION = 1000;
 
     private final static int REQUEST_CODE_CAR_BRANDS = 1001;
     private final static int REQUEST_CODE_CAR_COLORS = 1002;
@@ -213,6 +219,10 @@ public class UploadCarInfoActivity extends BaseActivity implements View.OnClickL
         iv_driver_left.setOnClickListener(this);
         iv_driver_right.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
+
+        if (!EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA) || !EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.permission_tip), REQUEST_CODE_PERMISSION, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
 
         initDialog();
         initData();
@@ -947,6 +957,37 @@ public class UploadCarInfoActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+//        light();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        Dialog dialog = new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("请前往设置中心，打开相机和存储权限才可以继续使用！")
+                .setPositiveButton("确定", (dialog2, which) -> {
+                    startActivity(new Intent(Settings.ACTION_APPLICATION_SETTINGS));
+                })
+                .setNegativeButton(R.string.cancel, (dialog3, which) -> {
+                    dialog3.dismiss();
+                    finish();
+                })
+                .create();
+        dialog.show();
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -989,14 +1030,16 @@ public class UploadCarInfoActivity extends BaseActivity implements View.OnClickL
                     LogUtils.i(TAG, "从相册获取到图片");
                     //图库
                     String imgPath = PictureUtils.getPath(mContext, data.getData());
+                    LogUtils.i("==========", imgPath);
                     Bitmap bitmap = DrawableUtils.getBitmapFromPath(imgPath, 50, 50);
-                    int degree = DrawableUtils.readPictureDegree(imgPath);// 获取图片旋转的角度
-                    bitmap = DrawableUtils.rotaingImageView(degree,bitmap);// 将bitmap旋转回来
                     //保存图片到本地
                     if (bitmap == null) {
                         UIUtils.showToastSafe("图片有问题，不支持上传！");
                         return;
                     }
+                    int degree = DrawableUtils.readPictureDegree(imgPath);// 获取图片旋转的角度
+                    bitmap = DrawableUtils.rotaingImageView(degree,bitmap);// 将bitmap旋转回来
+
                     setImage(bitmap);
                 }
                 break;

@@ -1,10 +1,13 @@
 package com.weddingcar.driver.function.user.activity;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,14 +40,19 @@ import com.weddingcar.driver.common.utils.PictureUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener{
+public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks{
     private static final int PHOTO_REQUEST_CAMERA = 1001;  // 拍照获取头像
     private static final int PHOTO_REQUEST_ALBUM = 1002; // 从相册中选择头像
     private static final String PHOTO_FILE_NAME = "head";  // 头像照片
     private static final String TYPE_MINE_ACTIVITY = "MINE_ACTIVITY";
+
+    private static final int REQUEST_CODE_PERMISSION = 1003;
 
     @BindView(R.id.iv_head)
     ImageView iv_head;
@@ -75,6 +83,10 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         type = getIntent().getStringExtra("TYPE");
         setContentView(R.layout.activity_personal_info);
         ButterKnife.bind(this);
+
+        if (!EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA) || !EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.permission_tip), REQUEST_CODE_PERMISSION, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
     }
 
     @Override
@@ -284,6 +296,35 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 onSubmitPersonalInfo();
                 break;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+//        light();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        Dialog dialog = new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("请前往设置中心，打开相机和存储权限才可以继续使用！")
+                .setPositiveButton("确定", (dialog2, which) -> {
+                    startActivity(new Intent(Settings.ACTION_APPLICATION_SETTINGS));
+                })
+                .setNegativeButton(R.string.cancel, (dialog3, which) -> {
+                    dialog3.dismiss();
+                    finish();
+                })
+                .create();
+        dialog.show();
     }
 
     @Override

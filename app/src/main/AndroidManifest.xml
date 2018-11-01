@@ -267,7 +267,7 @@
         </receiver>
 
         <!-- 设置环信应用的AppKey -->
-        <meta-data android:name="EASEMOB_APPKEY"  android:value="1150181019177746#testy" />
+        <meta-data android:name="EASEMOB_APPKEY"  android:value="1144170905115168#app" />
         <!-- 声明SDK所需的service SDK核心功能-->
         <service android:name="com.hyphenate.chat.EMChatService" android:exported="true"/>
         <service android:name="com.hyphenate.chat.EMJobService"
@@ -304,6 +304,7 @@
         </activity>
         <activity android:name=".function.mine.activity.IncomeDetailActivity" />
         <activity android:name=".function.mine.activity.CompleteOrderActivity" />
+        <activity android:name=".function.mine.activity.ChartActivity" />
         <!--Ali pay end-->
     </application>
 

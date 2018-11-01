@@ -16,6 +16,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            lintOptions {
+                checkReleaseBuilds false
+                abortOnError false
+            }
         }
     }
     compileOptions {
@@ -26,6 +30,10 @@ android {
         main {
             jniLibs.srcDirs = ['libs']
         }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 
@@ -52,4 +60,5 @@ dependencies {
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
+    implementation 'pub.devrel:easypermissions:0.1.9'
 }

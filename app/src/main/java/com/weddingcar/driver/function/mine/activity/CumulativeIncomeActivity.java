@@ -129,7 +129,7 @@ public class CumulativeIncomeActivity extends BaseActivity implements LoadMoreLi
 
     private void checkData() {
         tv_empty.setVisibility(mDataList.size() == 0 ? View.VISIBLE : View.GONE);
-        lv_income.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+        swipeRefreshLayout.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
     }
 
     private NormalView<BalanceDetailEntity> getEvaluateListView = new NormalView<BalanceDetailEntity>() {

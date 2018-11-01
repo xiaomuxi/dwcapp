@@ -132,7 +132,7 @@ public class CompleteOrderActivity extends BaseActivity implements LoadMoreListV
 
     private void checkData() {
         tv_empty.setVisibility(mDataList.size() == 0 ? View.VISIBLE : View.GONE);
-        lv_order.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+        swipeRefreshLayout.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
     }
 
     private NormalView<CompleteOrderEntity> getOrderListView = new NormalView<CompleteOrderEntity>() {

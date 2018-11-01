@@ -2,6 +2,7 @@ package com.weddingcar.driver.function.main.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.main.adapter.OrderPagerAdapter;
+import com.weddingcar.driver.function.mine.activity.MessageActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +93,12 @@ public class OrderFragment extends BaseFragment implements SwipeRefreshLayout.On
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeRefreshLayout.setOnRefreshListener(this);
+        iv_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, MessageActivity.class));
+            }
+        });
         initActionBar();
         initTabLayout();
         initViewPager();

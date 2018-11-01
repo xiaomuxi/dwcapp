@@ -114,7 +114,7 @@ public class EvaluateActivity extends BaseActivity implements LoadMoreListView.O
 
     private void checkData() {
         tv_empty.setVisibility(mDataList.size() == 0 ? View.VISIBLE : View.GONE);
-        lv_evaluate.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+        swipeRefreshLayout.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
     }
 
     private NormalView<EvaluateEntity> getEvaluateListView = new NormalView<EvaluateEntity>() {
@@ -133,6 +133,7 @@ public class EvaluateActivity extends BaseActivity implements LoadMoreListView.O
                 swipeRefreshLayout.setRefreshing(false);
             }
             evaluateListAdapter.setData(mDataList);
+
             checkData();
         }
 

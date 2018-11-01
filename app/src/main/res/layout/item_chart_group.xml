@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:hyphenate="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:background="@color/bg_white"
+    android:gravity="center_vertical"
+    android:layout_height="match_parent">
+    
+    <ImageView
+        android:layout_width="@dimen/dimen_45"
+        android:layout_margin="@dimen/dimen_8"
+        android:layout_height="@dimen/dimen_45"
+        android:src="@drawable/ic_group"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10"
+            android:layout_marginRight="@dimen/dimen_15"
+            android:layout_marginTop="@dimen/dimen_5"
+            android:layout_marginBottom="@dimen/dimen_5"
+            android:gravity="center_vertical"
+            android:text="群组名称"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/sp_14"/>
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_15"
+            android:layout_marginLeft="@dimen/dimen_10"
+            android:layout_marginBottom="@dimen/dimen_5"
+            android:gravity="center_vertical"
+            android:text="群组描述"
+            android:textColor="@color/text_main_gray"
+            android:textSize="@dimen/sp_12"/>
+    </LinearLayout>
+
+</LinearLayout>
