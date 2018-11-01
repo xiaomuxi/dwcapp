@@ -1,1 +1,1 @@
-include ':app', ':NetLibrary'
+include ':app', ':NetLibrary', ':easeui'

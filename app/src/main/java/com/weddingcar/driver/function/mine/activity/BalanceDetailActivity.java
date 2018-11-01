@@ -1,7 +1,11 @@
 package com.weddingcar.driver.function.mine.activity;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.TextView;
 
 import com.network.library.bean.mine.request.GetBalanceDetailListRequest;
 import com.network.library.bean.mine.response.BalanceDetailEntity;
@@ -31,6 +35,8 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
     LoadMoreListView lv_balance;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.tv_empty)
+    TextView tv_empty;
 
     NetworkController networkController;
     BalanceListAdapter balanceListAdapter;
@@ -68,8 +74,21 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
         balanceListAdapter = new BalanceListAdapter(this);
         lv_balance.setAdapter(balanceListAdapter);
 
+        lv_balance.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                goToIncomeDetailActivity(mDataList.get(position));
+            }
+        });
+
         initData();
         initRefreshLayout();
+    }
+
+    private void goToIncomeDetailActivity(BalanceDetailEntity.Data data) {
+        Intent intent = new Intent(this, IncomeDetailActivity.class);
+        intent.putExtra("DATA", data);
+        startActivity(intent);
     }
 
     private void initRefreshLayout() {
@@ -97,10 +116,17 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
         });
     }
 
+    private void checkData() {
+        tv_empty.setVisibility(mDataList.size() == 0 ? View.VISIBLE : View.GONE);
+        lv_balance.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+    }
+
     private void initData() {
         GetBalanceDetailListRequest request = new GetBalanceDetailListRequest();
         GetBalanceDetailListRequest.Query query = new GetBalanceDetailListRequest.Query();
         query.setApiId(StringUtils.equals(type, "ACCOUNT") ? "HC0206201" : "HC0206200");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         query.setCustomerId(userInfo.getUserId());
         query.setPageIndex(pageNum);
         query.setPageSize(pageSize);
@@ -124,7 +150,8 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
                 //完成后调用完成的方法
                 swipeRefreshLayout.setRefreshing(false);
             }
-           balanceListAdapter.setData(mDataList);
+            balanceListAdapter.setData(mDataList);
+            checkData();
         }
 
         @Override

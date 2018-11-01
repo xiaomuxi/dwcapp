@@ -3,11 +3,15 @@ package com.network.library.inter;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.mine.response.BalanceDetailEntity;
 import com.network.library.bean.mine.response.CarColorsEntity;
+import com.network.library.bean.mine.response.CompleteOrderEntity;
+import com.network.library.bean.mine.response.DrawCashEntity;
+import com.network.library.bean.mine.response.EvaluateEntity;
 import com.network.library.bean.mine.response.GetBalanceInfoEntity;
 import com.network.library.bean.mine.response.GetCarBrandsEntity;
 import com.network.library.bean.mine.response.GetCarInfoEntity;
 import com.network.library.bean.mine.response.GetDriverCarInfoEntity;
 import com.network.library.bean.mine.response.GetMineInfoEntity;
+import com.network.library.bean.mine.response.WXPayOrderEntity;
 import com.network.library.bean.user.response.LoginEntity;
 import com.network.library.bean.user.response.OrderInfoEntity;
 import com.network.library.bean.user.response.OrderRunningListEntity;
@@ -88,8 +92,18 @@ public interface NetworkService {
 
     @GET("ljwy/JSON/HcPlApi01.aspx")
     Observable<BalanceDetailEntity> getBalanceDetailList(@QueryMap Map<String, String> map);
+
     @POST("ljwy/JSON/HcPlApi01.aspx")
-    Observable<BaseEntity<List<RobbingInfoEntity>>> getRobbingList(@Query("ApiId") String apiId, @Query("customerId") String customerId, @Query("carBrandId") String carBrandId, @Query("carModelId") String carModelId);
+    Observable<BaseEntity<List<RobbingInfoEntity>>> getRobbingList(@Query("ApiId") String apiId, @Query("customerId") String customerId,@Query("carBrandId") String carBrandId,@Query("carModelId") String carModelId);
+
+    @GET("ljwy/JSON/HcPlApi01.aspx")
+    Observable<EvaluateEntity> getEvaluateList(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi02.aspx")
+    Observable<DrawCashEntity> drawCash(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi01.aspx")
+    Observable<CompleteOrderEntity> getCompleteOrderList(@QueryMap Map<String, String> map);
 
     @POST("ljwy/JSON/HcPlApi01.aspx")
     Observable<BaseEntity<List<OrderInfoEntity>>> getOrderInfo(@Query("ApiId") String apiId, @Query("orderId") String orderId);
@@ -105,4 +119,13 @@ public interface NetworkService {
 
     @POST("ljwy/JSON/HcPlApi01.aspx")
     Observable<BaseEntity<List<OrderWaitListEntity>>> getCompleteOrderList(@Query("ApiId") String apiId, @Query("customerId") String customerId, @Query("state") String state);
+
+    @GET("ljwy/JSON/HcPlApi03.aspx")
+    Observable<WXPayOrderEntity> getWXPayOrder(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi03.aspx")
+    Observable<BaseEntity<String>> getALIPayOrder(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi03.aspx")
+    Observable<BaseEntity<String>> updatePayResult(@QueryMap Map<String, String> map);
 }

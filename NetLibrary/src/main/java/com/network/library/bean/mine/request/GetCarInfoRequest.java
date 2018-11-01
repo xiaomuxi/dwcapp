@@ -11,6 +11,8 @@ public class GetCarInfoRequest extends BaseRequest<GetCarInfoRequest.Query, Obje
 
         private String ApiId;
         private String customerId;
+        private String userid;
+        private String DEVICEID;
 
         public String getApiId() {
             return ApiId;
@@ -28,11 +30,29 @@ public class GetCarInfoRequest extends BaseRequest<GetCarInfoRequest.Query, Obje
             this.customerId = customerId;
         }
 
+        public String getUserid() {
+            return userid;
+        }
+
+        public void setUserid(String userid) {
+            this.userid = userid;
+        }
+
+        public String getDEVICEID() {
+            return DEVICEID;
+        }
+
+        public void setDEVICEID(String DEVICEID) {
+            this.DEVICEID = DEVICEID;
+        }
+
         @Override
         public String toString() {
             return "Query{" +
                     "ApiId='" + ApiId + '\'' +
                     ", customerId='" + customerId + '\'' +
+                    ", userid='" + userid + '\'' +
+                    ", DEVICEID='" + DEVICEID + '\'' +
                     '}';
         }
     }

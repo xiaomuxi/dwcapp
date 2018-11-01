@@ -15,5 +15,13 @@
             android:dividerHeight="0.5dp"
             android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:text="暂无明细信息"
+        android:textColor="@color/text_main_gray"
+        android:textSize="@dimen/sp_18"/>
 
 </LinearLayout>

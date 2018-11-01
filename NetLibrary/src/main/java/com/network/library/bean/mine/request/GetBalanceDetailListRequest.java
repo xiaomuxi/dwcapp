@@ -12,10 +12,28 @@ public class GetBalanceDetailListRequest extends BaseRequest<GetBalanceDetailLis
          * pageSize : 10
          */
 
+        private String userid;
+        private String DEVICEID;
         private String ApiId;
         private String customerId;
         private int pageIndex;
         private int pageSize;
+
+        public String getUserid() {
+            return userid;
+        }
+
+        public void setUserid(String userid) {
+            this.userid = userid;
+        }
+
+        public String getDEVICEID() {
+            return DEVICEID;
+        }
+
+        public void setDEVICEID(String DEVICEID) {
+            this.DEVICEID = DEVICEID;
+        }
 
         public String getApiId() {
             return ApiId;
@@ -52,7 +70,9 @@ public class GetBalanceDetailListRequest extends BaseRequest<GetBalanceDetailLis
         @Override
         public String toString() {
             return "Query{" +
-                    "ApiId='" + ApiId + '\'' +
+                    "userid='" + userid + '\'' +
+                    ", DEVICEID='" + DEVICEID + '\'' +
+                    ", ApiId='" + ApiId + '\'' +
                     ", customerId='" + customerId + '\'' +
                     ", pageIndex=" + pageIndex +
                     ", pageSize=" + pageSize +

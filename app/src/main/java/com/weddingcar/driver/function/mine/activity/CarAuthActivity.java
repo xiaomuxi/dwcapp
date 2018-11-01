@@ -99,6 +99,7 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
         mController.attachView(getCarInfoView);
 
         mTopRight.setOnClickListener(this);
+        tv_evaluate.setOnClickListener(this);
     }
 
     @Override
@@ -111,6 +112,8 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
         GetCarInfoRequest request = new GetCarInfoRequest();
         GetCarInfoRequest.Query query = new GetCarInfoRequest.Query();
         query.setApiId("HC010110");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         query.setCustomerId(userInfo.getUserId());
         request.setQuery(query);
         mController.sendRequest(HttpAction.ACTION_GET_CAR_INFO, request);
@@ -172,7 +175,15 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
             case R.id.right:
                 goToUploadCarInfoActivity();
                 break;
+            case R.id.tv_evaluate:
+                goToEvaluateActivity();
+                break;
         }
+    }
+
+    private void goToEvaluateActivity() {
+        Intent intent = new Intent(this, EvaluateActivity.class);
+        startActivity(intent);
     }
 
     private void goToUploadCarInfoActivity() {

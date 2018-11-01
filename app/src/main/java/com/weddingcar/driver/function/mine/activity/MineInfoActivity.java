@@ -83,6 +83,8 @@ public class MineInfoActivity extends BaseActivity implements View.OnClickListen
         GetBalanceInfoRequest request = new GetBalanceInfoRequest();
         GetBalanceInfoRequest.Query query = new GetBalanceInfoRequest.Query();
         query.setApiId("HC010101");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         query.setId(userInfo.getUserId());
         request.setQuery(query);
 

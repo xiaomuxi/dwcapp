@@ -12,7 +12,9 @@ import com.network.library.controller.NetworkController;
 import com.network.library.view.NormalView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
+import com.weddingcar.driver.common.bean.UserInfo;
 import com.weddingcar.driver.common.config.ToastConstant;
+import com.weddingcar.driver.common.manager.SPController;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.mine.adapter.CarColorListAdapter;
@@ -32,9 +34,13 @@ public class CarColorActivity extends BaseActivity{
 
     private int currentCheckedIndex = -1;
 
+    UserInfo userInfo;
+
     @Override
     protected void init() {
         super.init();
+
+        userInfo = SPController.getInstance().getUserInfo();
         setContentView(R.layout.activity_car_color);
         ButterKnife.bind(this);
     }
@@ -93,6 +99,8 @@ public class CarColorActivity extends BaseActivity{
         GetCarBrandsRequest req = new GetCarBrandsRequest();
         GetCarBrandsRequest.Query query = new GetCarBrandsRequest.Query();
         query.setApiId("HC010206");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         req.setQuery(query);
 
         mController.sendRequest(HttpAction.ACTION_GET_CAR_COLORS, req);

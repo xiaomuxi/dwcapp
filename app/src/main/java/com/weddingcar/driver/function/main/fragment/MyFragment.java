@@ -33,6 +33,10 @@ import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.mine.activity.CarAuthActivity;
+import com.weddingcar.driver.function.mine.activity.CompleteOrderActivity;
+import com.weddingcar.driver.function.mine.activity.CumulativeIncomeActivity;
+import com.weddingcar.driver.function.mine.activity.EvaluateActivity;
+import com.weddingcar.driver.function.mine.activity.MessageActivity;
 import com.weddingcar.driver.function.mine.activity.MineInfoActivity;
 import com.weddingcar.driver.function.mine.activity.SettingActivity;
 import com.weddingcar.driver.function.mine.activity.UploadCarInfoActivity;
@@ -132,6 +136,10 @@ public class MyFragment extends BaseFragment implements View.OnClickListener{
         tv_help.setOnClickListener(this);
         tv_setting.setOnClickListener(this);
         iv_head.setOnClickListener(this);
+        tv_income.setOnClickListener(this);
+        iv_message.setOnClickListener(this);
+        tv_evaluate.setOnClickListener(this);
+        tv_complete_order.setOnClickListener(this);
 
         initMineInfo();
     }
@@ -163,6 +171,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener{
         GetMineInfoRequest request = new GetMineInfoRequest();
         GetMineInfoRequest.Query query = new GetMineInfoRequest.Query();
         query.setApiId("HC010108");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         query.setId(userInfo.getUserId());
         request.setQuery(query);
 
@@ -173,6 +183,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener{
         GetDriverCarInfoRequest request1 = new GetDriverCarInfoRequest();
         GetDriverCarInfoRequest.Query query1 = new GetDriverCarInfoRequest.Query();
         query1.setApiId("HC010305");
+        query.setDEVICEID(userInfo.getDeviceId());
+        query.setUserid(userInfo.getUserId());
         query1.setId(userInfo.getUserId());
         request1.setQuery(query1);
 
@@ -298,6 +310,26 @@ public class MyFragment extends BaseFragment implements View.OnClickListener{
         startActivity(intent);
     }
 
+    private void goToCumulativeIncomeActivity() {
+        Intent intent = new Intent(mContext, CumulativeIncomeActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToMessageActivity() {
+        Intent intent = new Intent(mContext, MessageActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToEvaluateActivity() {
+        Intent intent = new Intent(mContext, EvaluateActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToCompleteOrderActivity() {
+        Intent intent = new Intent(mContext, CompleteOrderActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -324,6 +356,18 @@ public class MyFragment extends BaseFragment implements View.OnClickListener{
                 break;
             case R.id.iv_head:
                 goToMineInfoActivity();
+                break;
+            case R.id.tv_income:
+                goToCumulativeIncomeActivity();
+                break;
+            case R.id.iv_message:
+                goToMessageActivity();
+                break;
+            case R.id.tv_evaluate:
+                goToEvaluateActivity();
+                break;
+            case R.id.tv_complete_order:
+                goToCompleteOrderActivity();
                 break;
         }
     }
