@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
 import com.weddingcar.driver.common.manager.SPController;
@@ -68,6 +69,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 SPController.getInstance().logout();
+                EMClient.getInstance().logout(true);
+
                 goToLoginActivity();
                 dialog.dismiss();
             }

@@ -33,6 +33,7 @@ import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.mine.activity.CarAuthActivity;
+import com.weddingcar.driver.function.mine.activity.CompleteOrderActivity;
 import com.weddingcar.driver.function.mine.activity.CumulativeIncomeActivity;
 import com.weddingcar.driver.function.mine.activity.EvaluateActivity;
 import com.weddingcar.driver.function.mine.activity.MessageActivity;
@@ -138,6 +139,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener{
         tv_income.setOnClickListener(this);
         iv_message.setOnClickListener(this);
         tv_evaluate.setOnClickListener(this);
+        tv_complete_order.setOnClickListener(this);
 
         initMineInfo();
     }
@@ -323,6 +325,11 @@ public class MyFragment extends BaseFragment implements View.OnClickListener{
         startActivity(intent);
     }
 
+    private void goToCompleteOrderActivity() {
+        Intent intent = new Intent(mContext, CompleteOrderActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -358,6 +365,9 @@ public class MyFragment extends BaseFragment implements View.OnClickListener{
                 break;
             case R.id.tv_evaluate:
                 goToEvaluateActivity();
+                break;
+            case R.id.tv_complete_order:
+                goToCompleteOrderActivity();
                 break;
         }
     }

@@ -2,9 +2,14 @@ package com.weddingcar.driver.function.user.activity;
 
 import android.content.Intent;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
+import com.weddingcar.driver.common.bean.UserInfo;
+import com.weddingcar.driver.common.config.Config;
 import com.weddingcar.driver.common.manager.SPController;
+import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.main.activity.HomeActivity;
 
@@ -78,6 +83,25 @@ public class SplashActivity extends BaseActivity {
     private void checkAutoLogin() {
         boolean isAutoLogin = SPController.getInstance().getBoolean(SPController.IS_USER_AUTO_LOGIN, false);
         if (isAutoLogin) {
+            UserInfo userInfo = SPController.getInstance().getUserInfo();
+            EMClient.getInstance().login(userInfo.getUserId(), Config.HX_USER_PASSWORD, new EMCallBack() {//回调
+                @Override
+                public void onSuccess() {
+                    EMClient.getInstance().groupManager().loadAllGroups();
+                    EMClient.getInstance().chatManager().loadAllConversations();
+                    LogUtils.d("HX", "登录聊天服务器成功！");
+                }
+
+                @Override
+                public void onProgress(int progress, String status) {
+
+                }
+
+                @Override
+                public void onError(int code, String message) {
+                    LogUtils.d("HX", "登录聊天服务器失败！");
+                }
+            });
             goToHomeActivity();
         }else {
             goToLoginActivity();

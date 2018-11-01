@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 import com.network.library.bean.user.request.LoginRequest;
 import com.network.library.bean.user.response.LoginEntity;
 import com.network.library.constant.HttpAction;
@@ -18,6 +21,7 @@ import com.network.library.view.NormalView;
 import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.base.BaseActivity;
 import com.weddingcar.driver.common.bean.UserInfo;
+import com.weddingcar.driver.common.config.Config;
 import com.weddingcar.driver.common.config.IntentConstant;
 import com.weddingcar.driver.common.config.ToastConstant;
 import com.weddingcar.driver.common.manager.SPController;
@@ -223,6 +227,31 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         SPController.getInstance().saveUserInfo(info);
         SPController.getInstance().putBoolean(SPController.IS_USER_AUTO_LOGIN, true);
         SPController.getInstance().putString(SPController.USER_LAST_FILLED_PHONE, et_phone.getText().toString().trim());
+
+        try {
+            EMClient.getInstance().createAccount(data.getUserId(), Config.HX_USER_PASSWORD);
+        } catch (HyphenateException e) {
+            e.printStackTrace();
+        }
+
+        EMClient.getInstance().login(data.getUserId(), Config.HX_USER_PASSWORD, new EMCallBack() {//回调
+            @Override
+            public void onSuccess() {
+                EMClient.getInstance().groupManager().loadAllGroups();
+                EMClient.getInstance().chatManager().loadAllConversations();
+                LogUtils.d("HX", "登录聊天服务器成功！");
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                LogUtils.d("HX", "登录聊天服务器失败！");
+            }
+        });
 
         goToHomeActivity();
     }

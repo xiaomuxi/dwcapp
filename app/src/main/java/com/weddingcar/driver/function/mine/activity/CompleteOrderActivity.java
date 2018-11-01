@@ -1,8 +1,10 @@
 package com.weddingcar.driver.function.mine.activity;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.network.library.bean.mine.request.CompleteOrderListRequest;
@@ -20,6 +22,8 @@ import com.weddingcar.driver.common.ui.LoadMoreListView;
 import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.StringUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
+import com.weddingcar.driver.function.main.activity.OrderInfoActivity;
+import com.weddingcar.driver.function.mine.adapter.CompleteOrderListAdapter;
 
 import java.util.List;
 
@@ -34,7 +38,7 @@ public class CompleteOrderActivity extends BaseActivity implements LoadMoreListV
     LoadMoreListView lv_order;
     @BindView(R.id.tv_empty)
     TextView tv_empty;
-//    BalanceListAdapter balanceListAdapter;
+    CompleteOrderListAdapter completeOrderListAdapter;
     List<OrderWaitListEntity> mDataList;
 
     NetworkController networkController;
@@ -48,7 +52,7 @@ public class CompleteOrderActivity extends BaseActivity implements LoadMoreListV
     protected void init() {
         super.init();
         userInfo = SPController.getInstance().getUserInfo();
-        setContentView(R.layout.activity_cumulative_income);
+        setContentView(R.layout.activity_complete_order);
         ButterKnife.bind(this);
     }
 
@@ -66,23 +70,24 @@ public class CompleteOrderActivity extends BaseActivity implements LoadMoreListV
         networkController = new NetworkController();
         networkController.attachView(getOrderListView);
 
-//        balanceListAdapter = new BalanceListAdapter(this);
-//        lv_order.setAdapter(balanceListAdapter);
-//        lv_order.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                goToOrderDetailActivity(mDataList.get(position));
-//            }
-//        });
-//
-//        initRefreshLayout();
-//        initData();
+        completeOrderListAdapter = new CompleteOrderListAdapter(this);
+        lv_order.setAdapter(completeOrderListAdapter);
+        lv_order.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                goToOrderDetailActivity(mDataList.get(position));
+            }
+        });
+
+        initRefreshLayout();
+        initData();
     }
 
-    private void goToOrderDetailActivity(OrderWaitListEntity data) {
-//        Intent intent = new Intent(this, IncomeDetailActivity.class);
-//        intent.putExtra("DATA", data);
-//        startActivity(intent);
+    public void goToOrderDetailActivity(OrderWaitListEntity data) {
+        Intent intent = new Intent(this, OrderInfoActivity.class);
+        intent.putExtra("type", "complete");
+        intent.putExtra("complete", data);
+        mContext.startActivity(intent);
     }
 
     private void initRefreshLayout() {
@@ -117,6 +122,7 @@ public class CompleteOrderActivity extends BaseActivity implements LoadMoreListV
         query.setDEVICEID(userInfo.getDeviceId());
         query.setUserid(userInfo.getUserId());
         query.setCustomerId(userInfo.getUserId());
+        query.setState("已结束");
         query.setPageIndex(pageNum);
         query.setPageSize(pageSize);
         request.setQuery(query);
@@ -144,7 +150,7 @@ public class CompleteOrderActivity extends BaseActivity implements LoadMoreListV
                 //完成后调用完成的方法
                 swipeRefreshLayout.setRefreshing(false);
             }
-//            balanceListAdapter.setData(mDataList);
+            completeOrderListAdapter.setData(mDataList);
             checkData();
         }
 

@@ -16,10 +16,8 @@ public class Config {
     private static final String APP_BASE_URL_PRO = "http://139.196.254.89:8080/";
     private static final String APP_BASE_URL_USER_AVATOR = "http://139.196.254.89:8080/LJTP/CATP/";
     private static final String APP_BASE_URL_CAR_BRANDS = "http://139.196.254.89:8080/LJTP/Logo/";
-    public static final String PAY_APP_ID_WX = "";
-    public static final String PAY_APP_ID_ALI = "";
-    public static final String PAY_ALI_PID = "";
-    public static final String PAY_ALI_TARGET_ID = "";
+    public static final String PAY_APP_ID_WX = "wxc1ec297924f43820";
+    public static final String HX_USER_PASSWORD = "12345678";
 
     /**
      * Determine whether is test environment currently

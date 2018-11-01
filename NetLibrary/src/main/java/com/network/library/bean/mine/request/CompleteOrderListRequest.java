@@ -2,7 +2,7 @@ package com.network.library.bean.mine.request;
 
 import com.network.library.bean.BaseRequest;
 
-public class CompleteOrderListRequest extends BaseRequest{
+public class CompleteOrderListRequest extends BaseRequest<CompleteOrderListRequest.Query, Object> {
     public static class Query {
 
         /**
