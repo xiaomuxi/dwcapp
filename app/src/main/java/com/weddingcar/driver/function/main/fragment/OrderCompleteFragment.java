@@ -91,6 +91,18 @@ public class OrderCompleteFragment extends BaseFragment implements OnRecycleItem
         DividerItemDecoration divider = new DividerItemDecoration(UIUtils.getContext(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(UIUtils.getDrawable(R.drawable.recycleview_divider));
         mCompleteRecycleView.addItemDecoration(divider);
+
+        mCompleteRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
     @Override

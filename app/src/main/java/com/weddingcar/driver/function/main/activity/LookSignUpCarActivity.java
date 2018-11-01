@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MarkerOptions;
 import com.network.library.bean.BaseEntity;
@@ -48,7 +49,7 @@ import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
-        GetSignUpListView, CancelSignUpView ,GetOrderInfoView {
+        GetSignUpListView, CancelSignUpView, GetOrderInfoView {
 
     @BindView(R.id.order_number)
     TextView mOrderNumber;
@@ -104,6 +105,7 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mOrderEntity = (OrderWaitListEntity) getIntent().getSerializableExtra("orderNumber");
         mController = new NetworkController<>();
         mController.attachView(this);
@@ -122,6 +124,12 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
         super.init();
         setContentView(R.layout.activity_look_sign_up_car);
         unbinder = ButterKnife.bind(this);
+
+        orderInfoMapView.onCreate(null);
+
+        UiSettings uiSettings = orderInfoMapView.getMap().getUiSettings();
+        uiSettings.setScaleControlsEnabled(true);
+        uiSettings.setZoomControlsEnabled(false);
     }
 
     @Override
@@ -215,11 +223,7 @@ public class LookSignUpCarActivity extends BaseActivity implements BaseNetView,
         mOrderTimeTxView.setText(new SimpleDateFormat("yyyy年MM月dd日").format(new Date(Long.parseLong(signUpInfoEntity.getTheWeddingDate()))));
         String sex = signUpInfoEntity.getCustomerSex();
         mOrderUserName.setVisibility(View.GONE);
-        if (sex.equals("男")) {
-            mOrderUserName.setText(signUpInfoEntity.getCustomerName() + "先生");
-        } else if (sex.equals("女")) {
-            mOrderUserName.setText(signUpInfoEntity.getCustomerName() + "女士");
-        }
+        mOrderUserName.setText(signUpInfoEntity.getCustomerName());
         mOrderCarTypeTxView.setText(signUpInfoEntity.getCarBrandName() + signUpInfoEntity.getCarModelName());
         mOrderDurationTxView.setText(signUpInfoEntity.getHourChoose() + "小时");
         mOrderRoadTxView.setText(signUpInfoEntity.getJourneyChoose() + "公里");

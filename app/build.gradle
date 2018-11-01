@@ -51,4 +51,5 @@ dependencies {
     implementation files('libs/alipaySdk-20180601.jar')
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
 }
