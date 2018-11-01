@@ -70,7 +70,9 @@ public class OrderInvalidAdapter extends RecyclerView.Adapter<OrderInvalidAdapte
         String code = orderWaitListEntity.getID();
         holder.orderInvalidView.setVisibility(View.VISIBLE);
         holder.orderInvalidView.setText("已失效");
+        holder.orderInvalidView.setTextColor(mContext.getResources().getColor(R.color.text_black));
         holder.orderCatLocation.setText("删除");
+        holder.orderCatLocation.setTextColor(mContext.getResources().getColor(R.color.text_black));
         holder.orderCatLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,13 +80,9 @@ public class OrderInvalidAdapter extends RecyclerView.Adapter<OrderInvalidAdapte
             }
         });
         holder.orderNumber.setText("订单号:" + code);
-        if (customerSex.equals("男")) {
-            holder.orderUserName.setText(customerName + "先生");
-        } else if (customerSex.equals("女")) {
-            holder.orderUserName.setText(customerName + "女士");
-        }
+        holder.orderUserName.setText(customerName);
         GlideUtils.loadShow(mContext, userHeadUrl, holder.orderUserIconView);
-        holder.orderMoneyTxView.setText("$" + amount);
+        holder.orderMoneyTxView.setText("￥" + amount);
         holder.orderDurationTxView.setText(hourChoose + "小时");
         holder.orderRoadTxView.setText(journeyChoose + "公里");
         holder.orderSpaceTxView.setText(areaName);

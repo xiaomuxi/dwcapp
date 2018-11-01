@@ -58,9 +58,9 @@ public class SignUpAdapter extends BaseAdapter {
         String signUpName = name + "师傅";
         String evaluate = signUpInfo.getEvaluate();
         String carPlate = signUpInfo.getCarPlate();
-        String orderCount = signUpInfo.getOrderAmount() + "次";
+        String orderCount = signUpInfo.getOrderAmount() + "单";
         String carColor = signUpInfo.getCarColor();
-        String signPrice = "$" + signUpInfo.getAmount();
+        String signPrice = "￥" + signUpInfo.getAmount();
         String signUpIcon = Config.getAppHtmlUrl() + "/LJTP/CATP/" + signUpInfo.getAvator();
 
         holder.signUpCarNick.setText(signUpName);
