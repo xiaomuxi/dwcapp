@@ -7,6 +7,7 @@ import com.network.library.bean.mine.response.CompleteOrderEntity;
 import com.network.library.bean.mine.response.DrawCashEntity;
 import com.network.library.bean.mine.response.EvaluateEntity;
 import com.network.library.bean.mine.response.GetBalanceInfoEntity;
+import com.network.library.bean.mine.response.GetCalendarEventEntity;
 import com.network.library.bean.mine.response.GetCarBrandsEntity;
 import com.network.library.bean.mine.response.GetCarInfoEntity;
 import com.network.library.bean.mine.response.GetDriverCarInfoEntity;
@@ -128,4 +129,10 @@ public interface NetworkService {
 
     @GET("ljwy/JSON/HcPlApi03.aspx")
     Observable<BaseEntity<String>> updatePayResult(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi01.aspx")
+    Observable<GetCalendarEventEntity> getCalendarEvent(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi02.aspx")
+    Observable<BaseEntity<String>> operateCalendarEvent(@QueryMap Map<String, String> map);
 }

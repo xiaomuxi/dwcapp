@@ -20,4 +20,6 @@ public class HttpAction {
     public final static String ACTION_GET_WX_PAY_ORDER = "ACTION_GET_WX_PAY_ORDER";
     public final static String ACTION_GET_ALI_PAY_ORDER = "ACTION_GET_ALI_PAY_ORDER";
     public final static String ACTION_UPDATE_PAY_RESULT = "ACTION_UPDATE_PAY_RESULT";
+    public final static String ACTION_GET_CALENDAR_EVENT = "ACTION_GET_CALENDAR_EVENT";
+    public final static String ACTION_OPERATE_CALENDAR_EVENT = "ACTION_OPERATE_CALENDAR_EVENT";
 }

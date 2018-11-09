@@ -22,6 +22,7 @@ import com.weddingcar.driver.R;
 import com.weddingcar.driver.common.utils.LogUtils;
 import com.weddingcar.driver.common.utils.UIUtils;
 import com.weddingcar.driver.function.main.adapter.OrderPagerAdapter;
+import com.weddingcar.driver.function.mine.activity.DriverCalendarActivity;
 import com.weddingcar.driver.function.mine.activity.MessageActivity;
 
 import java.util.ArrayList;
@@ -99,6 +100,14 @@ public class OrderFragment extends BaseFragment implements SwipeRefreshLayout.On
                 startActivity(new Intent(mContext, MessageActivity.class));
             }
         });
+        iv_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, DriverCalendarActivity.class);
+                startActivity(intent);
+            }
+        });
+
         initActionBar();
         initTabLayout();
         initViewPager();

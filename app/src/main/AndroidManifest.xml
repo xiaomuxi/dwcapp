@@ -305,6 +305,7 @@
         <activity android:name=".function.mine.activity.IncomeDetailActivity" />
         <activity android:name=".function.mine.activity.CompleteOrderActivity" />
         <activity android:name=".function.mine.activity.ChartActivity" />
+        <activity android:name=".function.mine.activity.DriverCalendarActivity" />
         <!--Ali pay end-->
     </application>
 
