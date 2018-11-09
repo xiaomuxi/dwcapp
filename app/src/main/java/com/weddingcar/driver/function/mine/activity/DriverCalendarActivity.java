@@ -208,8 +208,6 @@ public class DriverCalendarActivity extends BaseActivity {
 
             orderDateList = dateFormat(orderDateList, "yyyy-MM-dd", "yyyy-M-d");
             busDateList = dateFormat(busDateList, "yyyy-MM-dd", "yyyy-M-d");
-            LogUtils.i(TAG, orderDateList.toString());
-            LogUtils.i(TAG, busDateList.toString());
             //Set order list time
             DPCManager.getInstance().setDecorBG(orderDateList);
             DPCManager.getInstance().setDecorTR(busDateList);
@@ -247,8 +245,6 @@ public class DriverCalendarActivity extends BaseActivity {
                 busDateList.remove(currentDate);
             }
 
-            LogUtils.i(TAG, "YIN======>"+currentDate);
-            LogUtils.i(TAG, busDateList.toString());
             DPCManager.getInstance().setDecorTR(busDateList);
             dp_calendar.notifyView();
             UIUtils.showToastSafe("设置成功");

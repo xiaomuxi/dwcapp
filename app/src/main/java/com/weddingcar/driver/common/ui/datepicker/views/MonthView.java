@@ -529,12 +529,10 @@ public class MonthView extends View {
             for (int j = 0; j < tmp[i].length; j++) {
                 Region region = tmp[i][j];
                 String strG = mCManager.obtainDPInfo(centerYear, centerMonth)[i][j].strG;
-                System.out.println("======》strG:"+strG);
                 if (TextUtils.isEmpty(strG)) {
                     continue;
                 }
                 if (map.contains(strG)) {
-                    System.out.println("====contains==》"+strG);
                     String date = centerYear + "-" + centerMonth + "-" + strG;
                     BGCircle circle = createCircle(
                             region.getBounds().centerX() + indexMonth * width,
