@@ -33,7 +33,8 @@ public class BalanceListAdapter extends MyBaseAdapter <BalanceDetailEntity.Data>
         tv_title.setText(item.getName() + item.getType());
         tv_title_order.setText(mContext.getResources().getString(R.string.text_balance_detail_order, item.getOrderID()));
         tv_title_order.setVisibility(StringUtils.isEmpty(item.getOrderID())?View.INVISIBLE:View.VISIBLE);
-        tv_money.setText(mContext.getResources().getString(R.string.text_balance_detail_money, item.getAmount()+""));
+        String prefix = StringUtils.equals("提现", item.getType()) ? "- " :  "+ ";
+        tv_money.setText(mContext.getResources().getString(R.string.text_balance_detail_money, prefix + item.getAmount()));
         tv_time.setText(item.getCreateTimeString());
 
         return convertView;

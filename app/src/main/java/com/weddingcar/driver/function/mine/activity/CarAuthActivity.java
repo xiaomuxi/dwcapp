@@ -145,7 +145,7 @@ public class CarAuthActivity extends BaseActivity implements View.OnClickListene
             tv_order_num.setText(getResources().getString(R.string.text_order_num, carInfo.getOrderQuantity()+""));
             tv_phone.setText(carInfo.getCustomerID());
             Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePathZQ()).apply(options).into(iv_img1);
-            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePathYQ()).apply(options).into(iv_img2);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePathYH()).apply(options).into(iv_img2);
             Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath1()).apply(options).into(iv_img3);
             Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath2()).apply(options).into(iv_img4);
             Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath3()).apply(options).into(iv_img5);

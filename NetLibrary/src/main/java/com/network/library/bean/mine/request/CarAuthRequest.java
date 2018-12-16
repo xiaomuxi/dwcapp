@@ -69,6 +69,8 @@ public class CarAuthRequest extends BaseRequest<CarAuthRequest.Query, CarAuthReq
         private String ImagePath6;
         private String ImagePath7;
         private String ImagePath8;
+        private double Latitude;
+        private double Longitude;
 
         public String getCustomerID() {
             return CustomerID;
@@ -238,6 +240,22 @@ public class CarAuthRequest extends BaseRequest<CarAuthRequest.Query, CarAuthReq
             ImagePath8 = imagePath8;
         }
 
+        public double getLatitude() {
+            return Latitude;
+        }
+
+        public void setLatitude(double latitude) {
+            Latitude = latitude;
+        }
+
+        public double getLongitude() {
+            return Longitude;
+        }
+
+        public void setLongitude(double longitude) {
+            Longitude = longitude;
+        }
+
         @Override
         public String toString() {
             return "Body{" +
@@ -262,6 +280,8 @@ public class CarAuthRequest extends BaseRequest<CarAuthRequest.Query, CarAuthReq
                     ", ImagePath6='" + ImagePath6 + '\'' +
                     ", ImagePath7='" + ImagePath7 + '\'' +
                     ", ImagePath8='" + ImagePath8 + '\'' +
+                    ", Latitude=" + Latitude +
+                    ", Longitude=" + Longitude +
                     '}';
         }
     }
