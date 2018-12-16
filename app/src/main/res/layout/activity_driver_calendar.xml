@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <com.weddingcar.driver.common.ui.datepicker.views.DatePicker
+        android:id="@+id/dp_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_35"
+        android:layout_marginLeft="@dimen/dimen_15"
+        android:layout_marginBottom="@dimen/dimen_8"
+        android:drawableLeft="@drawable/shape_dot_red"
+        android:drawablePadding="@dimen/dimen_10"
+        android:text="@string/text_calendar_red"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/text_main_gray"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_15"
+        android:drawableLeft="@drawable/shape_dot_orange"
+        android:drawablePadding="@dimen/dimen_10"
+        android:text="@string/text_calendar_orange"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/text_main_gray"/>
+
+</LinearLayout>

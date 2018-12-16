@@ -41,6 +41,9 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
 
     UserInfo userInfo;
     NetworkController networkController;
+
+    double depositMoney;
+    double integrationMoney;
     @Override
     protected void init() {
         super.init();
@@ -94,8 +97,10 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         @Override
         public void onSuccess(GetBalanceInfoEntity entity) {
             GetBalanceInfoEntity.Data data = entity.getData().get(0);
-            String accountBalance = StringUtils.isEmpty(data.getIntegration() + "") ? "--" : data.getIntegration() + "";
-            String bondBalance = StringUtils.isEmpty(data.getCashDeposit() + "") ? "--" : data.getCashDeposit() + "";
+            integrationMoney = data.getIntegration();
+            depositMoney = data.getCashDeposit();
+            String accountBalance = StringUtils.isEmpty(integrationMoney + "") ? "--" : integrationMoney + "";
+            String bondBalance = StringUtils.isEmpty(depositMoney + "") ? "--" : depositMoney + "";
             tv_account_balance.setText(accountBalance);
             tv_bond_balance.setText(bondBalance);
         }
@@ -130,15 +135,23 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.tv_account_cash:
                 //账户余额提现
-                goToDrawCashActivity("ACCOUNT");
+                if (integrationMoney <= 0) {
+                    UIUtils.showToastSafe("没有可提现的余额");
+                    return;
+                }
+                goToDrawCashActivity("ACCOUNT", integrationMoney);
                 break;
             case R.id.tv_bond_detail:
                 //保证金余额明细
                 goToBalanceDetailActivity("BOND");
                 break;
             case R.id.tv_bond_cash:
+                if (depositMoney <= 0) {
+                    UIUtils.showToastSafe("没有可提现的余额");
+                    return;
+                }
                 //保证金余额提现
-                goToDrawCashActivity("BOND");
+                goToDrawCashActivity("BOND", depositMoney);
                 break;
             case R.id.tv_bond_recharge:
                 //保证金余额充值
@@ -157,9 +170,10 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         startActivity(intent);
     }
 
-    private void goToDrawCashActivity(String type) {
+    private void goToDrawCashActivity(String type, double money) {
         Intent intent = new Intent(this, DrawCashActivity.class);
         intent.putExtra("TYPE", type);
+        intent.putExtra("ALLOWED_MONEY", money);
         startActivity(intent);
     }
 }

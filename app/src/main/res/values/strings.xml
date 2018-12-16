@@ -42,5 +42,8 @@
     <string name="order_info_title">订单详情</string>
 
     <string name="permission_tip">正在请求权限</string>
+    <string name="text_calendar_red">红色背景表示当天已有订单</string>
+    <string name="text_calendar_orange">橙色背景表示当天无法接单</string>
+    <string name="text_allowed_money">可提现金额%s元</string>
 
 </resources>

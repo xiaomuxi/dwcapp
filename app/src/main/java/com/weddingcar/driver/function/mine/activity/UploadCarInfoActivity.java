@@ -35,6 +35,7 @@ import com.weddingcar.driver.common.bean.UserInfo;
 import com.weddingcar.driver.common.config.Config;
 import com.weddingcar.driver.common.config.ToastConstant;
 import com.weddingcar.driver.common.manager.SPController;
+import com.weddingcar.driver.common.map.LocationBean;
 import com.weddingcar.driver.common.utils.Base64Utils;
 import com.weddingcar.driver.common.utils.CheckUtils;
 import com.weddingcar.driver.common.utils.DrawableUtils;
@@ -156,7 +157,7 @@ public class UploadCarInfoActivity extends BaseActivity implements View.OnClickL
     private String plateNumber;
     private String contactNumber;
     private String emergencyContactNumber;
-    private String address;
+    private LocationBean locationBean;
     private String description;
     private String imgCarLeft1;
     private String imgCarLeft2;
@@ -237,25 +238,25 @@ public class UploadCarInfoActivity extends BaseActivity implements View.OnClickL
             et_urgent_contact.setText(carInfo.getTelEmergency());
             et_description.setText(carInfo.getIntroduce());
             RequestOptions options1 = new RequestOptions().placeholder(R.drawable.car_left_anterior);
-            RequestOptions options2 = new RequestOptions().placeholder(R.drawable.car_forward);
+            RequestOptions options2 = new RequestOptions().placeholder(R.drawable.car_right_back);
             RequestOptions options3 = new RequestOptions().placeholder(R.drawable.car_front_seat);
-            RequestOptions options4 = new RequestOptions().placeholder(R.drawable.car_right_back);
-            RequestOptions options5 = new RequestOptions().placeholder(R.drawable.car_after);
-            RequestOptions options6 = new RequestOptions().placeholder(R.drawable.car_back_seat);
+            RequestOptions options4 = new RequestOptions().placeholder(R.drawable.car_back_seat);
+            RequestOptions options5 = new RequestOptions().placeholder(R.drawable.car_forward);
+            RequestOptions options6 = new RequestOptions().placeholder(R.drawable.car_after);
             RequestOptions options7 = new RequestOptions().placeholder(R.drawable.id_positive);
             RequestOptions options8 = new RequestOptions().placeholder(R.drawable.id_opposite);
             RequestOptions options9 = new RequestOptions().placeholder(R.drawable.drivers_license);
             RequestOptions options10 = new RequestOptions().placeholder(R.drawable.driving_license);
             Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePathZQ()).apply(options1).into(iv_car_left_1);
-            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePathYQ()).apply(options1).into(iv_car_middle_1);
-            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath1()).apply(options1).into(iv_car_right_1);
-            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath2()).apply(options1).into(iv_car_left_2);
-            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath3()).apply(options1).into(iv_car_middle_2);
-            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath4()).apply(options1).into(iv_car_right_2);
-            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath5()).apply(options1).into(iv_id_left);
-            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath6()).apply(options1).into(iv_id_right);
-            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath7()).apply(options1).into(iv_driver_left);
-            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath8()).apply(options1).into(iv_driver_right);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePathYH()).apply(options2).into(iv_car_middle_1);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath1()).apply(options3).into(iv_car_right_1);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath2()).apply(options4).into(iv_car_left_2);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath3()).apply(options5).into(iv_car_middle_2);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath4()).apply(options6).into(iv_car_right_2);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath5()).apply(options7).into(iv_id_left);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath6()).apply(options8).into(iv_id_right);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath7()).apply(options9).into(iv_driver_left);
+            Glide.with(mContext).load(Config.getUserAvatorBaseUrl() + carInfo.getImagePath8()).apply(options10).into(iv_driver_right);
         }
     }
 
@@ -799,6 +800,8 @@ public class UploadCarInfoActivity extends BaseActivity implements View.OnClickL
         body.setTelEmergency(emergencyContactNumber);
         body.setIntroduce(description);
         body.setPlate(plateNumber);
+        body.setLatitude(locationBean.getLat());
+        body.setLongitude(locationBean.getLon());
         body.setImagePathZQ(imgCarLeft1);
         body.setImagePathYQ(imgCarMiddle1);
         body.setImagePath1(imgCarRight1);
@@ -1006,8 +1009,8 @@ public class UploadCarInfoActivity extends BaseActivity implements View.OnClickL
                 break;
             case REQUEST_CODE_ADDRESS_CHOOSE:
                 if (resultCode == 1) {
-                    address = data.getStringExtra("ADDRESS");
-                    tv_address.setText(address);
+                    locationBean = (LocationBean) data.getSerializableExtra("ADDRESS");
+                    tv_address.setText(locationBean.getTitle());
                 }
                 break;
             case REQUEST_CODE_PICTURE_CAMERA:
